@@ -32,13 +32,14 @@
             listarMaterias = new Button();
             agegarMaterias = new Button();
             eliminarMaterias = new Button();
+            modificarMateria = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvMaterias).BeginInit();
             SuspendLayout();
             // 
             // dgvMaterias
             // 
             dgvMaterias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvMaterias.Location = new Point(12, 85);
+            dgvMaterias.Location = new Point(12, 12);
             dgvMaterias.Name = "dgvMaterias";
             dgvMaterias.Size = new Size(626, 150);
             dgvMaterias.TabIndex = 0;
@@ -55,12 +56,13 @@
             // 
             // agegarMaterias
             // 
-            agegarMaterias.Location = new Point(279, 241);
+            agegarMaterias.Location = new Point(187, 241);
             agegarMaterias.Name = "agegarMaterias";
             agegarMaterias.Size = new Size(75, 23);
             agegarMaterias.TabIndex = 2;
             agegarMaterias.Text = "Agregar";
             agegarMaterias.UseVisualStyleBackColor = true;
+            agegarMaterias.Click += agegarMaterias_Click;
             // 
             // eliminarMaterias
             // 
@@ -72,11 +74,22 @@
             eliminarMaterias.UseVisualStyleBackColor = true;
             eliminarMaterias.Click += eliminarMaterias_Click;
             // 
+            // modificarMateria
+            // 
+            modificarMateria.Location = new Point(381, 241);
+            modificarMateria.Name = "modificarMateria";
+            modificarMateria.Size = new Size(75, 23);
+            modificarMateria.TabIndex = 4;
+            modificarMateria.Text = "Modificar";
+            modificarMateria.UseVisualStyleBackColor = true;
+            modificarMateria.Click += modificarMateria_Click;
+            // 
             // ABMmaterias
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(650, 450);
+            ClientSize = new Size(650, 289);
+            Controls.Add(modificarMateria);
             Controls.Add(eliminarMaterias);
             Controls.Add(agegarMaterias);
             Controls.Add(listarMaterias);
@@ -93,5 +106,6 @@
         private Button listarMaterias;
         private Button agegarMaterias;
         private Button eliminarMaterias;
+        private Button modificarMateria;
     }
 }

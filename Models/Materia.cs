@@ -3,7 +3,7 @@
     public class Materia
     {
         public int Id { get; set; }
-        public string descripcion { get; set; }
+        public string Descripcion { get; set; }
         public string HSSemanales { get; set; }
         public string HSTotales { get; set; }
         public int IDPlan { get; set; }

@@ -52,5 +52,33 @@ namespace VistaEscritorio
                 MessageBox.Show("No se pudo eliminar la materia.");
             }
         }
+
+        private void agegarMaterias_Click(object sender, EventArgs e)
+        {
+            CargaMaterias cargaMateriasForm = new CargaMaterias();
+            cargaMateriasForm.ShowDialog();
+            listarMaterias_Click(sender, e);
+        }
+
+        private void modificarMateria_Click(object sender, EventArgs e)
+        {
+            if (dgvMaterias.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Debe seleccionar una fila para Modificar.");
+                return;
+            }
+
+            int filaSeleccionada = dgvMaterias.SelectedRows[0].Index;
+            if (listaMaterias == null)
+            {
+                MessageBox.Show("No hay materias cargadas.");
+                return;
+            }
+
+            var materiaAModificar = listaMaterias.ToList()[filaSeleccionada];
+            ModificarMateria cargaMateriasForm = new ModificarMateria(materiaAModificar);
+            cargaMateriasForm.ShowDialog();
+            listarMaterias_Click(sender, e);
+        }
     }
 }
