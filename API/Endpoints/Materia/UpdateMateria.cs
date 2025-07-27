@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using System.Threading;
-using Models;
 
 namespace API.Endpoints.Materia;
    
