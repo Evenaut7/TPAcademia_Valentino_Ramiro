@@ -31,13 +31,13 @@
             descBox = new TextBox();
             horaHastaBox = new TextBox();
             horaDesdeBox = new TextBox();
-            idPlanBox = new TextBox();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
             cancelarButton = new Button();
             agregarMateria = new Button();
+            idPlanBox = new ComboBox();
             SuspendLayout();
             // 
             // descBox
@@ -60,13 +60,6 @@
             horaDesdeBox.Name = "horaDesdeBox";
             horaDesdeBox.Size = new Size(193, 23);
             horaDesdeBox.TabIndex = 2;
-            // 
-            // idPlanBox
-            // 
-            idPlanBox.Location = new Point(85, 104);
-            idPlanBox.Name = "idPlanBox";
-            idPlanBox.Size = new Size(193, 23);
-            idPlanBox.TabIndex = 4;
             // 
             // label2
             // 
@@ -124,6 +117,15 @@
             agregarMateria.UseVisualStyleBackColor = true;
             agregarMateria.Click += agregarMateria_Click;
             // 
+            // idPlanBox
+            // 
+            idPlanBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            idPlanBox.FormattingEnabled = true;
+            idPlanBox.Location = new Point(85, 104);
+            idPlanBox.Name = "idPlanBox";
+            idPlanBox.Size = new Size(121, 23);
+            idPlanBox.TabIndex = 13;
+            // 
             // CargaMaterias
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -140,7 +142,8 @@
             Controls.Add(horaDesdeBox);
             Controls.Add(descBox);
             Name = "CargaMaterias";
-            Text = "Form1";
+            Text = "Ingrese una materia";
+            Load += CargaMaterias_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -149,12 +152,12 @@
         private TextBox descBox;
         private TextBox horaHastaBox;
         private TextBox horaDesdeBox;
-        private TextBox idPlanBox;
         private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
         private Button cancelarButton;
         private Button agregarMateria;
+        private ComboBox idPlanBox;
     }
 }

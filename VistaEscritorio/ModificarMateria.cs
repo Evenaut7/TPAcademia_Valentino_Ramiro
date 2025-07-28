@@ -26,6 +26,12 @@ namespace VistaEscritorio
 
         }
 
+        private async Task CargarIdsAsync()
+        {
+            var listaPlanes = await PlanNegocio.GetAll();
+            idPlanBox.DataSource = listaPlanes.Select(p => p.Id).ToList();
+        }
+
         private async void agregarMateria_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(descBox.Text) ||
@@ -53,6 +59,16 @@ namespace VistaEscritorio
             {
                 MessageBox.Show("Error al agregar la materia.");
             }
+        }
+
+        private void idPlanBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void ModificarMateria_Load(object sender, EventArgs e)
+        {
+            await CargarIdsAsync();
         }
     }
 }

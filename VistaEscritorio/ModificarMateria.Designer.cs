@@ -34,12 +34,12 @@
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
-            idPlanBox = new TextBox();
             horaHastaBox = new TextBox();
             horaDesdeBox = new TextBox();
             descBox = new TextBox();
             idMateria = new TextBox();
             label6 = new Label();
+            idPlanBox = new ComboBox();
             SuspendLayout();
             // 
             // agregarMateria
@@ -97,13 +97,6 @@
             label2.TabIndex = 19;
             label2.Text = "Descripcion";
             // 
-            // idPlanBox
-            // 
-            idPlanBox.Location = new Point(92, 163);
-            idPlanBox.Name = "idPlanBox";
-            idPlanBox.Size = new Size(193, 23);
-            idPlanBox.TabIndex = 17;
-            // 
             // horaHastaBox
             // 
             horaHastaBox.Location = new Point(92, 134);
@@ -141,11 +134,22 @@
             label6.TabIndex = 26;
             label6.Text = "Materia a Modificar";
             // 
+            // idPlanBox
+            // 
+            idPlanBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            idPlanBox.FormattingEnabled = true;
+            idPlanBox.Location = new Point(92, 163);
+            idPlanBox.Name = "idPlanBox";
+            idPlanBox.Size = new Size(121, 23);
+            idPlanBox.TabIndex = 27;
+            idPlanBox.SelectedIndexChanged += idPlanBox_SelectedIndexChanged;
+            // 
             // ModificarMateria
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(307, 296);
+            Controls.Add(idPlanBox);
             Controls.Add(label6);
             Controls.Add(idMateria);
             Controls.Add(agregarMateria);
@@ -154,12 +158,12 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(idPlanBox);
             Controls.Add(horaHastaBox);
             Controls.Add(horaDesdeBox);
             Controls.Add(descBox);
             Name = "ModificarMateria";
-            Text = "Form1";
+            Text = "Modificar Materia";
+            Load += ModificarMateria_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -172,11 +176,11 @@
         private Label label4;
         private Label label3;
         private Label label2;
-        private TextBox idPlanBox;
         private TextBox horaHastaBox;
         private TextBox horaDesdeBox;
         private TextBox descBox;
         private TextBox idMateria;
         private Label label6;
+        private ComboBox idPlanBox;
     }
 }

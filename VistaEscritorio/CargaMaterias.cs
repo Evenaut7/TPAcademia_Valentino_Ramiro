@@ -13,6 +13,12 @@ namespace VistaEscritorio
 {
     public partial class CargaMaterias : Form
     {
+        private async Task CargarIdsAsync()
+        {
+            var listaPlanes = await PlanNegocio.GetAll();
+            idPlanBox.DataSource = listaPlanes.Select(p => p.Id).ToList();
+        }
+
         public CargaMaterias()
         {
             InitializeComponent();
@@ -52,6 +58,9 @@ namespace VistaEscritorio
             Close();
         }
 
-
+        private async void CargaMaterias_Load(object sender, EventArgs e)
+        {
+            await CargarIdsAsync();
+        }
     }
 }
