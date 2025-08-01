@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Endpoints\Materia\NewFile.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Ardalis.ApiEndpoints" Version="4.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace Negocio
 {
     public class MateriaNegocio
     {
-        static readonly string defaultURL = "https://localhost:7058/materias/";
+        static readonly string defaultURL = "https://localhost:7055/api/Materia/";
 
         public async static Task<IEnumerable<Materia>> GetAll()
         {
