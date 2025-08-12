@@ -1,4 +1,7 @@
 
+using ApiAcademia.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace ApiAcademia
 {
     public class Program
@@ -11,6 +14,10 @@ namespace ApiAcademia
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<AppDbContext>(
+                options => options.UseSqlServer("Server=DESKTOP-92A4UNT\\SQLEXPRESS01;Database=Academia;Trusted_Connection=True;TrustServerCertificate=True;")
+                );
 
             var app = builder.Build();
 
