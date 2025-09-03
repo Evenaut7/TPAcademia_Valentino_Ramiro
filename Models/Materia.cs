@@ -75,7 +75,7 @@
 
             if (_plan != null && _plan.Id != planId)
             {
-                _plan = null; // Invalidar navigation property
+                _plan = null; 
             }
         }
 
