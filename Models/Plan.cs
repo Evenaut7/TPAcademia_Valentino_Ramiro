@@ -1,21 +1,22 @@
-﻿namespace Models
+﻿namespace Domain.Model
 {
     public class Plan
     {
-        public int Id { get; set; }
-        public string Descripcion { get; set; }
+        public int Id { get; private set; }
+        public string Descripcion { get; private set; }
 
-        public static readonly List<Plan> Lista = new();
-
-        public static int ObtenerProximoId()
+        public void SetId(int id)
         {
-            if (Lista.Count == 0) return 0;
-            int max = 0;
-            foreach (var item in Lista)
-            {
-                if (item.Id > max) max = item.Id;
-            }
-            return max + 1;
+            if (id < 0)
+                throw new ArgumentException("El Id debe ser mayor que 0.", nameof(id));
+            Id = id;
+        }
+
+        public void SetDescripcion(string descripcion)
+        {
+            if (string.IsNullOrWhiteSpace(descripcion))
+                throw new ArgumentException("La descripción no puede estar vacía.", nameof(descripcion));
+            Descripcion = descripcion;
         }
     }
 }

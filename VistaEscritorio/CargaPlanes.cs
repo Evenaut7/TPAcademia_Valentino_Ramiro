@@ -1,6 +1,4 @@
-﻿using Models;
-using Negocio;
-
+﻿using Domain.Model;
 namespace VistaEscritorio
 {
     public partial class CargaPlanes : Form

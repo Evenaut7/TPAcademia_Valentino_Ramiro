@@ -1,5 +1,4 @@
-﻿using Models;
-using Negocio;
+﻿using Domain.Model;
 using System.Windows.Forms;
 
 namespace VistaEscritorio

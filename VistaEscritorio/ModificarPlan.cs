@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Models;
-using Negocio;
+using Domain.Model;
 
 namespace VistaEscritorio
 {
