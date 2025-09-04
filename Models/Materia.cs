@@ -29,13 +29,17 @@
             }
         }
 
-        public Materia(int id, string descripcion, string hSSemanales, string hSTotales, int iDPlan)
+        public Materia()
+        {
+        }
+
+        public Materia(int id, string descripcion, string hsSemanales, string hsTotales, int idPlan)
         {
             SetId(id);
             SetDescripcion(descripcion);
-            SetHSSemanales(hSSemanales);
-            SetHSTotales(hSTotales);
-            SetPlanId(iDPlan);
+            SetHSSemanales(hsSemanales);
+            SetHSTotales(hsTotales);
+            SetPlanId(idPlan);
         }
 
         public void SetId(int id)

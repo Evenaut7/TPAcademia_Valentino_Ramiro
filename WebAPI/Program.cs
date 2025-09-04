@@ -15,7 +15,7 @@ namespace WebAPI
                 options.AddPolicy("AllowBlazorWasm",
                     policy =>
                     {
-                        policy.WithOrigins("https://localhost:7170", "http://localhost:5076")
+                        policy.WithOrigins("https://localhost:7170", "http://localhost:5124")
                               .AllowAnyHeader()
                               .AllowAnyMethod();
                     });

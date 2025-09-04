@@ -13,7 +13,7 @@ namespace API.Clients
 
         static PlanApiClient()
         {
-            client.BaseAddress = new Uri("http://localhost:5183/");
+            client.BaseAddress = new Uri("http://localhost:5124");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
