@@ -3,9 +3,9 @@
     public class Materia
     {
         public int Id { get; private set; }
-        public string Descripcion { get; set; }
-        public string HSSemanales { get; set; }
-        public string HSTotales { get; set; }
+        public string Descripcion { get; private set; }
+        public string HSSemanales { get; private set; }
+        public string HSTotales { get; private set; }
 
         private int _planId;
         private Plan? _plan;

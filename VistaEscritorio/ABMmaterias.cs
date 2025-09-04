@@ -14,7 +14,7 @@ namespace VistaEscritorio
 {
     public partial class ABMmaterias : Form
     {
-        private IEnumerable<Materia>? listaMaterias;
+        private IEnumerable<MateriaDTO>? listaMaterias;
 
         public ABMmaterias()
         {
@@ -23,7 +23,7 @@ namespace VistaEscritorio
 
         private async Task CargarTablaAsync()
         {
-            listaMaterias = await MateriaAPIClients.GetAll();
+            listaMaterias = await MateriaApiClient.GetAllAsync();
             dgvMaterias.DataSource = listaMaterias.ToList();
         }
 
@@ -48,14 +48,13 @@ namespace VistaEscritorio
             }
 
             var materiaAEliminar = listaMaterias.ToList()[filaSeleccionada];
-            bool eliminado = await MateriaAPIClients.Delete(materiaAEliminar);
-
-            if (eliminado)
+            try
             {
+                await MateriaApiClient.DeleteAsync(materiaAEliminar.Id);
                 MessageBox.Show("Materia eliminada correctamente.");
                 await CargarTablaAsync();
             }
-            else
+            catch (Exception)
             {
                 MessageBox.Show("No se pudo eliminar la materia.");
             }
@@ -63,7 +62,7 @@ namespace VistaEscritorio
 
         private void agegarMaterias_Click(object sender, EventArgs e)
         {
-            CargaMaterias cargaMateriasForm = new CargaMaterias();
+            CargaMaterias cargaMateriasForm = new();
             cargaMateriasForm.ShowDialog();
             listarMaterias_Click(sender, e);
         }
@@ -83,8 +82,10 @@ namespace VistaEscritorio
                 return;
             }
 
-            var materiaAModificar = listaMaterias.ToList()[filaSeleccionada];
-            ModificarMateria cargaMateriasForm = new ModificarMateria(materiaAModificar);
+            var materiaAModificarDTO = listaMaterias.ToList()[filaSeleccionada];
+
+            // Pass MateriaDTO directly to ModificarMateria
+            ModificarMateria cargaMateriasForm = new ModificarMateria(materiaAModificarDTO);
             cargaMateriasForm.ShowDialog();
             listarMaterias_Click(sender, e);
         }

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Windows.Forms;
-using Domain.Model;
+using DTOs;
+using API.Clients;
 
 namespace VistaEscritorio
 {
     public partial class ModificarPlan : Form
     {
-        private Plan plan;
+        private PlanDTO plan;
 
-        public ModificarPlan(Plan planSeleccionado)
+        public ModificarPlan(PlanDTO planSeleccionado)
         {
             InitializeComponent();
             plan = planSeleccionado;
@@ -25,15 +26,15 @@ namespace VistaEscritorio
         {
             plan.Descripcion = descBox.Text;
 
-            var exito = await PlanNegocio.Update(plan);
-            if (exito)
+            try
             {
+                await PlanApiClient.UpdateAsync(plan);
                 MessageBox.Show("Plan modificado correctamente");
                 this.Close();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Error al modificar el plan");
+                MessageBox.Show($"Error al modificar el plan: {ex.Message}");
             }
         }
 

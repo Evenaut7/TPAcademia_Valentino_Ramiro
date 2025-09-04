@@ -1,4 +1,9 @@
-﻿using Domain.Model;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using DTOs;
+using API.Clients;
+
 namespace VistaEscritorio
 {
     public partial class CargaPlanes : Form
@@ -16,21 +21,21 @@ namespace VistaEscritorio
                 return;
             }
 
-            Plan nuevoPlan = new Plan
+            var nuevoPlan = new PlanDTO
             {
-                Id = Plan.ObtenerProximoId(),
                 Descripcion = descBox.Text
+                // El Id lo asigna el backend
             };
 
-            bool resultado = await PlanNegocio.Add(nuevoPlan);
-            if (resultado)
+            try
             {
+                await PlanApiClient.AddAsync(nuevoPlan);
                 MessageBox.Show("Plan agregado correctamente.");
                 Close();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Error al agregar el plan.");
+                MessageBox.Show($"Error al agregar el plan: {ex.Message}");
             }
         }
 

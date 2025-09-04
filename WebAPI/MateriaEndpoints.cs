@@ -22,7 +22,8 @@ namespace WebAPI
             })
             .WithName("GetMateria")
             .Produces<MateriaDTO>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
 
             app.MapGet("/materias", () =>
             {
@@ -33,7 +34,9 @@ namespace WebAPI
                 return Results.Ok(dtos);
             })
             .WithName("GetAllMaterias")
-            .Produces<List<MateriaDTO>>(StatusCodes.Status200OK);
+            .Produces<List<MateriaDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi();
+
 
             app.MapPost("/materias", (MateriaDTO dto) =>
             {
@@ -52,7 +55,10 @@ namespace WebAPI
             })
             .WithName("AddMateria")
             .Produces<MateriaDTO>(StatusCodes.Status201Created)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithOpenApi();
+
+
 
             app.MapPut("/materias", (MateriaDTO dto) =>
             {
@@ -76,7 +82,9 @@ namespace WebAPI
             })
             .WithName("UpdateMateria")
             .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithOpenApi();
+
 
             app.MapDelete("/materias/{id}", (int id) =>
             {
@@ -93,7 +101,9 @@ namespace WebAPI
             })
             .WithName("DeleteMateria")
             .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
+
         }
     }
 }

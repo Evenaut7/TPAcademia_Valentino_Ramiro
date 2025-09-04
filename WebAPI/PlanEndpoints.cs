@@ -22,7 +22,8 @@ namespace WebAPI
             })
             .WithName("GetPlan")
             .Produces<PlanDTO>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
 
             app.MapGet("/planes", () =>
             {
@@ -33,7 +34,8 @@ namespace WebAPI
                 return Results.Ok(dtos);
             })
             .WithName("GetAllPlanes")
-            .Produces<List<PlanDTO>>(StatusCodes.Status200OK);
+            .Produces<List<PlanDTO>>(StatusCodes.Status200OK)
+            .WithOpenApi();
 
             app.MapPost("/planes", (PlanDTO dto) =>
             {
@@ -52,7 +54,8 @@ namespace WebAPI
             })
             .WithName("AddPlan")
             .Produces<PlanDTO>(StatusCodes.Status201Created)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithOpenApi();
 
             app.MapPut("/planes", (PlanDTO dto) =>
             {
@@ -76,7 +79,8 @@ namespace WebAPI
             })
             .WithName("UpdatePlan")
             .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithOpenApi();
 
             app.MapDelete("/planes/{id}", (int id) =>
             {
@@ -93,7 +97,8 @@ namespace WebAPI
             })
             .WithName("DeletePlan")
             .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status404NotFound)
+            .WithOpenApi();
         }
 
     }

@@ -1,11 +1,16 @@
-﻿using Domain.Model;
+﻿using DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using API.Clients;
 
 namespace VistaEscritorio
 {
     public partial class ABMplan : Form
     {
-        private IEnumerable<Plan>? listaPlanes;
+        private IEnumerable<PlanDTO>? listaPlanes;
 
         public ABMplan()
         {
@@ -14,7 +19,7 @@ namespace VistaEscritorio
 
         private async Task CargarTablaAsync()
         {
-            listaPlanes = await PlanNegocio.GetAll();
+            listaPlanes = await PlanApiClient.GetAllAsync();
             dgvPlanes.DataSource = listaPlanes.ToList();
         }
 
@@ -39,14 +44,13 @@ namespace VistaEscritorio
             }
 
             var planAEliminar = listaPlanes.ToList()[filaSeleccionada];
-            bool eliminado = await PlanNegocio.Delete(planAEliminar);
-
-            if (eliminado)
+            try
             {
+                await PlanApiClient.DeleteAsync(planAEliminar.Id);
                 MessageBox.Show("Plan eliminado correctamente.");
                 await CargarTablaAsync();
             }
-            else
+            catch (Exception)
             {
                 MessageBox.Show("No se pudo eliminar el plan.");
             }
@@ -54,7 +58,7 @@ namespace VistaEscritorio
 
         private void agregarPlanes_Click(object sender, EventArgs e)
         {
-            CargaPlanes cargaPlanesForm = new CargaPlanes();
+            CargaPlanes cargaPlanesForm = new();
             cargaPlanesForm.ShowDialog();
             listarPlanes_Click(sender, e);
         }
@@ -74,8 +78,10 @@ namespace VistaEscritorio
                 return;
             }
 
-            var planAModificar = listaPlanes.ToList()[filaSeleccionada];
-            ModificarPlan modificarPlanForm = new ModificarPlan(planAModificar);
+            var planAModificarDTO = listaPlanes.ToList()[filaSeleccionada];
+
+            // Pass the PlanDTO directly to the ModificarPlan form
+            ModificarPlan modificarPlanForm = new ModificarPlan(planAModificarDTO);
             modificarPlanForm.ShowDialog();
             listarPlanes_Click(sender, e);
         }

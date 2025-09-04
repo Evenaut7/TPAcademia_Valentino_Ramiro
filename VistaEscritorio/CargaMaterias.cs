@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Domain.Model;
+using DTOs;
+using API.Clients;
+
 namespace VistaEscritorio
 {
     public partial class CargaMaterias : Form
     {
         private async Task CargarIdsAsync()
         {
-            var listaPlanes = await PlanNegocio.GetAll();
+            // Usar el cliente API para obtener los planes
+            var listaPlanes = await PlanApiClient.GetAllAsync();
             idPlanBox.DataSource = listaPlanes.Select(p => p.Id).ToList();
         }
 
@@ -26,29 +25,32 @@ namespace VistaEscritorio
         private async void agregarMateria_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(descBox.Text) ||
-                string.IsNullOrWhiteSpace(horaHastaBox.Text) || string.IsNullOrWhiteSpace(horaDesdeBox.Text) ||
+                string.IsNullOrWhiteSpace(horaHastaBox.Text) ||
+                string.IsNullOrWhiteSpace(horaDesdeBox.Text) ||
                 string.IsNullOrWhiteSpace(idPlanBox.Text))
             {
                 MessageBox.Show("Todos los campos son obligatorios.");
                 return;
             }
-            Materia nuevaMateria = new Materia
+
+            var nuevaMateria = new MateriaDTO
             {
-                Id = Materia.ObtenerProximoId(),
+                // El Id lo asigna el backend, así que lo dejamos en 0
                 Descripcion = descBox.Text,
                 HSSemanales = horaDesdeBox.Text,
                 HSTotales = horaHastaBox.Text,
-                IDPlan = int.Parse(idPlanBox.Text)
+                PlanId = int.Parse(idPlanBox.Text)
             };
-            bool resultado = await MateriaNegocio.Add(nuevaMateria);
-            if (resultado)
+
+            try
             {
+                await MateriaApiClient.AddAsync(nuevaMateria);
                 MessageBox.Show("Materia agregada correctamente.");
                 Close();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Error al agregar la materia.");
+                MessageBox.Show($"Error al agregar la materia: {ex.Message}");
             }
         }
 

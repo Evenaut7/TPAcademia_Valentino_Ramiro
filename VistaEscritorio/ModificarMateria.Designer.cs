@@ -182,5 +182,19 @@
         private TextBox idMateria;
         private Label label6;
         private ComboBox idPlanBox;
+
+        // Add this method to handle the 'Click' event for the 'agregarMateria' button.
+        private void agregarMateria_Click(object sender, EventArgs e)
+        {
+            // TODO: Add the logic for handling the button click event here.
+            MessageBox.Show("Agregar Materia button clicked!");
+        }
+
+        // Add this method to handle the 'SelectedIndexChanged' event for the 'idPlanBox' ComboBox.
+        private void idPlanBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // TODO: Add logic to handle the event when the selected index changes.
+            MessageBox.Show("Selected plan changed!");
+        }
     }
 }
