@@ -36,6 +36,7 @@ namespace WebAPI
 
             app.MapMateriaEndpoints();
             app.MapPlanEndpoints();
+            app.MapUsuarioEndpoints();
 
             app.Run();
 
