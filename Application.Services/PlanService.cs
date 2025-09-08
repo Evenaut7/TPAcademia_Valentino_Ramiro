@@ -17,8 +17,8 @@ namespace Application.Services
             }
 
             Plan plan = new Plan();
-            plan.SetId(0);
-            plan.SetDescripcion(dto.Descripcion);
+            //plan.Id = 0;
+            plan.Descripcion = dto.Descripcion;
 
             planRepository.Add(plan);
 
@@ -70,8 +70,8 @@ namespace Application.Services
             }
 
             Plan plan = new Plan();
-            plan.SetId(dto.Id);
-            plan.SetDescripcion(dto.Descripcion);
+            //plan.Id = dto.Id;
+            plan.Descripcion = dto.Descripcion;
 
             return planRepository.Update(plan);
 

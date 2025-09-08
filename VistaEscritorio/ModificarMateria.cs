@@ -18,8 +18,8 @@ namespace VistaEscritorio
             idMateria.Text = materia.Id.ToString();
             idMateria.Enabled = false;
             descBox.Text = materia.Descripcion;
-            horaDesdeBox.Text = materia.HSSemanales;
-            horaHastaBox.Text = materia.HSTotales;
+            horaDesdeBox.Text = materia.HsSemanales;
+            horaHastaBox.Text = materia.HsTotales;
             idPlanBox.Text = materia.PlanId.ToString();
         }
 
@@ -41,8 +41,8 @@ namespace VistaEscritorio
             }
 
             materia.Descripcion = descBox.Text;
-            materia.HSSemanales = horaDesdeBox.Text;
-            materia.HSTotales = horaHastaBox.Text;
+            materia.HsSemanales = horaDesdeBox.Text;
+            materia.HsTotales = horaHastaBox.Text;
             materia.PlanId = int.Parse(idPlanBox.Text);
 
             try

@@ -37,8 +37,8 @@ namespace VistaEscritorio
             {
                 // El Id lo asigna el backend, así que lo dejamos en 0
                 Descripcion = descBox.Text,
-                HSSemanales = horaDesdeBox.Text,
-                HSTotales = horaHastaBox.Text,
+                HsSemanales = horaDesdeBox.Text,
+                HsTotales = horaHastaBox.Text,
                 PlanId = int.Parse(idPlanBox.Text)
             };
 

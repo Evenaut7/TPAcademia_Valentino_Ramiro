@@ -79,12 +79,12 @@ namespace Data
             var existingUsuario = context.Usuarios.Find(usuario.Id);
             if (existingUsuario != null)
             {
-                existingUsuario.SetNombreUsuario(usuario.NombreUsuario);
-                existingUsuario.SetNombre(usuario.Nombre);
-                existingUsuario.SetApellido(usuario.Apellido);
-                existingUsuario.SetEmail(usuario.Email);
-                existingUsuario.SetClave(usuario.Clave);
-                existingUsuario.SetHabilitado(usuario.Habilitado);
+                existingUsuario.NombreUsuario = usuario.NombreUsuario;
+                existingUsuario.Nombre = usuario.Nombre;
+                existingUsuario.Apellido = usuario.Apellido;
+                existingUsuario.Email = usuario.Email;
+                existingUsuario.Clave = usuario.Clave;
+                existingUsuario.Habilitado = usuario.Habilitado;
 
                 context.SaveChanges();
                 return true;

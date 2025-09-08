@@ -66,7 +66,7 @@ namespace Data
             var existingMateria = context.Materias.Find(materia.Id);
             if (existingMateria != null)
             {
-                existingMateria.SetDescripcion(materia.Descripcion);
+                existingMateria.Descripcion= materia.Descripcion;
 
                 context.SaveChanges();
                 return true;

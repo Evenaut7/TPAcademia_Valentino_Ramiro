@@ -19,8 +19,8 @@ namespace Application.Services
             {
                 Id = materia.Id,
                 Descripcion = materia.Descripcion,
-                HSSemanales = materia.HSSemanales,
-                HSTotales = materia.HSTotales,
+                HsSemanales = materia.HsSemanales,
+                HsTotales = materia.HsTotales,
                 PlanId = materia.PlanId
             };
         }
@@ -34,8 +34,8 @@ namespace Application.Services
             {
                 Id = m.Id,
                 Descripcion = m.Descripcion,
-                HSSemanales = m.HSSemanales,
-                HSTotales = m.HSTotales,
+                HsSemanales = m.HsSemanales,
+                HsTotales = m.HsTotales,
                 PlanId = m.PlanId
             }).ToList();
         }
@@ -50,7 +50,7 @@ namespace Application.Services
                 throw new ArgumentException($"Ya existe una materia con la descripción '{dto.Descripcion}' en este plan.");
             }
 
-            Materia materia = new Materia(0, dto.Descripcion, dto.HSSemanales, dto.HSTotales, dto.PlanId);
+            Materia materia = new Materia(0, dto.Descripcion, dto.HsSemanales, dto.HsTotales, dto.PlanId);
 
             materiaRepository.Add(materia);
 
@@ -68,7 +68,7 @@ namespace Application.Services
                 throw new ArgumentException($"Ya existe otra materia con la descripción '{dto.Descripcion}' en este plan.");
             }
 
-            Materia materia = new Materia(dto.Id, dto.Descripcion, dto.HSSemanales, dto.HSTotales, dto.PlanId);
+            Materia materia = new Materia(dto.Id, dto.Descripcion, dto.HsSemanales, dto.HsTotales, dto.PlanId);
 
             return materiaRepository.Update(materia);
         }

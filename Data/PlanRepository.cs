@@ -56,7 +56,7 @@ namespace Data
             var existingPlan = context.Planes.Find(plan.Id);
             if (existingPlan != null)
             {
-                existingPlan.SetDescripcion(plan.Descripcion);
+                existingPlan.Descripcion = plan.Descripcion;
 
                 context.SaveChanges();
                 return true;

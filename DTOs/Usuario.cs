@@ -9,11 +9,11 @@ namespace DTOs
     public class UsuarioDTO
     {
         public int Id { get; set; }
-        public string Apellido { get; set; }
-        public string Clave { get; set; }
-        public string Email { get; set; }
-        public bool Habilitado { get; set; }
-        public string Nombre { get; set; }
-        public string NombreUsuario { get; set; }
+        public string Apellido { get; set; } = string.Empty;
+        public string Clave { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public bool Habilitado { get; set; }    
+        public string Nombre { get; set; } = string.Empty;
+        public string NombreUsuario { get; set; } = string.Empty;
     }
 }
