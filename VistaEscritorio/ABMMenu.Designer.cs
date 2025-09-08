@@ -1,6 +1,6 @@
 ﻿namespace VistaEscritorio
 {
-    partial class MenuABM
+    partial class ABMMenu
     {
         /// <summary>
         /// Required designer variable.
@@ -47,7 +47,7 @@
             // materiasButton
             // 
             materiasButton.Font = new Font("Segoe UI", 12F);
-            materiasButton.Location = new Point(244, 169);
+            materiasButton.Location = new Point(257, 125);
             materiasButton.Name = "materiasButton";
             materiasButton.Size = new Size(108, 71);
             materiasButton.TabIndex = 1;
@@ -58,7 +58,7 @@
             // planesButton
             // 
             planesButton.Font = new Font("Segoe UI", 12F);
-            planesButton.Location = new Point(110, 169);
+            planesButton.Location = new Point(97, 125);
             planesButton.Name = "planesButton";
             planesButton.Size = new Size(108, 71);
             planesButton.TabIndex = 2;
@@ -66,16 +66,16 @@
             planesButton.UseVisualStyleBackColor = true;
             planesButton.Click += planesButton_Click;
             // 
-            // MenuABM
+            // ABMMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(454, 277);
+            ClientSize = new Size(457, 270);
             Controls.Add(planesButton);
             Controls.Add(materiasButton);
             Controls.Add(label1);
-            Name = "MenuABM";
-            Text = "MenuABM";
+            Name = "ABMMenu";
+            Text = "Menu";
             ResumeLayout(false);
             PerformLayout();
         }

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace VistaEscritorio
 {
-    public partial class MenuABM : Form
+    public partial class ABMMenu : Form
     {
-        public MenuABM()
+        public ABMMenu()
         {
             InitializeComponent();
         }

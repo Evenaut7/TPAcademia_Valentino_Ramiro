@@ -14,7 +14,9 @@ namespace VistaEscritorio
         {
             // Usar el cliente API para obtener los planes
             var listaPlanes = await PlanApiClient.GetAllAsync();
-            idPlanBox.DataSource = listaPlanes.Select(p => p.Id).ToList();
+            idPlanBox.DataSource = listaPlanes;
+            idPlanBox.DisplayMember = "Descripcion"; // Lo que se muestra
+            idPlanBox.ValueMember = "Id";
         }
 
         public CargaMaterias()
@@ -27,7 +29,7 @@ namespace VistaEscritorio
             if (string.IsNullOrWhiteSpace(descBox.Text) ||
                 string.IsNullOrWhiteSpace(horaHastaBox.Text) ||
                 string.IsNullOrWhiteSpace(horaDesdeBox.Text) ||
-                string.IsNullOrWhiteSpace(idPlanBox.Text))
+                idPlanBox.SelectedValue == null)
             {
                 MessageBox.Show("Todos los campos son obligatorios.");
                 return;
@@ -39,7 +41,7 @@ namespace VistaEscritorio
                 Descripcion = descBox.Text,
                 HsSemanales = horaDesdeBox.Text,
                 HsTotales = horaHastaBox.Text,
-                PlanId = int.Parse(idPlanBox.Text)
+                PlanId = (int)idPlanBox.SelectedValue
             };
 
             try

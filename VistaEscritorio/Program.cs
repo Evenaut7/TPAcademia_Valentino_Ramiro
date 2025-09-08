@@ -11,7 +11,8 @@ namespace VistaEscritorio
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MenuABM());
+            Application.Run(new ABMMenu());
+            Application.Run(new Inicio());
         }
     }
 }
