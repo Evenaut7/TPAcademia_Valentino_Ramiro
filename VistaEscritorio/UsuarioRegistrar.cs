@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DTOs;
+using API.Clients;
 
 namespace VistaEscritorio
 {
@@ -15,6 +17,37 @@ namespace VistaEscritorio
         public UsuarioRegistrar()
         {
             InitializeComponent();
+            registrarseButton.Click += registrarseButton_Click;
+        }
+        private async void registrarseButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(nombreTextBox.Text) ||
+                string.IsNullOrWhiteSpace(apellidoTextBox.Text) ||
+                string.IsNullOrWhiteSpace(emailTextBox.Text) ||
+                string.IsNullOrWhiteSpace(usuarioTextBox.Text) ||
+                string.IsNullOrWhiteSpace(claveTextBox.Text))
+            {
+                MessageBox.Show("Todos los campos son obligatorios.");
+                return;
+            }
+            var nuevoUsuario = new UsuarioDTO
+            {
+                Nombre = nombreTextBox.Text,
+                Apellido = apellidoTextBox.Text,
+                Email = emailTextBox.Text,
+                NombreUsuario = usuarioTextBox.Text,
+                Clave = claveTextBox.Text
+            };
+            try
+            {
+                await UsuarioApiClient.AddAsync(nuevoUsuario);
+                MessageBox.Show("Usuario registrado correctamente.");
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al registrar el usuario: {ex.Message}");
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)
