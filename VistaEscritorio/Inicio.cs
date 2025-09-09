@@ -15,6 +15,14 @@ namespace VistaEscritorio
         public Inicio()
         {
             InitializeComponent();
+            nuevaCuentaButton.Click += nuevaCuentaButton_Click;
+
+        }
+
+        private void nuevaCuentaButton_Click(object sender, EventArgs e)
+        {
+            UsuarioRegistrar usuarioRegistrar = new UsuarioRegistrar();
+            usuarioRegistrar.ShowDialog();
         }
 
         private void Form1_Load(object sender, EventArgs e)
