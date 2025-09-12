@@ -104,6 +104,16 @@ namespace WebAPI
             .Produces(StatusCodes.Status404NotFound)
             .WithOpenApi();
 
+            app.MapGet("/usuarios/validate/{user}/{password}", (string user, string password) =>
+            {
+                var usuarioService = new UsuarioService();
+                bool esValido = usuarioService.ValidarUsuario(user, password);
+                return Results.Ok(esValido);
+            })
+            .WithName("ValidarUsuario")
+            .Produces<bool>(StatusCodes.Status200OK)
+            .WithOpenApi();
+
         }
     }
 }

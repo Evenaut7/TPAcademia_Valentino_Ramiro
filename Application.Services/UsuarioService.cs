@@ -96,5 +96,12 @@ namespace Application.Services
             var usuarioRepository = new UsuarioRepository();
             return usuarioRepository.Delete(id);
         }
+
+        public bool ValidarUsuario(string nombreUsuario, string clave)
+        {
+            var usuarioRepository = new UsuarioRepository();
+            var usuarios = usuarioRepository.GetAll();
+            return usuarios.Any(u => u.NombreUsuario.Equals(nombreUsuario, StringComparison.OrdinalIgnoreCase) && u.Clave == clave);
+        }
     }
 }

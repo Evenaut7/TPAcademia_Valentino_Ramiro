@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace API.Clients
 {
@@ -135,6 +136,32 @@ namespace API.Clients
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al eliminar usuario con Id {id}: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task<bool> ValidarUsuario(string user, string password)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync($"usuarios/validate/{user}/{password}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<bool>();
+                    return result;
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al validar usuario. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al validar usuario: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al validar usuario: {ex.Message}", ex);
             }
         }
     }
