@@ -13,6 +13,7 @@ namespace DTOs
         public string Clave { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public bool Habilitado { get; set; }    
+        public string Privilegio { get; set; } = "Usuario"; // Valor por defecto "Usuario"
         public string Nombre { get; set; } = string.Empty;
         public string NombreUsuario { get; set; } = string.Empty;
     }

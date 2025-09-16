@@ -13,6 +13,7 @@ namespace Domain.Model
         public string Clave { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public bool Habilitado { get; set; }
+        public string Privilegio { get; set; } = "Usuario"; // Valor por defecto "Usuario"
         public string Nombre { get; set; } = string.Empty;
        
         private string _nombreUsuario;
@@ -37,7 +38,7 @@ namespace Domain.Model
         {
         }
 
-        public Usuario(int id, string apellido, string clave, string email, bool habilitado, string nombre, string nombreUsuario)
+        public Usuario(int id, string apellido, string clave, string email, bool habilitado, string nombre, string nombreUsuario, string privilegio)
         {
             Id = id;
             Apellido = apellido;
@@ -46,6 +47,7 @@ namespace Domain.Model
             Habilitado = habilitado;
             Nombre = nombre;
             NombreUsuario = nombreUsuario;
+            Privilegio = privilegio;
         }
     }
 }

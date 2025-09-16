@@ -22,6 +22,7 @@ namespace Application.Services
                 Apellido = usuario.Apellido,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
+                Privilegio = usuario.Privilegio,
                 Clave = usuario.Clave
             };
         }
@@ -39,6 +40,7 @@ namespace Application.Services
                 Apellido = u.Apellido,
                 Email = u.Email,
                 Habilitado = u.Habilitado,
+                Privilegio = u.Privilegio,
                 Clave = u.Clave
             }).ToList();
         }
@@ -60,7 +62,8 @@ namespace Application.Services
                 apellido: dto.Apellido,
                 email: dto.Email,
                 clave: dto.Clave,
-                habilitado: dto.Habilitado
+                habilitado: dto.Habilitado,
+                privilegio: dto.Privilegio
             );
 
             usuarioRepository.Add(usuario);
@@ -85,7 +88,8 @@ namespace Application.Services
                 apellido: dto.Apellido,
                 email: dto.Email,
                 clave: dto.Clave,
-                habilitado: dto.Habilitado
+                habilitado: dto.Habilitado,
+                privilegio: dto.Privilegio
             );
 
             return usuarioRepository.Update(usuario);
