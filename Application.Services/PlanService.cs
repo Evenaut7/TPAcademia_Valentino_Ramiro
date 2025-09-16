@@ -19,6 +19,7 @@ namespace Application.Services
             Plan plan = new Plan();
             //plan.Id = 0;
             plan.Descripcion = dto.Descripcion;
+            plan.EspecialidadId = dto.EspecialidadId;
 
             planRepository.Add(plan);
 
@@ -43,7 +44,8 @@ namespace Application.Services
             return new PlanDTO
             {
                 Id = plan.Id,
-                Descripcion = plan.Descripcion
+                Descripcion = plan.Descripcion,
+                EspecialidadId = plan.EspecialidadId 
             };
         }
 
@@ -55,7 +57,8 @@ namespace Application.Services
             return planes.Select(p => new PlanDTO
             {
                 Id = p.Id,
-                Descripcion = p.Descripcion
+                Descripcion = p.Descripcion,
+                EspecialidadId = p.EspecialidadId
             }).ToList();
         }
 
@@ -70,7 +73,7 @@ namespace Application.Services
             }
 
             Plan plan = new Plan();
-            //plan.Id = dto.Id;
+            plan.EspecialidadId = dto.EspecialidadId;
             plan.Descripcion = dto.Descripcion;
 
             return planRepository.Update(plan);

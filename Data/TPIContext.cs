@@ -9,6 +9,7 @@ namespace Data
         public DbSet<Materia> Materias { get; set; }
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Especialidad> Especialidades { get; set; }
         internal TPIContext()
         {
             this.Database.EnsureCreated();

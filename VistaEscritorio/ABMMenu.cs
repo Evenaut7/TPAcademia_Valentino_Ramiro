@@ -17,16 +17,22 @@ namespace VistaEscritorio
             InitializeComponent();
         }
 
-        private void materiasButton_Click(object sender, EventArgs e)
+        private void materiasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ABMmaterias materiasForm = new ABMmaterias();
             materiasForm.ShowDialog();
         }
 
-        private void planesButton_Click(object sender, EventArgs e)
+        private void planesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ABMplan planForm = new ABMplan();
             planForm.ShowDialog();
+        }
+
+        private void especialidadesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ABMEspecialidades especialidadesForm = new ABMEspecialidades();
+            especialidadesForm.ShowDialog();
         }
     }
 }

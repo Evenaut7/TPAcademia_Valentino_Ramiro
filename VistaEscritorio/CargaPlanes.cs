@@ -8,6 +8,13 @@ namespace VistaEscritorio
 {
     public partial class CargaPlanes : Form
     {
+        private async Task CargarIdsAsync()
+        {
+            var listaEspecialidades = await EspecialidadApiClient.GetAllAsync();
+            idEspecialidadBox.DataSource = listaEspecialidades;
+            idEspecialidadBox.DisplayMember = "Descripcion";
+            idEspecialidadBox.ValueMember = "Id";
+        }
         public CargaPlanes()
         {
             InitializeComponent();
@@ -15,7 +22,7 @@ namespace VistaEscritorio
 
         private async void agregarPlan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(descBox.Text))
+            if (string.IsNullOrWhiteSpace(descBox.Text) || idEspecialidadBox.SelectedValue == null)
             {
                 MessageBox.Show("Debe ingresar una descripción.");
                 return;
@@ -23,8 +30,8 @@ namespace VistaEscritorio
 
             var nuevoPlan = new PlanDTO
             {
-                Descripcion = descBox.Text
-                // El Id lo asigna el backend
+                Descripcion = descBox.Text,
+                EspecialidadId = (int)idEspecialidadBox.SelectedValue
             };
 
             try
@@ -42,6 +49,21 @@ namespace VistaEscritorio
         private void cancelarButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void idEspecialidadBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void CargaPlanes_Load(object sender, EventArgs e)
+        {
+            await CargarIdsAsync();
         }
     }
 }

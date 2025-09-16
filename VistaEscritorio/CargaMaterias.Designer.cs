@@ -142,6 +142,7 @@
             Controls.Add(horaDesdeBox);
             Controls.Add(descBox);
             Name = "CargaMaterias";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Ingrese una materia";
             Load += CargaMaterias_Load;
             ResumeLayout(false);

@@ -21,54 +21,64 @@ namespace VistaEscritorio
             agregarPlanes = new Button();
             eliminarPlanes = new Button();
             modificarPlanes = new Button();
-
             ((System.ComponentModel.ISupportInitialize)dgvPlanes).BeginInit();
             SuspendLayout();
-
+            // 
             // dgvPlanes
+            // 
             dgvPlanes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPlanes.Location = new Point(12, 12);
             dgvPlanes.Name = "dgvPlanes";
             dgvPlanes.Size = new Size(500, 150);
             dgvPlanes.TabIndex = 0;
-
+            // 
             // listarPlanes
+            // 
             listarPlanes.Location = new Point(12, 200);
             listarPlanes.Name = "listarPlanes";
             listarPlanes.Size = new Size(75, 23);
+            listarPlanes.TabIndex = 1;
             listarPlanes.Text = "Listar";
             listarPlanes.Click += listarPlanes_Click;
-
+            // 
             // agregarPlanes
+            // 
             agregarPlanes.Location = new Point(120, 200);
             agregarPlanes.Name = "agregarPlanes";
             agregarPlanes.Size = new Size(75, 23);
+            agregarPlanes.TabIndex = 2;
             agregarPlanes.Text = "Agregar";
             agregarPlanes.Click += agregarPlanes_Click;
-
-            // modificarPlanes
-            modificarPlanes.Location = new Point(230, 200);
-            modificarPlanes.Name = "modificarPlanes";
-            modificarPlanes.Size = new Size(75, 23);
-            modificarPlanes.Text = "Modificar";
-            modificarPlanes.Click += modificarPlanes_Click;
-
+            // 
             // eliminarPlanes
+            // 
             eliminarPlanes.Location = new Point(340, 200);
             eliminarPlanes.Name = "eliminarPlanes";
             eliminarPlanes.Size = new Size(75, 23);
+            eliminarPlanes.TabIndex = 4;
             eliminarPlanes.Text = "Eliminar";
             eliminarPlanes.Click += eliminarPlanes_Click;
-
+            // 
+            // modificarPlanes
+            // 
+            modificarPlanes.Location = new Point(230, 200);
+            modificarPlanes.Name = "modificarPlanes";
+            modificarPlanes.Size = new Size(75, 23);
+            modificarPlanes.TabIndex = 3;
+            modificarPlanes.Text = "Modificar";
+            modificarPlanes.Click += modificarPlanes_Click;
+            // 
             // ABMplan
+            // 
             ClientSize = new Size(534, 261);
             Controls.Add(dgvPlanes);
             Controls.Add(listarPlanes);
             Controls.Add(agregarPlanes);
             Controls.Add(modificarPlanes);
             Controls.Add(eliminarPlanes);
+            Name = "ABMplan";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Planes";
-
             ((System.ComponentModel.ISupportInitialize)dgvPlanes).EndInit();
             ResumeLayout(false);
         }

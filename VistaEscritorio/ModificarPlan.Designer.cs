@@ -16,7 +16,6 @@
             descBox = new TextBox();
             label1 = new Label();
             label2 = new Label();
-            modificarPlan = new Button();
             cancelarButton = new Button();
             SuspendLayout();
             // 
@@ -26,12 +25,14 @@
             idBox.Name = "idBox";
             idBox.ReadOnly = true;
             idBox.Size = new Size(200, 23);
+            idBox.TabIndex = 0;
             // 
             // descBox
             // 
             descBox.Location = new Point(120, 60);
             descBox.Name = "descBox";
             descBox.Size = new Size(200, 23);
+            descBox.TabIndex = 1;
             // 
             // label1
             // 
@@ -39,6 +40,7 @@
             label1.Location = new Point(30, 23);
             label1.Name = "label1";
             label1.Size = new Size(18, 15);
+            label1.TabIndex = 2;
             label1.Text = "ID";
             // 
             // label2
@@ -46,23 +48,16 @@
             label2.AutoSize = true;
             label2.Location = new Point(30, 63);
             label2.Name = "label2";
-            label2.Size = new Size(66, 15);
+            label2.Size = new Size(69, 15);
+            label2.TabIndex = 3;
             label2.Text = "Descripción";
-            // 
-            // modificarPlan
-            // 
-            modificarPlan.Location = new Point(70, 100);
-            modificarPlan.Name = "modificarPlan";
-            modificarPlan.Size = new Size(75, 23);
-            modificarPlan.Text = "Guardar";
-            modificarPlan.UseVisualStyleBackColor = true;
-            modificarPlan.Click += modificarPlan_Click;
             // 
             // cancelarButton
             // 
             cancelarButton.Location = new Point(200, 100);
             cancelarButton.Name = "cancelarButton";
             cancelarButton.Size = new Size(75, 23);
+            cancelarButton.TabIndex = 4;
             cancelarButton.Text = "Cancelar";
             cancelarButton.UseVisualStyleBackColor = true;
             cancelarButton.Click += cancelarButton_Click;
@@ -74,9 +69,9 @@
             Controls.Add(descBox);
             Controls.Add(label1);
             Controls.Add(label2);
-            Controls.Add(modificarPlan);
             Controls.Add(cancelarButton);
             Name = "ModificarPlan";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Modificar Plan";
             ResumeLayout(false);
             PerformLayout();

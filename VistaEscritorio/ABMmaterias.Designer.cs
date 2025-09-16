@@ -43,6 +43,7 @@
             dgvMaterias.Name = "dgvMaterias";
             dgvMaterias.Size = new Size(626, 150);
             dgvMaterias.TabIndex = 0;
+            dgvMaterias.CellContentClick += dgvMaterias_CellContentClick;
             // 
             // listarMaterias
             // 
@@ -95,6 +96,7 @@
             Controls.Add(listarMaterias);
             Controls.Add(dgvMaterias);
             Name = "ABMmaterias";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Materias";
             ((System.ComponentModel.ISupportInitialize)dgvMaterias).EndInit();
             ResumeLayout(false);

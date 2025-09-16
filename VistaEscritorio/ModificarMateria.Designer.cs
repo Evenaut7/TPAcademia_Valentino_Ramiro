@@ -162,6 +162,7 @@
             Controls.Add(horaDesdeBox);
             Controls.Add(descBox);
             Name = "ModificarMateria";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Modificar Materia";
             Load += ModificarMateria_Load;
             ResumeLayout(false);

@@ -89,5 +89,10 @@ namespace VistaEscritorio
             cargaMateriasForm.ShowDialog();
             listarMaterias_Click(sender, e);
         }
+
+        private void dgvMaterias_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

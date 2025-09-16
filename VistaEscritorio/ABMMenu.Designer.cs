@@ -28,54 +28,82 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
-            materiasButton = new Button();
-            planesButton = new Button();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            contextMenuStrip2 = new ContextMenuStrip(components);
+            menuStrip1 = new MenuStrip();
+            materiasToolStripMenuItem = new ToolStripMenuItem();
+            planesToolStripMenuItem = new ToolStripMenuItem();
+            especialidadesToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 36F);
-            label1.Location = new Point(12, 9);
+            label1.Location = new Point(264, 65);
             label1.Name = "label1";
-            label1.Size = new Size(434, 65);
+            label1.Size = new Size(343, 65);
             label1.TabIndex = 0;
-            label1.Text = "Seleccione un ABM";
+            label1.Text = "Menu de Inicio";
             label1.TextAlign = ContentAlignment.TopCenter;
             // 
-            // materiasButton
+            // contextMenuStrip1
             // 
-            materiasButton.Font = new Font("Segoe UI", 12F);
-            materiasButton.Location = new Point(257, 125);
-            materiasButton.Name = "materiasButton";
-            materiasButton.Size = new Size(108, 71);
-            materiasButton.TabIndex = 1;
-            materiasButton.Text = "Materias";
-            materiasButton.UseVisualStyleBackColor = true;
-            materiasButton.Click += materiasButton_Click;
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(61, 4);
             // 
-            // planesButton
+            // contextMenuStrip2
             // 
-            planesButton.Font = new Font("Segoe UI", 12F);
-            planesButton.Location = new Point(97, 125);
-            planesButton.Name = "planesButton";
-            planesButton.Size = new Size(108, 71);
-            planesButton.TabIndex = 2;
-            planesButton.Text = "Planes";
-            planesButton.UseVisualStyleBackColor = true;
-            planesButton.Click += planesButton_Click;
+            contextMenuStrip2.Name = "contextMenuStrip2";
+            contextMenuStrip2.Size = new Size(61, 4);
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.Font = new Font("Segoe UI", 11F);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(855, 28);
+            menuStrip1.TabIndex = 6;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // materiasToolStripMenuItem
+            // 
+            materiasToolStripMenuItem.Name = "materiasToolStripMenuItem";
+            materiasToolStripMenuItem.Size = new Size(78, 24);
+            materiasToolStripMenuItem.Text = "Materias";
+            materiasToolStripMenuItem.Click += materiasToolStripMenuItem_Click;
+            // 
+            // planesToolStripMenuItem
+            // 
+            planesToolStripMenuItem.Name = "planesToolStripMenuItem";
+            planesToolStripMenuItem.Size = new Size(63, 24);
+            planesToolStripMenuItem.Text = "Planes";
+            planesToolStripMenuItem.Click += planesToolStripMenuItem_Click;
+            // 
+            // especialidadesToolStripMenuItem
+            // 
+            especialidadesToolStripMenuItem.Name = "especialidadesToolStripMenuItem";
+            especialidadesToolStripMenuItem.Size = new Size(119, 24);
+            especialidadesToolStripMenuItem.Text = "Especialidades";
+            especialidadesToolStripMenuItem.Click += especialidadesToolStripMenuItem_Click;
             // 
             // ABMMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(457, 270);
-            Controls.Add(planesButton);
-            Controls.Add(materiasButton);
+            ClientSize = new Size(855, 484);
+            Controls.Add(menuStrip1);
             Controls.Add(label1);
+            MainMenuStrip = menuStrip1;
             Name = "ABMMenu";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Menu";
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -85,5 +113,13 @@
         private Label label1;
         private Button materiasButton;
         private Button planesButton;
+        private Panel panel1;
+        private ContextMenuStrip contextMenuStrip1;
+        private ContextMenuStrip contextMenuStrip2;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem materiasToolStripMenuItem;
+        private ToolStripMenuItem masMateriasToolStripMenuItem;
+        private ToolStripMenuItem planesToolStripMenuItem;
+        private ToolStripMenuItem especialidadesToolStripMenuItem;
     }
 }

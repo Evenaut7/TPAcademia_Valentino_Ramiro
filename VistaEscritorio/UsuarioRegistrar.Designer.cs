@@ -167,6 +167,7 @@
             Controls.Add(ApellidoLabel);
             Controls.Add(NombreLabel);
             Name = "UsuarioRegistrar";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Form1";
             Load += UsuarioRegistrar_Load;
             ResumeLayout(false);
