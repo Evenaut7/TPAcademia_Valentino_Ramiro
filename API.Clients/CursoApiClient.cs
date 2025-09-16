@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using DTOs;
+using System.Net.Http.Headers;
+
 
 namespace API.Clients
 {
-    public class ComisionApiClient
+    public class CursoApiClient
     {
         private static HttpClient client = new HttpClient();
 
-        static ComisionApiClient()
+        static CursoApiClient()
         {
             client.BaseAddress = new Uri("http://localhost:5124");
             client.DefaultRequestHeaders.Accept.Clear();
@@ -20,14 +21,14 @@ namespace API.Clients
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public static async Task<ComisionDTO> GetAsync(int id)
+        public static async Task<CursoDTO> GetAsync(int id)
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("comisiones/" + id);
+                HttpResponseMessage response = await client.GetAsync("cursos/" + id);
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsAsync<DTOs.ComisionDTO>();
+                    return await response.Content.ReadAsAsync<DTOs.CursoDTO>();
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
@@ -36,130 +37,130 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener comisión con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener comisión con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener curso con Id {id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener comisión con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener curso con Id {id}: {ex.Message}", ex);
             }
         }
 
-        public static async Task<IEnumerable<ComisionDTO>> GetAllAsync()
+        public static async Task<IEnumerable<CursoDTO>> GetAllAsync()
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("comisiones");
+                HttpResponseMessage response = await client.GetAsync("cursos");
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsAsync<IEnumerable<DTOs.ComisionDTO>>();
+                    return await response.Content.ReadAsAsync<IEnumerable<DTOs.CursoDTO>>();
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener comisiones. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener cursos. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener comisiones: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener cursos: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener comisiones: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener cursos: {ex.Message}", ex);
             }
         }
-        
-        public static async Task<ComisionDTO> AddAsync(ComisionDTO dto)
+
+        public static async Task<CursoDTO> AddAsync(CursoDTO dto)
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("comisiones", dto);
+                HttpResponseMessage response = await client.PostAsJsonAsync("cursos", dto);
                 if (response.IsSuccessStatusCode)
                 {
-                    return await response.Content.ReadAsAsync<ComisionDTO>();
+                    return await response.Content.ReadAsAsync<DTOs.CursoDTO>();
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al agregar comisión. Detalle: {errorContent}");
+                    throw new Exception($"Error de validación al agregar curso. Detalle: {errorContent}");
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al agregar comisión. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al agregar curso. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al agregar comisión: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al agregar curso: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al agregar comisión: {ex.Message}", ex);
+                throw new Exception($"Timeout al agregar curso: {ex.Message}", ex);
             }
         }
 
-        public static async Task UpdateAsync(int id, ComisionDTO dto)
+        public static async Task<bool> UpdateAsync(int id, CursoDTO dto)
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"comisiones/{id}", dto);
+                HttpResponseMessage response = await client.PutAsJsonAsync("cursos/" + id, dto);
                 if (response.IsSuccessStatusCode)
                 {
-                    return;
+                    return true;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar comisión. Detalle: {errorContent}");
+                    throw new Exception($"Error de validación al actualizar curso con Id {id}. Detalle: {errorContent}");
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar comisión. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al actualizar curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar comisión: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al actualizar curso con Id {id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar comisión: {ex.Message}", ex);
+                throw new Exception($"Timeout al actualizar curso con Id {id}: {ex.Message}", ex);
             }
         }
 
-        public static async Task DeleteAsync(int id)
+        public static async Task DeketeAsyync(int id)
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync($"comisiones/{id}");
+                HttpResponseMessage response = await client.DeleteAsync("cursos/" + id);
                 if (response.IsSuccessStatusCode)
                 {
                     return;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
-                    throw new Exception($"Comisión con Id {id} no encontrada para eliminar.");
+                    throw new Exception($"Curso con Id {id} no encontrado para eliminar.");
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al eliminar comisión con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al eliminar curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al eliminar comisión con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al eliminar curso con Id {id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al eliminar comisión con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al eliminar curso con Id {id}: {ex.Message}", ex);
             }
         }
     }

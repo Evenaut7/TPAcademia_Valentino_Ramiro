@@ -10,6 +10,8 @@ namespace Data
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Especialidad> Especialidades { get; set; }
+        public DbSet<Comision> Comisiones { get; set; }
+        public DbSet<Curso> Cursos { get; set; }
         internal TPIContext()
         {
             this.Database.EnsureCreated();
@@ -27,6 +29,30 @@ namespace Data
                 string connectionString = configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
             }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Materia → Plan (Restrict delete)
+            modelBuilder.Entity<Materia>()
+                .HasOne(m => m.Plan)
+                .WithMany()
+                .HasForeignKey(m => m.PlanId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Comision → Plan (Restrict delete)
+            modelBuilder.Entity<Comision>()
+                .HasOne(c => c.Plan)
+                .WithMany()
+                .HasForeignKey(c => c.PlanId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Curso → Materia (Cascade or Restrict, but only one should cascade)
+            modelBuilder.Entity<Curso>()
+                .HasOne(c => c.Materia)
+                .WithMany()
+                .HasForeignKey(c => c.MateriaId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     } 
 }

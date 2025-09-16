@@ -8,53 +8,59 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data
 {
-    public class ComisionRepository
+    public class CursoRepository
     {
         private TPIContext CreateContext()
         {
             return new TPIContext();
         }
 
-        public void Add(Comision comision)
+        public void Add(Curso curso)
         {
             using var context = CreateContext();
-            context.Comisiones.Add(comision);
+            context.Cursos.Add(curso);
             context.SaveChanges();
         }
 
         public bool Delete(int id)
         {
             using var context = CreateContext();
-            var comision = context.Comisiones.Find(id);
-            if (comision != null)
+            var curso = context.Cursos.Find(id);
+            if (curso != null)
             {
-                context.Comisiones.Remove(comision);
+                context.Cursos.Remove(curso);
                 context.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public Comision? Get(int id)
+        public Curso? Get(int id)
         {
             using var context = CreateContext();
-            return context.Comisiones
-                .Include(c => c.Plan)
+            return context.Cursos
+                .Include(c => c.Materia)
+                .Include(c => c.Comision)
                 .FirstOrDefault(c => c.Id == id);
         }
 
-        public IEnumerable<Comision> GetAll()
+        public IEnumerable<Curso> GetAll()
         {
             using var context = CreateContext();
-            return context.Comisiones
-                .Include(c => c.Plan)
+            return context.Cursos
+                .Include(c => c.Materia)
+                .Include(c => c.Comision)
                 .ToList();
         }
 
-        public bool NombreExists(string nombre, int? excludeId = null)
+        public bool Exists(int anioCalendario, int materiaId, int comisionId, int? excludeId = null)
         {
             using var context = CreateContext();
-            var query = context.Comisiones.Where(c => c.Nombre.ToLower() == nombre.ToLower());
+            var query = context.Cursos.Where(c =>
+                c.AnioCalendario == anioCalendario &&
+                c.MateriaId == materiaId &&
+                c.ComisionId == comisionId
+            );
             if (excludeId.HasValue)
             {
                 query = query.Where(c => c.Id != excludeId.Value);
@@ -62,15 +68,16 @@ namespace Data
             return query.Any();
         }
 
-        public bool Update(Comision comision)
+        public bool Update(Curso curso)
         {
             using var context = CreateContext();
-            var existingComision = context.Comisiones.Find(comision.Id);
-            if (existingComision != null)
+            var existingCurso = context.Cursos.Find(curso.Id);
+            if (existingCurso != null)
             {
-                existingComision.Nombre = comision.Nombre;
-                existingComision.AnioEspecialidad = comision.AnioEspecialidad;
-                existingComision.PlanId = comision.PlanId;
+                existingCurso.AnioCalendario = curso.AnioCalendario;
+                existingCurso.Cupo = curso.Cupo;
+                existingCurso.MateriaId = curso.MateriaId;
+                existingCurso.ComisionId = curso.ComisionId;
 
                 context.SaveChanges();
                 return true;

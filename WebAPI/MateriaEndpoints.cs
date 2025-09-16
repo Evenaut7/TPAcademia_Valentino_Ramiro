@@ -81,6 +81,7 @@ namespace WebAPI
                 }
             })
             .WithName("UpdateMateria")
+            .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();
