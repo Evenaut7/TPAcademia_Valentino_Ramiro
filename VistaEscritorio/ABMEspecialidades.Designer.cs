@@ -115,6 +115,7 @@
             Controls.Add(panel1);
             Controls.Add(dgvEspecialidades);
             Name = "ABMEspecialidades";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ABM Especialidades";
             Load += ABMEspecialidades_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEspecialidades).EndInit();

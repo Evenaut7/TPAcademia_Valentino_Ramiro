@@ -93,9 +93,10 @@
             label5.AutoSize = true;
             label5.Location = new Point(11, 107);
             label5.Name = "label5";
-            label5.Size = new Size(44, 15);
+            label5.Size = new Size(30, 15);
             label5.TabIndex = 10;
-            label5.Text = "ID plan";
+            label5.Text = "Plan";
+            label5.Click += label5_Click;
             // 
             // cancelarButton
             // 

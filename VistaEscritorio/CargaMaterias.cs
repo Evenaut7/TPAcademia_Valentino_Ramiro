@@ -12,10 +12,9 @@ namespace VistaEscritorio
     {
         private async Task CargarIdsAsync()
         {
-            // Usar el cliente API para obtener los planes
             var listaPlanes = await PlanApiClient.GetAllAsync();
             idPlanBox.DataSource = listaPlanes;
-            idPlanBox.DisplayMember = "Descripcion"; // Lo que se muestra
+            idPlanBox.DisplayMember = "Descripcion"; 
             idPlanBox.ValueMember = "Id";
         }
 
@@ -37,7 +36,6 @@ namespace VistaEscritorio
 
             var nuevaMateria = new MateriaDTO
             {
-                // El Id lo asigna el backend, así que lo dejamos en 0
                 Descripcion = descBox.Text,
                 HsSemanales = horaDesdeBox.Text,
                 HsTotales = horaHastaBox.Text,
@@ -64,6 +62,11 @@ namespace VistaEscritorio
         private async void CargaMaterias_Load(object sender, EventArgs e)
         {
             await CargarIdsAsync();
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

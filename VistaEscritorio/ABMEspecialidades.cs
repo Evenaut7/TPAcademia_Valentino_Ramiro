@@ -59,12 +59,12 @@ namespace VistaEscritorio
 
         private void agregarButton_Click(object sender, EventArgs e)
         {
-            //CargaEspecialidades cargaEspecialidadesForm = new();
-            //cargaEspecialidadesForm.ShowDialog();
-            //listarButton_Click(sender, e);
+            CargaEspecialidades cargaEspecialidadesForm = new();
+            cargaEspecialidadesForm.ShowDialog();
+            listarButton_Click(sender, e);
         }
 
-        private async void modificarButton_Click(object sender, EventArgs e)
+        private void modificarButton_Click(object sender, EventArgs e)
         {
             if (dgvEspecialidades.SelectedRows.Count == 0)
             {
@@ -81,9 +81,9 @@ namespace VistaEscritorio
 
             var especialidadAModificarDTO = listaEspecialidades.ToList()[filaSeleccionada];
 
-            //ModificarEspecialidad cargaEspecialidadesForm = new ModificarEspecialidad(especialidadAModificarDTO);
-            //cargaEspecialidadesForm.ShowDialog();
-            //listarButton_Click(sender, e);
+            ModificarEspecialidad cargaEspecialidadesForm = new ModificarEspecialidad(especialidadAModificarDTO);
+            cargaEspecialidadesForm.ShowDialog();
+            listarButton_Click(sender, e);
         }
 
         private async void eliminarButton_Click(object sender, EventArgs e)

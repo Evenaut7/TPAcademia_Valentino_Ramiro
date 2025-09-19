@@ -126,6 +126,7 @@
             claveTextBox.Name = "claveTextBox";
             claveTextBox.Size = new Size(173, 23);
             claveTextBox.TabIndex = 9;
+            claveTextBox.UseSystemPasswordChar = true;
             claveTextBox.TextChanged += textBox2_TextChanged;
             // 
             // registrarseButton
