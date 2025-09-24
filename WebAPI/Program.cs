@@ -38,6 +38,8 @@ namespace WebAPI
             app.MapPlanEndpoints();
             app.MapUsuarioEndpoints();
             app.MapEspecialidadEndpoints();
+            app.MapComisionEndpoints();
+            app.MapCursoEndpoints();
 
             app.Run();
 

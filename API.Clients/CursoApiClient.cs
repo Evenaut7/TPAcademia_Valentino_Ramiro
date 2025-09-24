@@ -105,11 +105,11 @@ namespace API.Clients
             }
         }
 
-        public static async Task<bool> UpdateAsync(int id, CursoDTO dto)
+        public static async Task<bool> UpdateAsync(CursoDTO dto)
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync("cursos/" + id, dto);
+                HttpResponseMessage response = await client.PutAsJsonAsync("cursos/" + dto.Id, dto);
                 if (response.IsSuccessStatusCode)
                 {
                     return true;
@@ -117,25 +117,25 @@ namespace API.Clients
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error de validación al actualizar curso con Id {id}. Detalle: {errorContent}");
+                    throw new Exception($"Error de validación al actualizar curso con Id {dto.Id}. Detalle: {errorContent}");
                 }
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al actualizar curso con Id {dto.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar curso con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al actualizar curso con Id {dto.Id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar curso con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al actualizar curso con Id {dto.Id}: {ex.Message}", ex);
             }
         }
 
-        public static async Task DeketeAsyync(int id)
+        public static async Task DeleteAsync(int id)
         {
             try
             {

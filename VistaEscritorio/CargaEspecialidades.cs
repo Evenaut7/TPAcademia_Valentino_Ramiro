@@ -48,5 +48,10 @@ namespace VistaEscritorio
                 MessageBox.Show($"Error al agregar la Especialidad: {ex.Message}");
             }
         }
+
+        private void cancelarButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

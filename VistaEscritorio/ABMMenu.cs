@@ -34,5 +34,11 @@ namespace VistaEscritorio
             ABMEspecialidades especialidadesForm = new ABMEspecialidades();
             especialidadesForm.ShowDialog();
         }
+
+        private void cursosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ABMCurso cursoForm = new ABMCurso();
+            cursoForm.ShowDialog();
+        }
     }
 }

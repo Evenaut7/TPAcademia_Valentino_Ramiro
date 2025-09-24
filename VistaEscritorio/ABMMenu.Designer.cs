@@ -36,6 +36,7 @@
             materiasToolStripMenuItem = new ToolStripMenuItem();
             planesToolStripMenuItem = new ToolStripMenuItem();
             especialidadesToolStripMenuItem = new ToolStripMenuItem();
+            cursosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -63,7 +64,7 @@
             // menuStrip1
             // 
             menuStrip1.Font = new Font("Segoe UI", 11F);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, cursosToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(855, 28);
@@ -90,6 +91,13 @@
             especialidadesToolStripMenuItem.Size = new Size(119, 24);
             especialidadesToolStripMenuItem.Text = "Especialidades";
             especialidadesToolStripMenuItem.Click += especialidadesToolStripMenuItem_Click;
+            // 
+            // cursosToolStripMenuItem
+            // 
+            cursosToolStripMenuItem.Name = "cursosToolStripMenuItem";
+            cursosToolStripMenuItem.Size = new Size(64, 24);
+            cursosToolStripMenuItem.Text = "Cursos";
+            cursosToolStripMenuItem.Click += cursosToolStripMenuItem_Click;
             // 
             // ABMMenu
             // 
@@ -121,5 +129,6 @@
         private ToolStripMenuItem masMateriasToolStripMenuItem;
         private ToolStripMenuItem planesToolStripMenuItem;
         private ToolStripMenuItem especialidadesToolStripMenuItem;
+        private ToolStripMenuItem cursosToolStripMenuItem;
     }
 }
