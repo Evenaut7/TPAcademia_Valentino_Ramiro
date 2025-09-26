@@ -8,6 +8,12 @@ namespace Domain.Model
 {
     public class Profesor : Persona
     {
+        public Profesor(int usuarioId, string cargo, int id, string nombre, string apellido, string dni, DateTime fechaNacimiento)
+            : base(id, nombre, apellido, dni, fechaNacimiento)
+        {
+            Cargo = cargo;
+            UsuarioId = usuarioId;
+        }
         public string Cargo { get; set; } = string.Empty;
 
         public int UsuarioId { get; set; }

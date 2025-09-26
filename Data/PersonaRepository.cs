@@ -47,7 +47,8 @@ namespace Data
             return context.Personas.ToList();
         }
 
-        public bool Update(Persona persona) {
+        public bool Update(Persona persona)
+        {
             using var context = CreateContext();
             var existingPersona = context.Personas.Find(persona.Id);
             if (existingPersona != null)
@@ -61,5 +62,5 @@ namespace Data
             }
             return false;
         }
-
+    }
 }
