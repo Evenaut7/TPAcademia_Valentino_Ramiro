@@ -80,11 +80,12 @@ namespace Data
             if (existingUsuario != null)
             {
                 existingUsuario.NombreUsuario = usuario.NombreUsuario;
-                existingUsuario.Nombre = usuario.Nombre;
-                existingUsuario.Apellido = usuario.Apellido;
                 existingUsuario.Email = usuario.Email;
                 existingUsuario.Clave = usuario.Clave;
+                existingUsuario.Privilegio = usuario.Privilegio;
                 existingUsuario.Habilitado = usuario.Habilitado;
+                existingUsuario.PersonaId = usuario.PersonaId;
+
 
                 context.SaveChanges();
                 return true;

@@ -16,8 +16,6 @@ namespace VistaEscritorio
         public Inicio()
         {
             InitializeComponent();
-            nuevaCuentaButton.Click += nuevaCuentaButton_Click;
-
         }
 
         private void nuevaCuentaButton_Click(object sender, EventArgs e)

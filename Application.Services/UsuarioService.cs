@@ -18,12 +18,11 @@ namespace Application.Services
             {
                 Id = usuario.Id,
                 NombreUsuario = usuario.NombreUsuario,
-                Nombre = usuario.Nombre,
-                Apellido = usuario.Apellido,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
                 Privilegio = usuario.Privilegio,
-                Clave = usuario.Clave
+                Clave = usuario.Clave,
+                PersonaId = usuario.PersonaId,
             };
         }
 
@@ -36,12 +35,11 @@ namespace Application.Services
             {
                 Id = u.Id,
                 NombreUsuario = u.NombreUsuario,
-                Nombre = u.Nombre,
-                Apellido = u.Apellido,
                 Email = u.Email,
                 Habilitado = u.Habilitado,
                 Privilegio = u.Privilegio,
-                Clave = u.Clave
+                Clave = u.Clave,
+                PersonaId = u.PersonaId
             }).ToList();
         }
 
@@ -58,12 +56,11 @@ namespace Application.Services
             var usuario = new Usuario(
                 id: dto.Id,
                 nombreUsuario: dto.NombreUsuario,
-                nombre: dto.Nombre,
-                apellido: dto.Apellido,
                 email: dto.Email,
                 clave: dto.Clave,
                 habilitado: dto.Habilitado,
-                privilegio: dto.Privilegio
+                privilegio: dto.Privilegio,
+                personaId: dto.PersonaId
             );
 
             usuarioRepository.Add(usuario);
@@ -84,12 +81,11 @@ namespace Application.Services
             var usuario = new Usuario(
                 id: dto.Id,
                 nombreUsuario: dto.NombreUsuario,
-                nombre: dto.Nombre,
-                apellido: dto.Apellido,
                 email: dto.Email,
                 clave: dto.Clave,
                 habilitado: dto.Habilitado,
-                privilegio: dto.Privilegio
+                privilegio: dto.Privilegio,
+                personaId: dto.PersonaId
             );
 
             return usuarioRepository.Update(usuario);

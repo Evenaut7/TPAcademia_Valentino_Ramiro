@@ -12,6 +12,9 @@ namespace Data
         public DbSet<Especialidad> Especialidades { get; set; }
         public DbSet<Comision> Comisiones { get; set; }
         public DbSet<Curso> Cursos { get; set; }
+        public DbSet<Persona> Personas { get; set; }
+        public DbSet<Alumno> Alumnos { get; set; }
+        public DbSet<Profesor> Profesores { get; set; }
         internal TPIContext()
         {
             this.Database.EnsureCreated();

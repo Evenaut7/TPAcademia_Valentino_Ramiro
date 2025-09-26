@@ -9,45 +9,28 @@ namespace Domain.Model
     public class Usuario
     {
         public int Id { get; set; }
-        public string Apellido { get; set; } = string.Empty;
+        public string NombreUsuario { get; set; } = string.Empty;
         public string Clave { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public bool Habilitado { get; set; }
         public string Privilegio { get; set; } = "Usuario"; // Valor por defecto "Usuario"
-        public string Nombre { get; set; } = string.Empty;
-       
-        private string _nombreUsuario;
-        public string NombreUsuario //Ejemplo de propiedad con validación
-        {
-            get { return _nombreUsuario; }
-            set
-            {
-                // Lógica de validación aquí
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentNullException("MiCampo no puede ser nulo o vacío."); // Lanza una excepción si la validación falla
-                }
-                else
-                {
-                    _nombreUsuario = value; // Asigna el valor si es válido
-                }
-            }
-        }
+
+        public int PersonaId { get; set; } // Clave foránea a Persona
+        public Persona Persona { get; set; } = null!; // Propiedad de navegación a Persona
 
         public Usuario()
         {
         }
 
-        public Usuario(int id, string apellido, string clave, string email, bool habilitado, string nombre, string nombreUsuario, string privilegio)
+        public Usuario(int id, string nombreUsuario, string clave, string email, bool habilitado, string privilegio, int personaId)
         {
             Id = id;
-            Apellido = apellido;
+            NombreUsuario = nombreUsuario;
             Clave = clave;
             Email = email;
             Habilitado = habilitado;
-            Nombre = nombre;
-            NombreUsuario = nombreUsuario;
             Privilegio = privilegio;
+            PersonaId = personaId;
         }
     }
 }

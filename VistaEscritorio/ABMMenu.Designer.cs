@@ -37,6 +37,8 @@
             planesToolStripMenuItem = new ToolStripMenuItem();
             especialidadesToolStripMenuItem = new ToolStripMenuItem();
             cursosToolStripMenuItem = new ToolStripMenuItem();
+            alumnosToolStripMenuItem = new ToolStripMenuItem();
+            toolStrip1 = new ToolStrip();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -64,7 +66,7 @@
             // menuStrip1
             // 
             menuStrip1.Font = new Font("Segoe UI", 11F);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, cursosToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, cursosToolStripMenuItem, alumnosToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(855, 28);
@@ -99,11 +101,26 @@
             cursosToolStripMenuItem.Text = "Cursos";
             cursosToolStripMenuItem.Click += cursosToolStripMenuItem_Click;
             // 
+            // alumnosToolStripMenuItem
+            // 
+            alumnosToolStripMenuItem.Name = "alumnosToolStripMenuItem";
+            alumnosToolStripMenuItem.Size = new Size(79, 24);
+            alumnosToolStripMenuItem.Text = "Alumnos";
+            // 
+            // toolStrip1
+            // 
+            toolStrip1.Location = new Point(0, 28);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(855, 25);
+            toolStrip1.TabIndex = 7;
+            toolStrip1.Text = "toolStrip1";
+            // 
             // ABMMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(855, 484);
+            Controls.Add(toolStrip1);
             Controls.Add(menuStrip1);
             Controls.Add(label1);
             MainMenuStrip = menuStrip1;
@@ -130,5 +147,7 @@
         private ToolStripMenuItem planesToolStripMenuItem;
         private ToolStripMenuItem especialidadesToolStripMenuItem;
         private ToolStripMenuItem cursosToolStripMenuItem;
+        private ToolStripMenuItem alumnosToolStripMenuItem;
+        private ToolStrip toolStrip1;
     }
 }

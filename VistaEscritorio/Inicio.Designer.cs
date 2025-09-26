@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             tituloInicio = new Label();
-            nuevaCuentaButton = new Button();
             inicioSesionButton = new Button();
             usuarioTextBox = new TextBox();
             passwordTextBox = new TextBox();
@@ -52,12 +51,6 @@
             // 
             // nuevaCuentaButton
             // 
-            nuevaCuentaButton.Location = new Point(334, 393);
-            nuevaCuentaButton.Name = "nuevaCuentaButton";
-            nuevaCuentaButton.Size = new Size(133, 23);
-            nuevaCuentaButton.TabIndex = 1;
-            nuevaCuentaButton.Text = "Crear Una Cuenta";
-            nuevaCuentaButton.UseVisualStyleBackColor = true;
             // 
             // inicioSesionButton
             // 
@@ -115,7 +108,6 @@
             Controls.Add(passwordTextBox);
             Controls.Add(usuarioTextBox);
             Controls.Add(inicioSesionButton);
-            Controls.Add(nuevaCuentaButton);
             Name = "Inicio";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Academia";
@@ -127,7 +119,6 @@
         #endregion
 
         private Label label1;
-        private Button nuevaCuentaButton;
         private Button button1;
         private TextBox textBox1;
         private TextBox textBox2;
