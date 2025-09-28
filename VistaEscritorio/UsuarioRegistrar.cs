@@ -21,9 +21,7 @@ namespace VistaEscritorio
         }
         private async void registrarseButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(nombreTextBox.Text) ||
-                string.IsNullOrWhiteSpace(apellidoTextBox.Text) ||
-                string.IsNullOrWhiteSpace(emailTextBox.Text) ||
+            if (string.IsNullOrWhiteSpace(emailTextBox.Text) ||
                 string.IsNullOrWhiteSpace(usuarioTextBox.Text) ||
                 string.IsNullOrWhiteSpace(claveTextBox.Text))
             {
@@ -32,8 +30,6 @@ namespace VistaEscritorio
             }
             var nuevoUsuario = new UsuarioDTO
             {
-                Nombre = nombreTextBox.Text,
-                Apellido = apellidoTextBox.Text,
                 Email = emailTextBox.Text,
                 NombreUsuario = usuarioTextBox.Text,
                 Clave = claveTextBox.Text

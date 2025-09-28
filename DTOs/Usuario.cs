@@ -8,7 +8,6 @@
         public string Email { get; set; } = string.Empty;
         public string Privilegio { get; set; } = "Usuario";
         public bool Habilitado { get; set; }
-
         public int PersonaId { get; set; }
         public PersonaDTO? Persona { get; set; }
     }

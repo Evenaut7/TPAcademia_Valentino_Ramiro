@@ -36,6 +36,29 @@ namespace Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Persona>().HasData(
+                new Persona
+                {
+                    Id = -10,
+                    Nombre = "Juan",
+                    Apellido = "Perez",
+                    Dni = 12345678,
+                    FechaNacimiento = new DateTime(2000, 1, 1)
+                }
+            );
+
+            modelBuilder.Entity<Usuario>().HasData(
+                new Usuario
+                {
+                    Id = -1,
+                    Email = "admin@correo.com",
+                    NombreUsuario = "admin",
+                    Clave = "1234",
+                    PersonaId = -10
+                }
+            );
             // Materia → Plan (Restrict delete)
             modelBuilder.Entity<Materia>()
                 .HasOne(m => m.Plan)
@@ -56,6 +79,26 @@ namespace Data
                 .WithMany()
                 .HasForeignKey(c => c.MateriaId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Persona)
+                .WithOne()
+                .HasForeignKey<Usuario>(u => u.PersonaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Alumno>()
+                .HasOne(a => a.Usuario)
+                .WithOne() 
+                .HasForeignKey<Alumno>(a => a.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            modelBuilder.Entity<Profesor>()
+                .HasOne(p => p.Usuario)
+                .WithOne() 
+                .HasForeignKey<Profesor>(p => p.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+
         }
     } 
 }

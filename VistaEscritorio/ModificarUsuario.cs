@@ -5,52 +5,45 @@ using API.Clients;
 
 namespace VistaEscritorio
 {
-    public partial class ModificarAlumno : Form
+    public partial class ModificarUsuario : Form
     {
-        private UsuarioDTO alumno;
+        private UsuarioDTO usuario;
 
-        public ModificarAlumno(UsuarioDTO alumnoSeleccionado)
+        public ModificarUsuario(UsuarioDTO usuarioSeleccionado)
         {
             InitializeComponent();
-            alumno = alumnoSeleccionado;
+            usuario = usuarioSeleccionado;
             CargarDatos();
         }
 
         private void CargarDatos()
         {
-            // Asume que tienes controles como nombreTextBox, emailTextBox, etc.
-            nombreTextBox.Text = alumno.Nombre;
-            apellidoTextBox.Text = alumno.Apellido;
-            emailTextBox.Text = alumno.Email;
-            alumnoTextBox.Text = alumno.NombreUsuario;
-            claveTextBox.Text = alumno.Clave;
-            // Agrega los demás campos según corresponda
+            emailTextBox.Text = usuario.Email;
+            usuarioTextBox.Text = usuario.NombreUsuario;
+            claveTextBox.Text = usuario.Clave;
         }
 
         private async void modificarButton_Click(object sender, EventArgs e)
         {
-            alumno.Nombre = nombreTextBox.Text;
-            alumno.Apellido = apellidoTextBox.Text;
-            alumno.Email = emailTextBox.Text;
-            alumno.NombreUsuario = alumnoTextBox.Text;
-            alumno.Clave = claveTextBox.Text;
-            // Agrega los demás campos según corresponda
+            usuario.Email = emailTextBox.Text;
+            usuario.NombreUsuario = usuarioTextBox.Text;
+            usuario.Clave = claveTextBox.Text;
 
             try
             {
-                await UsuarioApiClient.UpdateAsync(alumno);
-                MessageBox.Show("Alumno modificado correctamente.");
-                this.Close();
+                await UsuarioApiClient.UpdateAsync(usuario);
+                MessageBox.Show("Usuario modificado correctamente.");
+                Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al modificar el alumno: {ex.Message}");
+                MessageBox.Show($"Error al modificar el usuario: {ex.Message}");
             }
         }
 
         private void cancelarButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }
