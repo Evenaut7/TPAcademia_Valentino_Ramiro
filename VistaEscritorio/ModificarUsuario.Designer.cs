@@ -1,20 +1,12 @@
-﻿namespace VistaEscritorio
+﻿using System.Windows.Forms;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace VistaEscritorio
 {
     partial class ModificarUsuario
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label nombreLabel;
-        private System.Windows.Forms.Label apellidoLabel;
-        private System.Windows.Forms.Label emailLabel;
-        private System.Windows.Forms.Label alumnoLabel; // Cambiado
-        private System.Windows.Forms.Label claveLabel;
-        private System.Windows.Forms.TextBox nombreTextBox;
-        private System.Windows.Forms.TextBox apellidoTextBox;
-        private System.Windows.Forms.TextBox emailTextBox;
-        private System.Windows.Forms.TextBox alumnoTextBox; // Cambiado
-        private System.Windows.Forms.TextBox claveTextBox;
-        private System.Windows.Forms.Button modificarButton;
-        private System.Windows.Forms.Button cancelarButton;
 
         protected override void Dispose(bool disposing)
         {
@@ -27,143 +19,115 @@
 
         private void InitializeComponent()
         {
-            nombreLabel = new System.Windows.Forms.Label();
-            apellidoLabel = new System.Windows.Forms.Label();
-            emailLabel = new System.Windows.Forms.Label();
-            alumnoLabel = new System.Windows.Forms.Label(); // Cambiado
-            claveLabel = new System.Windows.Forms.Label();
-            nombreTextBox = new System.Windows.Forms.TextBox();
-            apellidoTextBox = new System.Windows.Forms.TextBox();
-            emailTextBox = new System.Windows.Forms.TextBox();
-            alumnoTextBox = new System.Windows.Forms.TextBox(); // Cambiado
-            claveTextBox = new System.Windows.Forms.TextBox();
-            modificarButton = new System.Windows.Forms.Button();
-            cancelarButton = new System.Windows.Forms.Button();
+            emailTextBox = new TextBox();
+            usuarioTextBox = new TextBox();
+            claveTextBox = new TextBox();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            modificarButton = new Button();
+            cancelarButton = new Button();
             SuspendLayout();
-            // 
-            // nombreLabel
-            // 
-            nombreLabel.AutoSize = true;
-            nombreLabel.Location = new System.Drawing.Point(30, 30);
-            nombreLabel.Name = "nombreLabel";
-            nombreLabel.Size = new System.Drawing.Size(54, 15);
-            nombreLabel.TabIndex = 0;
-            nombreLabel.Text = "Nombre:";
-            // 
-            // nombreTextBox
-            // 
-            nombreTextBox.Location = new System.Drawing.Point(120, 27);
-            nombreTextBox.Name = "nombreTextBox";
-            nombreTextBox.Size = new System.Drawing.Size(200, 23);
-            nombreTextBox.TabIndex = 1;
-            // 
-            // apellidoLabel
-            // 
-            apellidoLabel.AutoSize = true;
-            apellidoLabel.Location = new System.Drawing.Point(30, 65);
-            apellidoLabel.Name = "apellidoLabel";
-            apellidoLabel.Size = new System.Drawing.Size(54, 15);
-            apellidoLabel.TabIndex = 2;
-            apellidoLabel.Text = "Apellido:";
-            // 
-            // apellidoTextBox
-            // 
-            apellidoTextBox.Location = new System.Drawing.Point(120, 62);
-            apellidoTextBox.Name = "apellidoTextBox";
-            apellidoTextBox.Size = new System.Drawing.Size(200, 23);
-            apellidoTextBox.TabIndex = 3;
-            // 
-            // emailLabel
-            // 
-            emailLabel.AutoSize = true;
-            emailLabel.Location = new System.Drawing.Point(30, 100);
-            emailLabel.Name = "emailLabel";
-            emailLabel.Size = new System.Drawing.Size(41, 15);
-            emailLabel.TabIndex = 4;
-            emailLabel.Text = "Email:";
             // 
             // emailTextBox
             // 
-            emailTextBox.Location = new System.Drawing.Point(120, 97);
+            emailTextBox.Location = new Point(137, 25);
+            emailTextBox.Margin = new Padding(3, 4, 3, 4);
             emailTextBox.Name = "emailTextBox";
-            emailTextBox.Size = new System.Drawing.Size(200, 23);
-            emailTextBox.TabIndex = 5;
+            emailTextBox.Size = new Size(228, 27);
+            emailTextBox.TabIndex = 2;
             // 
-            // alumnoLabel
+            // usuarioTextBox
             // 
-            alumnoLabel.AutoSize = true;
-            alumnoLabel.Location = new System.Drawing.Point(30, 135);
-            alumnoLabel.Name = "alumnoLabel";
-            alumnoLabel.Size = new System.Drawing.Size(54, 15);
-            alumnoLabel.TabIndex = 6;
-            alumnoLabel.Text = "Alumno:"; // Cambiado
-                                          // 
-                                          // alumnoTextBox
-                                          // 
-            alumnoTextBox.Location = new System.Drawing.Point(120, 132);
-            alumnoTextBox.Name = "alumnoTextBox";
-            alumnoTextBox.Size = new System.Drawing.Size(200, 23);
-            alumnoTextBox.TabIndex = 7;
-            // 
-            // claveLabel
-            // 
-            claveLabel.AutoSize = true;
-            claveLabel.Location = new System.Drawing.Point(30, 170);
-            claveLabel.Name = "claveLabel";
-            claveLabel.Size = new System.Drawing.Size(40, 15);
-            claveLabel.TabIndex = 8;
-            claveLabel.Text = "Clave:";
+            usuarioTextBox.Location = new Point(137, 79);
+            usuarioTextBox.Margin = new Padding(3, 4, 3, 4);
+            usuarioTextBox.Name = "usuarioTextBox";
+            usuarioTextBox.Size = new Size(228, 27);
+            usuarioTextBox.TabIndex = 3;
             // 
             // claveTextBox
             // 
-            claveTextBox.Location = new System.Drawing.Point(120, 167);
+            claveTextBox.Location = new Point(137, 132);
+            claveTextBox.Margin = new Padding(3, 4, 3, 4);
             claveTextBox.Name = "claveTextBox";
-            claveTextBox.Size = new System.Drawing.Size(200, 23);
-            claveTextBox.TabIndex = 9;
-            claveTextBox.UseSystemPasswordChar = true;
+            claveTextBox.PasswordChar = '*';
+            claveTextBox.Size = new Size(228, 27);
+            claveTextBox.TabIndex = 4;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(23, 29);
+            label3.Name = "label3";
+            label3.Size = new Size(46, 20);
+            label3.TabIndex = 7;
+            label3.Text = "Email";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(23, 83);
+            label4.Name = "label4";
+            label4.Size = new Size(59, 20);
+            label4.TabIndex = 8;
+            label4.Text = "Usuario";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(23, 136);
+            label5.Name = "label5";
+            label5.Size = new Size(45, 20);
+            label5.TabIndex = 9;
+            label5.Text = "Clave";
             // 
             // modificarButton
             // 
-            modificarButton.Location = new System.Drawing.Point(120, 210);
+            modificarButton.Location = new Point(136, 196);
+            modificarButton.Margin = new Padding(3, 4, 3, 4);
             modificarButton.Name = "modificarButton";
-            modificarButton.Size = new System.Drawing.Size(90, 27);
+            modificarButton.Size = new Size(86, 31);
             modificarButton.TabIndex = 10;
             modificarButton.Text = "Modificar";
-            modificarButton.UseVisualStyleBackColor = true;
             modificarButton.Click += modificarButton_Click;
             // 
             // cancelarButton
             // 
-            cancelarButton.Location = new System.Drawing.Point(230, 210);
+            cancelarButton.Location = new Point(279, 196);
+            cancelarButton.Margin = new Padding(3, 4, 3, 4);
             cancelarButton.Name = "cancelarButton";
-            cancelarButton.Size = new System.Drawing.Size(90, 27);
+            cancelarButton.Size = new Size(86, 31);
             cancelarButton.TabIndex = 11;
             cancelarButton.Text = "Cancelar";
-            cancelarButton.UseVisualStyleBackColor = true;
             cancelarButton.Click += cancelarButton_Click;
             // 
             // ModificarUsuario
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(370, 260);
-            Controls.Add(nombreLabel);
-            Controls.Add(nombreTextBox);
-            Controls.Add(apellidoLabel);
-            Controls.Add(apellidoTextBox);
-            Controls.Add(emailLabel);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(397, 254);
             Controls.Add(emailTextBox);
-            Controls.Add(alumnoLabel); // Cambiado
-            Controls.Add(alumnoTextBox); // Cambiado
-            Controls.Add(claveLabel);
+            Controls.Add(usuarioTextBox);
             Controls.Add(claveTextBox);
+            Controls.Add(label3);
+            Controls.Add(label4);
+            Controls.Add(label5);
             Controls.Add(modificarButton);
             Controls.Add(cancelarButton);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "ModificarUsuario";
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "Modificar Alumno"; // Cambiado
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Modificar Usuario";
             ResumeLayout(false);
             PerformLayout();
         }
+        private TextBox emailTextBox;
+        private TextBox usuarioTextBox;
+        private TextBox claveTextBox;
+        private Label label3;
+        private Label label4;
+        private Label label5;
+        private Button modificarButton;
+        private Button cancelarButton;
     }
 }

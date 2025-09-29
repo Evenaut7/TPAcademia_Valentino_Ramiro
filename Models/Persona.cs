@@ -8,7 +8,8 @@ namespace Domain.Model
 {
     public class Persona
     {
-        public Persona(int id, string nombre, string apellido, string dni, DateTime fechaNacimiento)
+        public Persona() { }
+        public Persona(int id, string nombre, string apellido, int dni, DateTime fechaNacimiento)
         {
             Id = id;
             Nombre = nombre;
@@ -20,7 +21,7 @@ namespace Domain.Model
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Apellido { get; set; } = string.Empty;
-        public string Dni { get; set; } = string.Empty;
+        public int Dni { get; set; }
         public DateTime FechaNacimiento { get; set; }
 
     }

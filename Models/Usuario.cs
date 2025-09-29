@@ -14,9 +14,8 @@ namespace Domain.Model
         public string Email { get; set; } = string.Empty;
         public bool Habilitado { get; set; }
         public string Privilegio { get; set; } = "Usuario"; // Valor por defecto "Usuario"
-
         public int PersonaId { get; set; } // Clave foránea a Persona
-        public Persona Persona { get; set; } = null!; // Propiedad de navegación a Persona
+        public Persona? Persona { get; set; } = null!; // Propiedad de navegación a Persona
 
         public Usuario()
         {
