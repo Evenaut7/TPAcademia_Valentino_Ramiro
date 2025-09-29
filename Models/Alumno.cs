@@ -8,6 +8,13 @@ namespace Domain.Model
 {
     public class Alumno : Persona
     {
+        public Alumno(int id, string legajo, int usuarioId)
+        {
+            Id = id;
+            Legajo = legajo;
+            UsuarioId = usuarioId;
+        }
+
         public Alumno(int id, string nombre, string apellido, string dni, DateTime fechaNacimiento, string legajo, int usuarioId) : base (id, nombre, apellido, dni, fechaNacimiento)
         {
 

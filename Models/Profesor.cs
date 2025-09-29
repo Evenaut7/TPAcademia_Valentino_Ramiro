@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Model;
+
 
 namespace Domain.Model
 {
     public class Profesor : Persona
     {
-        public Profesor(int usuarioId, string cargo, int id, string nombre, string apellido, string dni, DateTime fechaNacimiento)
+        public Profesor(int id, string nombre, string apellido, string dni, DateTime fechaNacimiento, string cargo, int usuarioId)
             : base(id, nombre, apellido, dni, fechaNacimiento)
         {
             Cargo = cargo;

@@ -7,56 +7,58 @@ using Domain.Model;
 
 namespace Data
 {
-    public class PersonaRepository
+    public class ProfesorRepository
     {
         private TPIContext CreateContext()
         {
             return new TPIContext();
         }
 
-        public void Add(Persona persona)
+        public void Add(Profesor profesor)
         {
             using var context = CreateContext();
-            context.Personas.Add(persona);
+            context.Profesores.Add(profesor);
             context.SaveChanges();
         }
 
         public bool Delete(int id)
         {
             using var context = CreateContext();
-            var persona = context.Personas.Find(id);
-            if (persona != null)
+            var profesor = context.Profesores.Find(id);
+            if (profesor != null)
             {
-                context.Personas.Remove(persona);
+                context.Profesores.Remove(profesor);
                 context.SaveChanges();
                 return true;
             }
             return false;
         }
 
-        public Persona? Get(int id)
+        public Profesor? Get(int id)
         {
             using var context = CreateContext();
-            return context.Personas
+            return context.Profesores
                 .FirstOrDefault(p => p.Id == id);
         }
 
-        public IEnumerable<Persona> GetAll()
+        public IEnumerable<Profesor> GetAll()
         {
             using var context = CreateContext();
-            return context.Personas.ToList();
+            return context.Profesores.ToList();
         }
 
-        public bool Update(Persona persona)
+        public bool Update(Profesor profesor)
         {
             using var context = CreateContext();
-            var existingPersona = context.Personas.Find(persona.Id);
-            if (existingPersona != null)
+            var existingProfesor = context.Profesores.Find(profesor.Id);
+            if (existingProfesor != null)
             {
-                existingPersona.Nombre = persona.Nombre;
-                existingPersona.Apellido = persona.Apellido;
-                existingPersona.Dni = persona.Dni;
-                existingPersona.FechaNacimiento = persona.FechaNacimiento;
+                existingProfesor.Nombre = profesor.Nombre;
+                existingProfesor.Apellido = profesor.Apellido;
+                existingProfesor.Dni = profesor.Dni;
+                existingProfesor.FechaNacimiento = profesor.FechaNacimiento;
+                existingProfesor.Cargo = profesor.Cargo;
+                existingProfesor.UsuarioId = profesor.UsuarioId;
                 context.SaveChanges();
                 return true;
             }
