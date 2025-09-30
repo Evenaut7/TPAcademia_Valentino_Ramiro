@@ -11,6 +11,6 @@ namespace DTOs
         public string Legajo { get; set; } = string.Empty;
         // Otros campos específicos de Alumno
         public UsuarioDTO Usuario { get; set; } = null!;
-        public int UsuarioId { get; set; }
+        public int? UsuarioId { get; set; }
     }
 }
