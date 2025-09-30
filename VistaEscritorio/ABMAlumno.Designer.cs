@@ -41,11 +41,11 @@
             Dni = new DataGridViewTextBoxColumn();
             FechaNacimiento = new DataGridViewTextBoxColumn();
             Legajo = new DataGridViewTextBoxColumn();
+            Usuario = new DataGridViewTextBoxColumn();
             listarButton = new Button();
             agregarButton = new Button();
             modificarButton = new Button();
             eliminarButton = new Button();
-            Usuario = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvAlumnos).BeginInit();
             SuspendLayout();
             // 
@@ -89,6 +89,11 @@
             Legajo.HeaderText = "Legajo";
             Legajo.Name = "Legajo";
             // 
+            // Usuario
+            // 
+            Usuario.HeaderText = "Usuario";
+            Usuario.Name = "Usuario";
+            // 
             // listarButton
             // 
             listarButton.Location = new Point(56, 182);
@@ -129,11 +134,6 @@
             eliminarButton.UseVisualStyleBackColor = true;
             eliminarButton.Click += eliminarButton_Click;
             // 
-            // Usuario
-            // 
-            Usuario.HeaderText = "Usuario";
-            Usuario.Name = "Usuario";
-            // 
             // ABMAlumno
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -145,6 +145,7 @@
             Controls.Add(modificarButton);
             Controls.Add(eliminarButton);
             Name = "ABMAlumno";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ABMAlumno";
             Load += ABMAlumno_Load_1;
             ((System.ComponentModel.ISupportInitialize)dgvAlumnos).EndInit();
