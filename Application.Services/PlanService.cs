@@ -73,6 +73,7 @@ namespace Application.Services
             }
 
             Plan plan = new Plan();
+            plan.Id = dto.Id;
             plan.EspecialidadId = dto.EspecialidadId;
             plan.Descripcion = dto.Descripcion;
 
