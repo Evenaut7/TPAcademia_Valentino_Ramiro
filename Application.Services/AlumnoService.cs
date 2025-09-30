@@ -25,7 +25,8 @@ namespace Application.Services
                 Dni = alumno.Dni,
                 FechaNacimiento = alumno.FechaNacimiento,
                 Legajo = alumno.Legajo,
-                UsuarioId = alumno.UsuarioId,
+                UsuarioId = alumno.UsuarioId ?? 0, // Explicitly handle nullable value
+                Usuario = null
             };
         }
         public IEnumerable<AlumnoDTO> GetAll()
@@ -41,6 +42,7 @@ namespace Application.Services
                 FechaNacimiento = alumno.FechaNacimiento,
                 Legajo = alumno.Legajo,
                 UsuarioId = alumno.UsuarioId,
+                Usuario = null
             }).ToList();
         }
         public AlumnoDTO Add(AlumnoDTO dto)
@@ -53,7 +55,7 @@ namespace Application.Services
                 dni: dto.Dni,
                 fechaNacimiento: dto.FechaNacimiento,
                 legajo: dto.Legajo,
-                usuarioId: dto.UsuarioId
+                usuarioId: dto.UsuarioId 
             );
             alumnoRepository.Add(alumno);
             dto.Id = alumno.Id; // Asignar el Id generado al DTO
@@ -78,5 +80,6 @@ namespace Application.Services
             var alumnoRepository = new AlumnoRepository();
             return alumnoRepository.Delete(id);
         }
+
     }
 }

@@ -37,7 +37,9 @@
             planesToolStripMenuItem = new ToolStripMenuItem();
             especialidadesToolStripMenuItem = new ToolStripMenuItem();
             cursosToolStripMenuItem = new ToolStripMenuItem();
+            usuariosToolStripMenuItem = new ToolStripMenuItem();
             alumnosToolStripMenuItem = new ToolStripMenuItem();
+            profesoresToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1 = new ToolStrip();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -46,9 +48,9 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 36F);
-            label1.Location = new Point(302, 87);
+            label1.Location = new Point(264, 65);
             label1.Name = "label1";
-            label1.Size = new Size(429, 81);
+            label1.Size = new Size(343, 65);
             label1.TabIndex = 0;
             label1.Text = "Menu de Inicio";
             label1.TextAlign = ContentAlignment.TopCenter;
@@ -69,75 +71,97 @@
             // 
             menuStrip1.Font = new Font("Segoe UI", 11F);
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, cursosToolStripMenuItem, alumnosToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, profesoresToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(7, 3, 0, 3);
-            menuStrip1.Size = new Size(977, 35);
+            menuStrip1.Size = new Size(855, 28);
             menuStrip1.TabIndex = 6;
             menuStrip1.Text = "menuStrip1";
             // 
             // materiasToolStripMenuItem
             // 
             materiasToolStripMenuItem.Name = "materiasToolStripMenuItem";
-            materiasToolStripMenuItem.Size = new Size(99, 29);
+            materiasToolStripMenuItem.Size = new Size(78, 24);
             materiasToolStripMenuItem.Text = "Materias";
             materiasToolStripMenuItem.Click += materiasToolStripMenuItem_Click;
             // 
             // planesToolStripMenuItem
             // 
             planesToolStripMenuItem.Name = "planesToolStripMenuItem";
-            planesToolStripMenuItem.Size = new Size(81, 29);
+            planesToolStripMenuItem.Size = new Size(63, 24);
             planesToolStripMenuItem.Text = "Planes";
             planesToolStripMenuItem.Click += planesToolStripMenuItem_Click;
             // 
             // especialidadesToolStripMenuItem
             // 
             especialidadesToolStripMenuItem.Name = "especialidadesToolStripMenuItem";
-            especialidadesToolStripMenuItem.Size = new Size(149, 29);
+            especialidadesToolStripMenuItem.Size = new Size(119, 24);
             especialidadesToolStripMenuItem.Text = "Especialidades";
             especialidadesToolStripMenuItem.Click += especialidadesToolStripMenuItem_Click;
             // 
             // cursosToolStripMenuItem
             // 
             cursosToolStripMenuItem.Name = "cursosToolStripMenuItem";
-            cursosToolStripMenuItem.Size = new Size(83, 29);
+            cursosToolStripMenuItem.Size = new Size(64, 24);
             cursosToolStripMenuItem.Text = "Cursos";
             cursosToolStripMenuItem.Click += cursosToolStripMenuItem_Click;
+            // 
+            // usuariosToolStripMenuItem
+            // 
+            usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
+            usuariosToolStripMenuItem.Size = new Size(77, 24);
+            usuariosToolStripMenuItem.Text = "Usuarios";
             // 
             // alumnosToolStripMenuItem
             // 
             alumnosToolStripMenuItem.Name = "alumnosToolStripMenuItem";
-            alumnosToolStripMenuItem.Size = new Size(99, 29);
-            alumnosToolStripMenuItem.Text = "Usuarios";
+            alumnosToolStripMenuItem.Size = new Size(79, 24);
+            alumnosToolStripMenuItem.Text = "Alumnos";
             alumnosToolStripMenuItem.Click += alumnosToolStripMenuItem_Click;
+            // 
+            // profesoresToolStripMenuItem
+            // 
+            profesoresToolStripMenuItem.Name = "profesoresToolStripMenuItem";
+            profesoresToolStripMenuItem.Size = new Size(90, 24);
+            profesoresToolStripMenuItem.Text = "Profesores";
             // 
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Location = new Point(0, 35);
+            toolStrip1.Location = new Point(0, 28);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(977, 25);
+            toolStrip1.Size = new Size(855, 25);
             toolStrip1.TabIndex = 7;
             toolStrip1.Text = "toolStrip1";
             // 
             // ABMMenu
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(977, 645);
+            ClientSize = new Size(855, 484);
             Controls.Add(toolStrip1);
             Controls.Add(menuStrip1);
             Controls.Add(label1);
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(3, 4, 3, 4);
             Name = "ABMMenu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Menu";
+            Load += ABMMenu_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void alumnosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var abmAlumnosForm = new ABMAlumno();
+            abmAlumnosForm.ShowDialog();
+        }
+
+        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Temporalmente sin uso
         }
 
         #endregion
@@ -154,7 +178,9 @@
         private ToolStripMenuItem planesToolStripMenuItem;
         private ToolStripMenuItem especialidadesToolStripMenuItem;
         private ToolStripMenuItem cursosToolStripMenuItem;
-        private ToolStripMenuItem alumnosToolStripMenuItem;
+        private ToolStripMenuItem usuariosToolStripMenuItem;
         private ToolStrip toolStrip1;
+        private ToolStripMenuItem alumnosToolStripMenuItem;
+        private ToolStripMenuItem profesoresToolStripMenuItem;
     }
 }

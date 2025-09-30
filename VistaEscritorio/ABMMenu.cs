@@ -41,10 +41,15 @@ namespace VistaEscritorio
             cursoForm.ShowDialog();
         }
 
-        private void alumnosToolStripMenuItem_Click(object sender, EventArgs e)
+        private void alumnosToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            ABMUsuario usuarioForm = new ABMUsuario();
-            usuarioForm.ShowDialog();
+            ABMAlumno alumnoForm = new ABMAlumno();
+            alumnoForm.ShowDialog();
+        }
+
+        private void ABMMenu_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

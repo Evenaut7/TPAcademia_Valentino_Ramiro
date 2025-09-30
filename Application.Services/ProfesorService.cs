@@ -52,7 +52,7 @@ namespace Application.Services
                 apellido: dto.Apellido,
                 dni: dto.Dni,
                 fechaNacimiento: dto.FechaNacimiento,
-                Cargo: dto.Cargo,
+                cargo: dto.Cargo,
                 usuarioId: dto.UsuarioId
             );
             profesorRepository.Add(profesor);

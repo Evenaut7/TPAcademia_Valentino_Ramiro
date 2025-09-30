@@ -38,13 +38,18 @@ namespace Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // TPT configuration: each type gets its own table
+            modelBuilder.Entity<Persona>().ToTable("Personas");
+            modelBuilder.Entity<Alumno>().ToTable("Alumnos");
+            modelBuilder.Entity<Profesor>().ToTable("Profesores");
+
             modelBuilder.Entity<Persona>().HasData(
                 new Persona
                 {
                     Id = -10,
                     Nombre = "Juan",
                     Apellido = "Perez",
-                    Dni = 12345678,
+                    Dni = "12345678",
                     FechaNacimiento = new DateTime(2000, 1, 1)
                 }
             );
@@ -88,9 +93,10 @@ namespace Data
 
             modelBuilder.Entity<Alumno>()
                 .HasOne(a => a.Usuario)
-                .WithOne() 
+                .WithOne()
                 .HasForeignKey<Alumno>(a => a.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Profesor>()
                 .HasOne(p => p.Usuario)
