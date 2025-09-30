@@ -22,7 +22,12 @@ namespace VistaEscritorio
             descBox.Text = plan.Descripcion;
         }
 
-        private async void modificarPlan_Click(object sender, EventArgs e)
+        private void cancelarButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private async void modificarButton_Click(object sender, EventArgs e)
         {
             plan.Descripcion = descBox.Text;
 
@@ -36,11 +41,6 @@ namespace VistaEscritorio
             {
                 MessageBox.Show($"Error al modificar el plan: {ex.Message}");
             }
-        }
-
-        private void cancelarButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }

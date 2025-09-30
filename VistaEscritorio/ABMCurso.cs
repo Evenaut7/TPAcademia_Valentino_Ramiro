@@ -88,5 +88,33 @@ namespace VistaEscritorio
             cargaCursosForm.ShowDialog();
             listarButton_Click(sender, e);
         }
+
+        private async void eliminarButton_Click_1(object sender, EventArgs e)
+        {
+            if (dgvCurso.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Debe seleccionar una fila para eliminar.");
+                return;
+            }
+            int filaSeleccionada = dgvCurso.SelectedRows[0].Index;
+            var listaCursos = dgvCurso.DataSource as List<CursoDTO>;
+            if (listaCursos == null)
+            {
+                MessageBox.Show("No hay cursos cargados.");
+                return;
+            }
+            var cursoAEliminar = listaCursos[filaSeleccionada];
+            try
+            {
+                await CursoApiClient.DeleteAsync(cursoAEliminar.Id);
+                MessageBox.Show("Curso eliminado correctamente.");
+                await CargarTablaAsync();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("No se pudo eliminar el curso.");
+            }
+
+        }
     }
 }

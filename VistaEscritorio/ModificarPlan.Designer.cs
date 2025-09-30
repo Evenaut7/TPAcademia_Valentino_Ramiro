@@ -17,6 +17,7 @@
             label1 = new Label();
             label2 = new Label();
             cancelarButton = new Button();
+            modificarButton = new Button();
             SuspendLayout();
             // 
             // idBox
@@ -62,9 +63,20 @@
             cancelarButton.UseVisualStyleBackColor = true;
             cancelarButton.Click += cancelarButton_Click;
             // 
+            // modificarButton
+            // 
+            modificarButton.Location = new Point(119, 100);
+            modificarButton.Name = "modificarButton";
+            modificarButton.Size = new Size(75, 23);
+            modificarButton.TabIndex = 5;
+            modificarButton.Text = "Aceptar";
+            modificarButton.UseVisualStyleBackColor = true;
+            modificarButton.Click += modificarButton_Click;
+            // 
             // ModificarPlan
             // 
             ClientSize = new Size(370, 150);
+            Controls.Add(modificarButton);
             Controls.Add(idBox);
             Controls.Add(descBox);
             Controls.Add(label1);
@@ -83,5 +95,6 @@
         private Label label2;
         private Button modificarPlan;
         private Button cancelarButton;
+        private Button modificarButton;
     }
 }

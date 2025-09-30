@@ -29,7 +29,7 @@ namespace VistaEscritorio
             idPlanBox.DataSource = listaPlanes.Select(p => p.Id).ToList();
         }
 
-        private async void guardarMateria_Click(object sender, EventArgs e)
+        private async void agregarMateria_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(descBox.Text) ||
                 string.IsNullOrWhiteSpace(horaHastaBox.Text) ||
