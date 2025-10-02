@@ -111,6 +111,7 @@
             usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
             usuariosToolStripMenuItem.Size = new Size(77, 24);
             usuariosToolStripMenuItem.Text = "Usuarios";
+            usuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
             // 
             // alumnosToolStripMenuItem
             // 
@@ -159,7 +160,7 @@
             abmAlumnosForm.ShowDialog();
         }
 
-        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UsuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Temporalmente sin uso
         }
