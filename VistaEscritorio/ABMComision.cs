@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace VistaEscritorio
 {
-    public partial class ABMProfesor : Form
+    public partial class ABMComision : Form
     {
-        public ABMProfesor()
+        public ABMComision()
         {
             InitializeComponent();
-        }
-
-        private void ABMProfesor_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

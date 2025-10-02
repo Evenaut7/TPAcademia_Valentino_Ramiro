@@ -10,11 +10,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using API.Clients;
+using System.Runtime.CompilerServices;
 namespace VistaEscritorio
 {
     public partial class ABMmaterias : Form
     {
         private IEnumerable<MateriaDTO>? listaMaterias;
+        private IEnumerable<PlanDTO>? listaPlanes;
 
         public ABMmaterias()
         {
@@ -23,8 +25,19 @@ namespace VistaEscritorio
 
         private async Task CargarTablaAsync()
         {
+            listaPlanes = await PlanApiClient.GetAllAsync();
             listaMaterias = await MateriaApiClient.GetAllAsync();
-            dgvMaterias.DataSource = listaMaterias.ToList();
+
+            var listaConNombre = listaMaterias.Select(m => new
+            {
+                m.Id,
+                m.Descripcion,
+                m.HsSemanales,
+                m.HsTotales,
+                Plan = listaPlanes.FirstOrDefault(item => item.Id == m.PlanId)?.Descripcion ?? "Plan no encontrado"
+            }).ToList();
+
+            dgvMaterias.DataSource = listaConNombre;
         }
 
         private async void listarMaterias_Click(object sender, EventArgs e)
@@ -90,9 +103,19 @@ namespace VistaEscritorio
             listarMaterias_Click(sender, e);
         }
 
+        private void ABMmaterias_Load(object sender, EventArgs e)
+        {
+  
+        }
+
         private void dgvMaterias_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void ABMmaterias_Load_1(object sender, EventArgs e)
+        {
+            listarMaterias_Click(sender, e);
         }
     }
 }

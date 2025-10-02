@@ -1,6 +1,6 @@
 ﻿namespace VistaEscritorio
 {
-    partial class ABMProfesor
+    partial class ABMComision
     {
         /// <summary>
         /// Required designer variable.
@@ -30,15 +30,14 @@
         {
             SuspendLayout();
             // 
-            // ABMProfesor
+            // ABMComision
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 461);
-            Name = "ABMProfesor";
+            Name = "ABMComision";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ABMProfesor";
-            Load += ABMProfesor_Load;
+            Text = "ABMComision";
             ResumeLayout(false);
         }
 

@@ -40,7 +40,7 @@
             usuariosToolStripMenuItem = new ToolStripMenuItem();
             alumnosToolStripMenuItem = new ToolStripMenuItem();
             profesoresToolStripMenuItem = new ToolStripMenuItem();
-            toolStrip1 = new ToolStrip();
+            Comisiones = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -48,7 +48,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 36F);
-            label1.Location = new Point(264, 65);
+            label1.Location = new Point(167, 158);
             label1.Name = "label1";
             label1.Size = new Size(343, 65);
             label1.TabIndex = 0;
@@ -71,12 +71,13 @@
             // 
             menuStrip1.Font = new Font("Segoe UI", 11F);
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, profesoresToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, profesoresToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(855, 28);
+            menuStrip1.Size = new Size(684, 28);
             menuStrip1.TabIndex = 6;
             menuStrip1.Text = "menuStrip1";
+            menuStrip1.ItemClicked += menuStrip1_ItemClicked;
             // 
             // materiasToolStripMenuItem
             // 
@@ -127,21 +128,18 @@
             profesoresToolStripMenuItem.Text = "Profesores";
             profesoresToolStripMenuItem.Click += profesoresToolStripMenuItem_Click;
             // 
-            // toolStrip1
+            // Comisiones
             // 
-            toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Location = new Point(0, 28);
-            toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(855, 25);
-            toolStrip1.TabIndex = 7;
-            toolStrip1.Text = "toolStrip1";
+            Comisiones.Name = "Comisiones";
+            Comisiones.Size = new Size(97, 24);
+            Comisiones.Text = "Comisiones";
+            Comisiones.Click += Comisiones_Click;
             // 
             // ABMMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(855, 484);
-            Controls.Add(toolStrip1);
+            ClientSize = new Size(684, 661);
             Controls.Add(menuStrip1);
             Controls.Add(label1);
             MainMenuStrip = menuStrip1;
@@ -181,8 +179,8 @@
         private ToolStripMenuItem especialidadesToolStripMenuItem;
         private ToolStripMenuItem cursosToolStripMenuItem;
         private ToolStripMenuItem usuariosToolStripMenuItem;
-        private ToolStrip toolStrip1;
         private ToolStripMenuItem alumnosToolStripMenuItem;
         private ToolStripMenuItem profesoresToolStripMenuItem;
+        private ToolStripMenuItem Comisiones;
     }
 }

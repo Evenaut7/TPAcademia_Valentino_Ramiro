@@ -15,6 +15,8 @@ namespace VistaEscritorio
     public partial class ABMCurso : Form
     {
         private IEnumerable<CursoDTO>? listaCursos;
+        private IEnumerable<MateriaDTO>? listaMaterias;
+        private IEnumerable<ComisionDTO>? listaComisiones;
         public ABMCurso()
         {
             InitializeComponent();
@@ -22,7 +24,19 @@ namespace VistaEscritorio
         private async Task CargarTablaAsync()
         {
             listaCursos = await CursoApiClient.GetAllAsync();
-            dgvCurso.DataSource = listaCursos.ToList();
+            listaMaterias = await MateriaApiClient.GetAllAsync();
+            listaComisiones = await ComisionApiClient.GetAllAsync();
+
+            var listaConNombre = listaCursos.Select(c => new
+            {
+                c.Id,
+                c.AnioCalendario,
+                c.Cupo,
+                Materia = listaMaterias.FirstOrDefault(item => item.Id == c.MateriaId)?.Descripcion ?? "Materia no encontrada",
+                Comision = listaComisiones.FirstOrDefault(item => item.Id == c.ComisionId)?.Nombre ?? "Comisión no encontrada"
+            }).ToList();
+
+            dgvCurso.DataSource = listaConNombre;
         }
         private async void listarButton_Click(object sender, EventArgs e)
         {

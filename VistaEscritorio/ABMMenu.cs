@@ -69,5 +69,16 @@ namespace VistaEscritorio
             ABMProfesor profesorForm = new ABMProfesor();
             profesorForm.ShowDialog();
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void Comisiones_Click(object sender, EventArgs e)
+        {
+            ABMComision comisionForm = new ABMComision();
+            comisionForm.ShowDialog();
+        }
     }
 }

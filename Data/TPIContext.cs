@@ -15,6 +15,8 @@ namespace Data
         public DbSet<Persona> Personas { get; set; }
         public DbSet<Alumno> Alumnos { get; set; }
         public DbSet<Profesor> Profesores { get; set; }
+        public DbSet<AlumnoInscripcion> AlumnosInscripciones { get; set; }
+        public DbSet<ProfesorCurso> ProfesoresCursos { get; set; }
         internal TPIContext()
         {
             this.Database.EnsureCreated();
@@ -64,21 +66,19 @@ namespace Data
                     PersonaId = -10
                 }
             );
-            // Materia → Plan (Restrict delete)
+
             modelBuilder.Entity<Materia>()
-                .HasOne(m => m.Plan)
+                .HasOne(p => p.Plan)
                 .WithMany()
-                .HasForeignKey(m => m.PlanId)
+                .HasForeignKey(p => p.PlanId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Comision → Plan (Restrict delete)
             modelBuilder.Entity<Comision>()
                 .HasOne(c => c.Plan)
                 .WithMany()
                 .HasForeignKey(c => c.PlanId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Curso → Materia (Cascade or Restrict, but only one should cascade)
             modelBuilder.Entity<Curso>()
                 .HasOne(c => c.Materia)
                 .WithMany()
@@ -102,8 +102,31 @@ namespace Data
                 .HasOne(p => p.Usuario)
                 .WithOne() 
                 .HasForeignKey<Profesor>(p => p.UsuarioId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<AlumnoInscripcion>()
+                .HasOne(ai => ai.Alumno)
+                .WithMany()
+                .HasForeignKey(ai => ai.AlumnoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AlumnoInscripcion>()
+                .HasOne(ai => ai.Curso)
+                .WithMany()
+                .HasForeignKey(ai => ai.CursoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProfesorCurso>()
+                .HasOne(pc => pc.Profesor)
+                .WithMany()
+                .HasForeignKey(pc => pc.ProfesorId)
+                .OnDelete(DeleteBehavior.Cascade);
+    
+            modelBuilder.Entity<ProfesorCurso>()
+                .HasOne(pc => pc.Curso)
+                .WithMany()
+                .HasForeignKey(pc => pc.CursoId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     } 

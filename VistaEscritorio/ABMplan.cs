@@ -5,12 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using API.Clients;
+using Domain.Model;
 
 namespace VistaEscritorio
 {
     public partial class ABMplan : Form
     {
         private IEnumerable<PlanDTO>? listaPlanes;
+        private IEnumerable<EspecialidadDTO>? listaEspecialidades;
 
         public ABMplan()
         {
@@ -20,7 +22,16 @@ namespace VistaEscritorio
         private async Task CargarTablaAsync()
         {
             listaPlanes = await PlanApiClient.GetAllAsync();
-            dgvPlanes.DataSource = listaPlanes.ToList();
+            listaEspecialidades = await EspecialidadApiClient.GetAllAsync();
+
+            var listaConNombre = listaPlanes.Select(p => new
+            {
+                p.Id,
+                p.Descripcion,
+                Especialidad = listaEspecialidades.FirstOrDefault(item => item.Id == p.EspecialidadId)?.Descripcion ?? "Especialidad no encontrada"
+            }).ToList();
+
+            dgvPlanes.DataSource = listaConNombre;
         }
 
         private async void listarPlanes_Click(object sender, EventArgs e)
@@ -83,6 +94,11 @@ namespace VistaEscritorio
             // Pass the PlanDTO directly to the ModificarPlan form
             ModificarPlan modificarPlanForm = new ModificarPlan(planAModificarDTO);
             modificarPlanForm.ShowDialog();
+            listarPlanes_Click(sender, e);
+        }
+
+        private void ABMplan_Load(object sender, EventArgs e)
+        {
             listarPlanes_Click(sender, e);
         }
     }

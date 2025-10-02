@@ -62,5 +62,11 @@ namespace Data
             }
             return false;
         }
+
+        public bool Exists(int alumnoId, int profesorId)
+        {
+            using var context = CreateContext();
+            return context.Alumnos.Any(a => a.Id == alumnoId) || context.Profesores.Any(p => p.Id == profesorId);
+        }
     }
 }

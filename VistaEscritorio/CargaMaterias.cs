@@ -14,7 +14,7 @@ namespace VistaEscritorio
         {
             var listaPlanes = await PlanApiClient.GetAllAsync();
             idPlanBox.DataSource = listaPlanes;
-            idPlanBox.DisplayMember = "Descripcion"; 
+            idPlanBox.DisplayMember = "Descripcion";
             idPlanBox.ValueMember = "Id";
         }
 
@@ -65,6 +65,11 @@ namespace VistaEscritorio
         }
 
         private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void horaHastaBox_ValueChanged(object sender, EventArgs e)
         {
 
         }

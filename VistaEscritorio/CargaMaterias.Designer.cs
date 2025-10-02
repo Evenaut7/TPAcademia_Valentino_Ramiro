@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             descBox = new TextBox();
-            horaHastaBox = new TextBox();
-            horaDesdeBox = new TextBox();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
@@ -38,33 +36,21 @@
             cancelarButton = new Button();
             agregarMateria = new Button();
             idPlanBox = new ComboBox();
+            horaDesdeBox = new TextBox();
+            horaHastaBox = new TextBox();
             SuspendLayout();
             // 
             // descBox
             // 
-            descBox.Location = new Point(85, 17);
+            descBox.Location = new Point(114, 17);
             descBox.Name = "descBox";
             descBox.Size = new Size(193, 23);
             descBox.TabIndex = 1;
             // 
-            // horaHastaBox
-            // 
-            horaHastaBox.Location = new Point(85, 75);
-            horaHastaBox.Name = "horaHastaBox";
-            horaHastaBox.Size = new Size(193, 23);
-            horaHastaBox.TabIndex = 3;
-            // 
-            // horaDesdeBox
-            // 
-            horaDesdeBox.Location = new Point(85, 46);
-            horaDesdeBox.Name = "horaDesdeBox";
-            horaDesdeBox.Size = new Size(193, 23);
-            horaDesdeBox.TabIndex = 2;
-            // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(11, 20);
+            label2.Location = new Point(39, 20);
             label2.Name = "label2";
             label2.Size = new Size(69, 15);
             label2.TabIndex = 7;
@@ -73,25 +59,25 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(11, 49);
+            label3.Location = new Point(12, 49);
             label3.Name = "label3";
-            label3.Size = new Size(68, 15);
+            label3.Size = new Size(97, 15);
             label3.TabIndex = 8;
-            label3.Text = "Hora Desde";
+            label3.Text = "Horas Semanales";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(11, 78);
+            label4.Location = new Point(31, 78);
             label4.Name = "label4";
-            label4.Size = new Size(66, 15);
+            label4.Size = new Size(77, 15);
             label4.TabIndex = 9;
-            label4.Text = "Hora Hasta";
+            label4.Text = "Horas Totales";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(11, 107);
+            label5.Location = new Point(78, 107);
             label5.Name = "label5";
             label5.Size = new Size(30, 15);
             label5.TabIndex = 10;
@@ -122,16 +108,32 @@
             // 
             idPlanBox.DropDownStyle = ComboBoxStyle.DropDownList;
             idPlanBox.FormattingEnabled = true;
-            idPlanBox.Location = new Point(85, 104);
+            idPlanBox.Location = new Point(114, 104);
             idPlanBox.Name = "idPlanBox";
             idPlanBox.Size = new Size(121, 23);
             idPlanBox.TabIndex = 13;
+            // 
+            // horaDesdeBox
+            // 
+            horaDesdeBox.Location = new Point(114, 46);
+            horaDesdeBox.Name = "horaDesdeBox";
+            horaDesdeBox.Size = new Size(121, 23);
+            horaDesdeBox.TabIndex = 16;
+            // 
+            // horaHastaBox
+            // 
+            horaHastaBox.Location = new Point(114, 75);
+            horaHastaBox.Name = "horaHastaBox";
+            horaHastaBox.Size = new Size(121, 23);
+            horaHastaBox.TabIndex = 17;
             // 
             // CargaMaterias
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(367, 229);
+            Controls.Add(horaHastaBox);
+            Controls.Add(horaDesdeBox);
             Controls.Add(agregarMateria);
             Controls.Add(cancelarButton);
             Controls.Add(label5);
@@ -139,8 +141,6 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(idPlanBox);
-            Controls.Add(horaHastaBox);
-            Controls.Add(horaDesdeBox);
             Controls.Add(descBox);
             Name = "CargaMaterias";
             StartPosition = FormStartPosition.CenterParent;
@@ -152,8 +152,6 @@
 
         #endregion
         private TextBox descBox;
-        private TextBox horaHastaBox;
-        private TextBox horaDesdeBox;
         private Label label2;
         private Label label3;
         private Label label4;
@@ -161,5 +159,7 @@
         private Button cancelarButton;
         private Button agregarMateria;
         private ComboBox idPlanBox;
+        private TextBox horaDesdeBox;
+        private TextBox horaHastaBox;
     }
 }

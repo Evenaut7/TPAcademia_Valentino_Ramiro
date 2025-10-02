@@ -90,19 +90,14 @@ namespace VistaEscritorio
             }
         }
 
-        private async void ABMAlumno_Load(object sender, EventArgs e)
-        {
-            await CargarTablaAsync();
-        }
-
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void ABMAlumno_Load_1(object sender, EventArgs e)
+        private async void ABMAlumno_Load_1(object sender, EventArgs e)
         {
-
+            await CargarTablaAsync();
         }
     }
 }

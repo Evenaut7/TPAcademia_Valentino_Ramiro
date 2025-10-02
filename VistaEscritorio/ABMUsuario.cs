@@ -11,6 +11,7 @@ namespace VistaEscritorio
     public partial class ABMUsuario : Form
     {
         private IEnumerable<UsuarioDTO>? listaUsuarios;
+        // private IEnumerable<PersonaDTO>? listaPersonas;
 
         public ABMUsuario()
         {
@@ -20,6 +21,8 @@ namespace VistaEscritorio
         private async Task CargarTablaAsync()
         {
             listaUsuarios = await UsuarioApiClient.GetAllAsync();
+            // listaPersonas = await PersonaApiClient.GetAllAsync();
+            // Falta crear el flujo de negocio de Entidad Persona
             dgvUsuarios.DataSource = listaUsuarios.ToList();
         }
 
