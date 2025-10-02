@@ -125,6 +125,7 @@
             profesoresToolStripMenuItem.Name = "profesoresToolStripMenuItem";
             profesoresToolStripMenuItem.Size = new Size(90, 24);
             profesoresToolStripMenuItem.Text = "Profesores";
+            profesoresToolStripMenuItem.Click += profesoresToolStripMenuItem_Click;
             // 
             // toolStrip1
             // 

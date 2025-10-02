@@ -57,5 +57,17 @@ namespace VistaEscritorio
         {
 
         }
+
+        private void usuariosToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            ABMUsuario usuarioForm = new ABMUsuario();
+            usuarioForm.ShowDialog();
+        }
+
+        private void profesoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ABMProfesor profesorForm = new ABMProfesor();
+            profesorForm.ShowDialog();
+        }
     }
 }
