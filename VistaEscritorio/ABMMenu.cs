@@ -17,40 +17,59 @@ namespace VistaEscritorio
             InitializeComponent();
         }
 
+        private void AbrirFormularioEnPanel(Form formHijo)
+        {
+            if (ABMPanel.Controls.Count > 0)
+                ABMPanel.Controls.RemoveAt(0);
+
+            formHijo.TopLevel = false;         
+            formHijo.FormBorderStyle = FormBorderStyle.None;
+            formHijo.Dock = DockStyle.Fill;
+
+            ABMPanel.Controls.Add(formHijo);
+            ABMPanel.Tag = formHijo;
+
+            formHijo.Show();
+        }
+
         private void materiasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ABMmaterias materiasForm = new ABMmaterias();
-            materiasForm.ShowDialog();
+            AbrirFormularioEnPanel(new ABMmaterias());
         }
 
         private void planesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ABMplan planForm = new ABMplan();
-            planForm.ShowDialog();
+            AbrirFormularioEnPanel(new ABMplan());
         }
 
         private void especialidadesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ABMEspecialidades especialidadesForm = new ABMEspecialidades();
-            especialidadesForm.ShowDialog();
+            AbrirFormularioEnPanel(new ABMEspecialidades());
         }
 
         private void cursosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ABMCurso cursoForm = new ABMCurso();
-            cursoForm.ShowDialog();
+            AbrirFormularioEnPanel(new ABMCurso());
         }
 
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ABMUsuario usuarioForm = new ABMUsuario();
-            usuarioForm.ShowDialog();
+            AbrirFormularioEnPanel(new ABMUsuario());
         }
 
-        private void alumnosToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void alumnosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ABMAlumno alumnoForm = new ABMAlumno();
-            alumnoForm.ShowDialog();
+            AbrirFormularioEnPanel(new ABMAlumno());
+        }
+
+        private void profesoresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new ABMProfesor());
+        }
+
+        private void Comisiones_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new ABMComision());
         }
 
         private void ABMMenu_Load(object sender, EventArgs e)
@@ -58,27 +77,9 @@ namespace VistaEscritorio
 
         }
 
-        private void usuariosToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            ABMUsuario usuarioForm = new ABMUsuario();
-            usuarioForm.ShowDialog();
-        }
-
-        private void profesoresToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ABMProfesor profesorForm = new ABMProfesor();
-            profesorForm.ShowDialog();
-        }
-
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
-        }
-
-        private void Comisiones_Click(object sender, EventArgs e)
-        {
-            ABMComision comisionForm = new ABMComision();
-            comisionForm.ShowDialog();
         }
     }
 }
