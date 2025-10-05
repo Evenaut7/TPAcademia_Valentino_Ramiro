@@ -72,7 +72,7 @@ namespace WebAPI
             .Produces(StatusCodes.Status400BadRequest)
             .WithOpenApi();
 
-            app.MapDelete("/comisiones/{id}", (int id) =>
+            app.MapDelete("/alumnosInscripciones/{id}", (int id) =>
             {
                 AlumnoInscripcionService alumnoInscripcionService = new AlumnoInscripcionService();
                 bool deleted = alumnoInscripcionService.Delete(id);

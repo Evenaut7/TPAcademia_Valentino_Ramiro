@@ -20,7 +20,7 @@ namespace VistaEscritorio
 
         private void nuevaCuentaButton_Click(object sender, EventArgs e)
         {
-            UsuarioRegistrar usuarioRegistrar = new UsuarioRegistrar();
+            CargarUsuario usuarioRegistrar = new CargarUsuario();
             usuarioRegistrar.ShowDialog();
         }
 

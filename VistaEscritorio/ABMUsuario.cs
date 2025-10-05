@@ -1,17 +1,17 @@
-﻿using System;
+﻿using API.Clients;
+using DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DTOs;
-using API.Clients;
 
 namespace VistaEscritorio
 {
     public partial class ABMUsuario : Form
     {
         private IEnumerable<UsuarioDTO>? listaUsuarios;
-        // private IEnumerable<PersonaDTO>? listaPersonas;
+        private List<dynamic>? listaPersonas; // alumnos + profesores
 
         public ABMUsuario()
         {
@@ -21,9 +21,27 @@ namespace VistaEscritorio
         private async Task CargarTablaAsync()
         {
             listaUsuarios = await UsuarioApiClient.GetAllAsync();
-            // listaPersonas = await PersonaApiClient.GetAllAsync();
-            // Falta crear el flujo de negocio de Entidad Persona
-            dgvUsuarios.DataSource = listaUsuarios.ToList();
+
+            var listaAlumnos = await AlumnoApiClient.GetAllAsync();
+            var listaProfesores = await ProfesorApiClient.GetAllAsync();
+
+            listaPersonas = listaAlumnos
+                .Select(a => new { a.Id, Nombre = a.Nombre + " (Alumno)" })
+                .Concat(listaProfesores.Select(p => new { p.Id, Nombre = p.Nombre + " (Profesor)" }))
+                .Cast<dynamic>()
+                .ToList();
+
+            var listaConNombre = listaUsuarios.Select(u => new
+            {
+                u.Id,
+                u.NombreUsuario,
+                u.Email,
+                u.Privilegio,
+                u.Habilitado,
+                Persona = listaPersonas.FirstOrDefault(p => p.Id == u.PersonaId)?.Nombre ?? "No asignado"
+            }).ToList();
+
+            dgvUsuario.DataSource = listaConNombre;
         }
 
         private async void listarButton_Click(object sender, EventArgs e)
@@ -33,18 +51,15 @@ namespace VistaEscritorio
 
         private async void eliminarButton_Click(object sender, EventArgs e)
         {
-            if (dgvUsuarios.SelectedRows.Count == 0)
+            if (dgvUsuario.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Debe seleccionar una fila para eliminar.");
                 return;
             }
-            int filaSeleccionada = dgvUsuarios.SelectedRows[0].Index;
-            if (listaUsuarios == null)
-            {
-                MessageBox.Show("No hay usuarios cargados.");
-                return;
-            }
-            var usuarioAEliminar = listaUsuarios.ToList()[filaSeleccionada];
+
+            int filaSeleccionada = dgvUsuario.SelectedRows[0].Index;
+            var usuarioAEliminar = listaUsuarios!.ToList()[filaSeleccionada];
+
             try
             {
                 await UsuarioApiClient.DeleteAsync(usuarioAEliminar.Id);
@@ -57,40 +72,32 @@ namespace VistaEscritorio
             }
         }
 
+        private async void ABMUsuario_Load(object sender, EventArgs e)
+        {
+            await CargarTablaAsync();
+        }
+
         private void agregarButton_Click(object sender, EventArgs e)
         {
-            UsuarioRegistrar usuarioRegistrar = new UsuarioRegistrar();
-            usuarioRegistrar.ShowDialog();
+            var form = new CargarUsuario();
+            form.ShowDialog();
             listarButton_Click(sender, e);
         }
 
         private void modificarButton_Click(object sender, EventArgs e)
         {
-            if (dgvUsuarios.SelectedRows.Count == 0)
+            if (dgvUsuario.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Debe seleccionar una fila para modificar.");
                 return;
             }
-            int filaSeleccionada = dgvUsuarios.SelectedRows[0].Index;
-            if (listaUsuarios == null)
-            {
-                MessageBox.Show("No hay usuarios cargados.");
-                return;
-            }
-            var usuarioAModificar = listaUsuarios.ToList()[filaSeleccionada];
-            ModificarUsuario modificarUsuarioForm = new ModificarUsuario(usuarioAModificar);
-            modificarUsuarioForm.ShowDialog();
+
+            int filaSeleccionada = dgvUsuario.SelectedRows[0].Index;
+            var usuarioAModificar = listaUsuarios!.ToList()[filaSeleccionada];
+
+            var form = new ModificarUsuario(usuarioAModificar);
+            form.ShowDialog();
             listarButton_Click(sender, e);
-        }
-
-        private async void UsuarioABM_Load(object sender, EventArgs e)
-        {
-            await CargarTablaAsync();
-        }
-
-        private void dgvUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }

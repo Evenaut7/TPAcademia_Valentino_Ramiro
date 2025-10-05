@@ -22,7 +22,7 @@ namespace VistaEscritorio
             if (ABMPanel.Controls.Count > 0)
                 ABMPanel.Controls.RemoveAt(0);
 
-            formHijo.TopLevel = false;         
+            formHijo.TopLevel = false;
             formHijo.FormBorderStyle = FormBorderStyle.None;
             formHijo.Dock = DockStyle.Fill;
 
@@ -57,11 +57,6 @@ namespace VistaEscritorio
             AbrirFormularioEnPanel(new ABMUsuario());
         }
 
-        private void alumnosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AbrirFormularioEnPanel(new ABMAlumno());
-        }
-
         private void profesoresToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel(new ABMProfesor());
@@ -80,6 +75,11 @@ namespace VistaEscritorio
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void alumnosToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new ABMAlumno());
         }
     }
 }

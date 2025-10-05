@@ -170,6 +170,7 @@
             alumnosToolStripMenuItem.Size = new Size(140, 29);
             alumnosToolStripMenuItem.Text = "Alumnos";
             alumnosToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
+            alumnosToolStripMenuItem.Click += alumnosToolStripMenuItem_Click_1;
             // 
             // profesoresToolStripMenuItem
             // 
