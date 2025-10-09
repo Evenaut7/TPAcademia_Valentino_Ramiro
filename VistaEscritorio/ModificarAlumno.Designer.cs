@@ -13,15 +13,6 @@
         private System.Windows.Forms.DateTimePicker fechaNacimientoPicker;
         private System.Windows.Forms.Label legajoLabel;
         private System.Windows.Forms.TextBox legajoTextBox;
-
-        private System.Windows.Forms.Label usuarioLabel;
-        private System.Windows.Forms.TextBox usuarioTextBox;
-        private System.Windows.Forms.Label claveLabel;
-        private System.Windows.Forms.TextBox claveTextBox;
-        private System.Windows.Forms.Label emailLabel;
-        private System.Windows.Forms.TextBox emailTextBox;
-        private System.Windows.Forms.Label privilegioLabel;
-        private System.Windows.Forms.ComboBox privilegioComboBox;
         private System.Windows.Forms.Button guardarButton;
 
         protected override void Dispose(bool disposing)
@@ -35,98 +26,123 @@
 
         private void InitializeComponent()
         {
-            this.nombreLabel = new System.Windows.Forms.Label();
-            this.nombreTextBox = new System.Windows.Forms.TextBox();
-            this.apellidoLabel = new System.Windows.Forms.Label();
-            this.apellidoTextBox = new System.Windows.Forms.TextBox();
-            this.dniLabel = new System.Windows.Forms.Label();
-            this.dniTextBox = new System.Windows.Forms.TextBox();
-            this.fechaNacimientoLabel = new System.Windows.Forms.Label();
-            this.fechaNacimientoPicker = new System.Windows.Forms.DateTimePicker();
-            this.legajoLabel = new System.Windows.Forms.Label();
-            this.legajoTextBox = new System.Windows.Forms.TextBox();
-
-            this.usuarioLabel = new System.Windows.Forms.Label();
-            this.usuarioTextBox = new System.Windows.Forms.TextBox();
-            this.claveLabel = new System.Windows.Forms.Label();
-            this.claveTextBox = new System.Windows.Forms.TextBox();
-            this.emailLabel = new System.Windows.Forms.Label();
-            this.emailTextBox = new System.Windows.Forms.TextBox();
-            this.privilegioLabel = new System.Windows.Forms.Label();
-            this.privilegioComboBox = new System.Windows.Forms.ComboBox();
-            this.guardarButton = new System.Windows.Forms.Button();
-
-            // Alumno fields
-            this.nombreLabel.Text = "Nombre:";
-            this.nombreLabel.Location = new System.Drawing.Point(20, 20);
-            this.nombreTextBox.Location = new System.Drawing.Point(150, 20);
-
-            this.apellidoLabel.Text = "Apellido:";
-            this.apellidoLabel.Location = new System.Drawing.Point(20, 60);
-            this.apellidoTextBox.Location = new System.Drawing.Point(150, 60);
-
-            this.dniLabel.Text = "DNI:";
-            this.dniLabel.Location = new System.Drawing.Point(20, 100);
-            this.dniTextBox.Location = new System.Drawing.Point(150, 100);
-
-            this.fechaNacimientoLabel.Text = "Fecha de Nacimiento:";
-            this.fechaNacimientoLabel.Location = new System.Drawing.Point(20, 140);
-            this.fechaNacimientoPicker.Location = new System.Drawing.Point(150, 140);
-
-            this.legajoLabel.Text = "Legajo:";
-            this.legajoLabel.Location = new System.Drawing.Point(20, 180);
-            this.legajoTextBox.Location = new System.Drawing.Point(150, 180);
-
-            // Usuario fields
-            this.usuarioLabel.Text = "Nombre de Usuario:";
-            this.usuarioLabel.Location = new System.Drawing.Point(20, 220);
-            this.usuarioTextBox.Location = new System.Drawing.Point(150, 220);
-
-            this.claveLabel.Text = "Clave:";
-            this.claveLabel.Location = new System.Drawing.Point(20, 260);
-            this.claveTextBox.Location = new System.Drawing.Point(150, 260);
-            this.claveTextBox.PasswordChar = '*';
-
-            this.emailLabel.Text = "Email:";
-            this.emailLabel.Location = new System.Drawing.Point(20, 300);
-            this.emailTextBox.Location = new System.Drawing.Point(150, 300);
-
-            this.privilegioLabel.Text = "Privilegio:";
-            this.privilegioLabel.Location = new System.Drawing.Point(20, 340);
-            this.privilegioComboBox.Location = new System.Drawing.Point(150, 340);
-            this.privilegioComboBox.Items.AddRange(new object[] { "Alumno", "Admin", "Profesor" });
-
-            // Guardar Button
-            this.guardarButton.Text = "Guardar";
-            this.guardarButton.Location = new System.Drawing.Point(150, 380);
-            this.guardarButton.Click += new System.EventHandler(this.guardarButton_Click);
-
-            // Add controls
-            this.Controls.Add(this.nombreLabel);
-            this.Controls.Add(this.nombreTextBox);
-            this.Controls.Add(this.apellidoLabel);
-            this.Controls.Add(this.apellidoTextBox);
-            this.Controls.Add(this.dniLabel);
-            this.Controls.Add(this.dniTextBox);
-            this.Controls.Add(this.fechaNacimientoLabel);
-            this.Controls.Add(this.fechaNacimientoPicker);
-            this.Controls.Add(this.legajoLabel);
-            this.Controls.Add(this.legajoTextBox);
-
-            this.Controls.Add(this.usuarioLabel);
-            this.Controls.Add(this.usuarioTextBox);
-            this.Controls.Add(this.claveLabel);
-            this.Controls.Add(this.claveTextBox);
-            this.Controls.Add(this.emailLabel);
-            this.Controls.Add(this.emailTextBox);
-            this.Controls.Add(this.privilegioLabel);
-            this.Controls.Add(this.privilegioComboBox);
-
-            this.Controls.Add(this.guardarButton);
-
-            // Form settings
-            this.ClientSize = new System.Drawing.Size(400, 430);
-            this.Text = "Modificar Alumno";
+            nombreLabel = new Label();
+            nombreTextBox = new TextBox();
+            apellidoLabel = new Label();
+            apellidoTextBox = new TextBox();
+            dniLabel = new Label();
+            dniTextBox = new TextBox();
+            fechaNacimientoLabel = new Label();
+            fechaNacimientoPicker = new DateTimePicker();
+            legajoLabel = new Label();
+            legajoTextBox = new TextBox();
+            guardarButton = new Button();
+            SuspendLayout();
+            // 
+            // nombreLabel
+            // 
+            nombreLabel.Location = new Point(83, 57);
+            nombreLabel.Name = "nombreLabel";
+            nombreLabel.Size = new Size(57, 23);
+            nombreLabel.TabIndex = 0;
+            nombreLabel.Text = "Nombre:";
+            // 
+            // nombreTextBox
+            // 
+            nombreTextBox.Location = new Point(146, 54);
+            nombreTextBox.Name = "nombreTextBox";
+            nombreTextBox.Size = new Size(190, 23);
+            nombreTextBox.TabIndex = 1;
+            // 
+            // apellidoLabel
+            // 
+            apellidoLabel.Location = new Point(83, 97);
+            apellidoLabel.Name = "apellidoLabel";
+            apellidoLabel.Size = new Size(54, 23);
+            apellidoLabel.TabIndex = 2;
+            apellidoLabel.Text = "Apellido:";
+            // 
+            // apellidoTextBox
+            // 
+            apellidoTextBox.Location = new Point(146, 94);
+            apellidoTextBox.Name = "apellidoTextBox";
+            apellidoTextBox.Size = new Size(190, 23);
+            apellidoTextBox.TabIndex = 3;
+            // 
+            // dniLabel
+            // 
+            dniLabel.Location = new Point(91, 137);
+            dniLabel.Name = "dniLabel";
+            dniLabel.Size = new Size(46, 23);
+            dniLabel.TabIndex = 4;
+            dniLabel.Text = "DNI:";
+            // 
+            // dniTextBox
+            // 
+            dniTextBox.Location = new Point(146, 134);
+            dniTextBox.Name = "dniTextBox";
+            dniTextBox.Size = new Size(190, 23);
+            dniTextBox.TabIndex = 5;
+            // 
+            // fechaNacimientoLabel
+            // 
+            fechaNacimientoLabel.Location = new Point(65, 174);
+            fechaNacimientoLabel.Name = "fechaNacimientoLabel";
+            fechaNacimientoLabel.Size = new Size(75, 32);
+            fechaNacimientoLabel.TabIndex = 6;
+            fechaNacimientoLabel.Text = "Fecha de Nacimiento:";
+            fechaNacimientoLabel.Click += fechaNacimientoLabel_Click;
+            // 
+            // fechaNacimientoPicker
+            // 
+            fechaNacimientoPicker.Location = new Point(146, 183);
+            fechaNacimientoPicker.Name = "fechaNacimientoPicker";
+            fechaNacimientoPicker.Size = new Size(190, 23);
+            fechaNacimientoPicker.TabIndex = 7;
+            // 
+            // legajoLabel
+            // 
+            legajoLabel.Location = new Point(87, 229);
+            legajoLabel.Name = "legajoLabel";
+            legajoLabel.Size = new Size(50, 21);
+            legajoLabel.TabIndex = 8;
+            legajoLabel.Text = "Legajo:";
+            // 
+            // legajoTextBox
+            // 
+            legajoTextBox.Location = new Point(143, 226);
+            legajoTextBox.Name = "legajoTextBox";
+            legajoTextBox.Size = new Size(193, 23);
+            legajoTextBox.TabIndex = 9;
+            // 
+            // guardarButton
+            // 
+            guardarButton.Location = new Point(123, 279);
+            guardarButton.Name = "guardarButton";
+            guardarButton.Size = new Size(133, 23);
+            guardarButton.TabIndex = 18;
+            guardarButton.Text = "Guardar";
+            guardarButton.Click += guardarButton_Click;
+            // 
+            // ModificarAlumno
+            // 
+            ClientSize = new Size(400, 430);
+            Controls.Add(nombreLabel);
+            Controls.Add(nombreTextBox);
+            Controls.Add(apellidoLabel);
+            Controls.Add(apellidoTextBox);
+            Controls.Add(dniLabel);
+            Controls.Add(dniTextBox);
+            Controls.Add(fechaNacimientoLabel);
+            Controls.Add(fechaNacimientoPicker);
+            Controls.Add(legajoLabel);
+            Controls.Add(legajoTextBox);
+            Controls.Add(guardarButton);
+            Name = "ModificarAlumno";
+            Text = "Modificar Alumno";
+            Load += ModificarAlumno_Load;
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }

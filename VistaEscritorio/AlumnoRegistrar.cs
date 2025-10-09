@@ -61,5 +61,10 @@ namespace VistaEscritorio
         {
 
         }
+
+        private void apellidoLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

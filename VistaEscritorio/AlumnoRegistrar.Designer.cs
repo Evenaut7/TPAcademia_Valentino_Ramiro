@@ -55,7 +55,7 @@
             // 
             // nombreLabel
             // 
-            nombreLabel.Location = new Point(228, 40);
+            nombreLabel.Location = new Point(228, 56);
             nombreLabel.Name = "nombreLabel";
             nombreLabel.Size = new Size(100, 19);
             nombreLabel.TabIndex = 0;
@@ -64,29 +64,30 @@
             // 
             // nombreTextBox
             // 
-            nombreTextBox.Location = new Point(228, 51);
+            nombreTextBox.Location = new Point(228, 78);
             nombreTextBox.Name = "nombreTextBox";
             nombreTextBox.Size = new Size(200, 23);
             nombreTextBox.TabIndex = 1;
             // 
             // apellidoLabel
             // 
-            apellidoLabel.Location = new Point(228, 100);
+            apellidoLabel.Location = new Point(228, 127);
             apellidoLabel.Name = "apellidoLabel";
             apellidoLabel.Size = new Size(100, 18);
             apellidoLabel.TabIndex = 2;
             apellidoLabel.Text = "Apellido:";
+            apellidoLabel.Click += apellidoLabel_Click;
             // 
             // apellidoTextBox
             // 
-            apellidoTextBox.Location = new Point(228, 121);
+            apellidoTextBox.Location = new Point(228, 148);
             apellidoTextBox.Name = "apellidoTextBox";
             apellidoTextBox.Size = new Size(200, 23);
             apellidoTextBox.TabIndex = 3;
             // 
             // dniLabel
             // 
-            dniLabel.Location = new Point(228, 169);
+            dniLabel.Location = new Point(228, 186);
             dniLabel.Name = "dniLabel";
             dniLabel.Size = new Size(100, 20);
             dniLabel.TabIndex = 4;
@@ -94,14 +95,14 @@
             // 
             // dniTextBox
             // 
-            dniTextBox.Location = new Point(228, 182);
+            dniTextBox.Location = new Point(228, 209);
             dniTextBox.Name = "dniTextBox";
             dniTextBox.Size = new Size(200, 23);
             dniTextBox.TabIndex = 5;
             // 
             // fechaNacimientoLabel
             // 
-            fechaNacimientoLabel.Location = new Point(228, 224);
+            fechaNacimientoLabel.Location = new Point(228, 251);
             fechaNacimientoLabel.Name = "fechaNacimientoLabel";
             fechaNacimientoLabel.Size = new Size(127, 27);
             fechaNacimientoLabel.TabIndex = 6;
@@ -110,14 +111,14 @@
             // 
             // fechaNacimientoPicker
             // 
-            fechaNacimientoPicker.Location = new Point(228, 254);
+            fechaNacimientoPicker.Location = new Point(228, 281);
             fechaNacimientoPicker.Name = "fechaNacimientoPicker";
             fechaNacimientoPicker.Size = new Size(200, 23);
             fechaNacimientoPicker.TabIndex = 7;
             // 
             // legajoLabel
             // 
-            legajoLabel.Location = new Point(228, 303);
+            legajoLabel.Location = new Point(228, 330);
             legajoLabel.Name = "legajoLabel";
             legajoLabel.Size = new Size(100, 18);
             legajoLabel.TabIndex = 8;
@@ -126,7 +127,7 @@
             // 
             // legajoTextBox
             // 
-            legajoTextBox.Location = new Point(228, 324);
+            legajoTextBox.Location = new Point(228, 351);
             legajoTextBox.Name = "legajoTextBox";
             legajoTextBox.Size = new Size(200, 23);
             legajoTextBox.TabIndex = 9;
