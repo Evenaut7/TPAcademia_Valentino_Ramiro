@@ -10,7 +10,8 @@ namespace Domain.Model
     {
         public int Id { get; set; }
         public string NombreUsuario { get; set; } = string.Empty;
-        public string Clave { get; set; } = string.Empty;
+        public string Clave { get; set; } = string.Empty; // Aquí se almacena el hash
+        public string Salt { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public bool Habilitado { get; set; }
         public string Privilegio { get; set; } = "Usuario"; // Valor por defecto "Usuario"
@@ -21,15 +22,47 @@ namespace Domain.Model
         {
         }
 
-        public Usuario(int id, string nombreUsuario, string clave, string email, bool habilitado, string privilegio, int personaId)
+        public Usuario(int id, string nombreUsuario, string clave, string salt, string email, bool habilitado, string privilegio, int personaId)
         {
             Id = id;
             NombreUsuario = nombreUsuario;
             Clave = clave;
+            Salt = salt;
             Email = email;
             Habilitado = habilitado;
             Privilegio = privilegio;
             PersonaId = personaId;
+        }
+
+        // Método para establecer la clave (hasheada)
+        public void SetClave(string clave)
+        {
+            if (string.IsNullOrWhiteSpace(clave))
+                throw new ArgumentException("La clave no puede ser vacía.");
+            Salt = GenerateSalt();
+            Clave = HashPassword(clave, Salt);
+        }
+
+        public bool ValidarClave(string clave)
+        {
+            var hash = HashPassword(clave, Salt);
+            return Clave == hash;
+        }
+        private string GenerateSalt()
+        {
+            // Implementación para generar un salt
+            return Guid.NewGuid().ToString();
+        }
+
+        private string HashPassword(string password, string salt)
+        {
+            // Implementación para hashear la contraseña con el salt
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            {
+                var combinedPassword = password + salt;
+                var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(combinedPassword));
+                return Convert.ToBase64String(hashBytes);
+            }
         }
     }
 }

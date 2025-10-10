@@ -22,6 +22,7 @@ namespace Application.Services
                 Habilitado = usuario.Habilitado,
                 Privilegio = usuario.Privilegio,
                 Clave = usuario.Clave,
+                Salt = usuario.Salt,
                 PersonaId = usuario.PersonaId,
             };
         }
@@ -39,6 +40,7 @@ namespace Application.Services
                 Habilitado = u.Habilitado,
                 Privilegio = u.Privilegio,
                 Clave = u.Clave,
+                Salt = u.Salt,
                 PersonaId = u.PersonaId
             }).ToList();
         }
@@ -58,6 +60,7 @@ namespace Application.Services
                 nombreUsuario: dto.NombreUsuario,
                 email: dto.Email,
                 clave: dto.Clave,
+                salt: dto.Salt,
                 habilitado: dto.Habilitado,
                 privilegio: dto.Privilegio,
                 personaId: dto.PersonaId
@@ -83,6 +86,7 @@ namespace Application.Services
                 nombreUsuario: dto.NombreUsuario,
                 email: dto.Email,
                 clave: dto.Clave,
+                salt: dto.Salt,
                 habilitado: dto.Habilitado,
                 privilegio: dto.Privilegio,
                 personaId: dto.PersonaId

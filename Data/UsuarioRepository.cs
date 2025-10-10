@@ -73,6 +73,12 @@ namespace Data
             return query.Any();
         }
 
+        public Usuario? GetByNombreUsuario(string nombreUsuario)
+        {
+            using var context = CreateContext();
+            return context.Usuarios.FirstOrDefault(u => u.NombreUsuario == nombreUsuario && u.Habilitado);
+        }
+
         public bool Update(Usuario usuario)
         {
             using var context = CreateContext();
@@ -82,6 +88,7 @@ namespace Data
                 existingUsuario.NombreUsuario = usuario.NombreUsuario;
                 existingUsuario.Email = usuario.Email;
                 existingUsuario.Clave = usuario.Clave;
+                existingUsuario.Salt = usuario.Salt;
                 existingUsuario.Privilegio = usuario.Privilegio;
                 existingUsuario.Habilitado = usuario.Habilitado;
                 existingUsuario.PersonaId = usuario.PersonaId;

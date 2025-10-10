@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Domain.Model;
+using System;
+using System.Text;
 
 namespace Data
 {
@@ -17,7 +19,7 @@ namespace Data
         public DbSet<Profesor> Profesores { get; set; }
         public DbSet<AlumnoInscripcion> AlumnosInscripciones { get; set; }
         public DbSet<ProfesorCurso> ProfesoresCursos { get; set; }
-        internal TPIContext()
+        public TPIContext()
         {
             this.Database.EnsureCreated();
         }
@@ -44,28 +46,6 @@ namespace Data
             modelBuilder.Entity<Persona>().ToTable("Personas");
             modelBuilder.Entity<Alumno>().ToTable("Alumnos");
             modelBuilder.Entity<Profesor>().ToTable("Profesores");
-
-            modelBuilder.Entity<Persona>().HasData(
-                new Persona
-                {
-                    Id = -10,
-                    Nombre = "Juan",
-                    Apellido = "Perez",
-                    Dni = "12345678",
-                    FechaNacimiento = new DateTime(2000, 1, 1)
-                }
-            );
-
-            modelBuilder.Entity<Usuario>().HasData(
-                new Usuario
-                {
-                    Id = -1,
-                    Email = "admin@correo.com",
-                    NombreUsuario = "admin",
-                    Clave = "1234",
-                    PersonaId = -10
-                }
-            );
 
             modelBuilder.Entity<Materia>()
                 .HasOne(p => p.Plan)
