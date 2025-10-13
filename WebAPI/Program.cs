@@ -48,6 +48,7 @@ namespace WebAPI
             app.MapProfesorEndpoints();
             app.MapAlumnoInscripcionEndpoints();
             app.MapProfesorCursoEndpoints();
+            app.MapAuthEndpoints();
 
 
             using (var scope = app.Services.CreateScope())

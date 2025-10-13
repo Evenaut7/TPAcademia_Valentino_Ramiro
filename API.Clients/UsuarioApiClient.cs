@@ -143,17 +143,15 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync($"usuarios/validate/{user}/{password}");
-                if (response.IsSuccessStatusCode)
+                var loginRequest = new
                 {
-                    var result = await response.Content.ReadAsAsync<bool>();
-                    return result;
-                }
-                else
-                {
-                    string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al validar usuario. Status: {response.StatusCode}, Detalle: {errorContent}");
-                }
+                    nombreUsuario = user,
+                    clave = password
+                };
+
+                HttpResponseMessage response = await client.PostAsJsonAsync("auth/login", loginRequest);
+
+                return response.IsSuccessStatusCode;
             }
             catch (HttpRequestException ex)
             {

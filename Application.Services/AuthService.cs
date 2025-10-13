@@ -48,6 +48,9 @@ namespace Application.Services
             var issuer = jwtSettings["Issuer"];
             var audience = jwtSettings["Audience"];
 
+            if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+                throw new Exception("Faltan valores en JwtSettings del appsettings.json");
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -78,6 +81,9 @@ namespace Application.Services
                 var secretKey = jwtSettings["SecretKey"];
                 var issuer = jwtSettings["Issuer"];
                 var audience = jwtSettings["Audience"];
+
+                if (string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+                    throw new Exception("Faltan valores en JwtSettings del appsettings.json");
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!));
 
