@@ -55,16 +55,15 @@ namespace Application.Services
             if (usuarioRepository.EmailExists(dto.Email))
                 throw new ArgumentException($"Ya existe un usuario con el email '{dto.Email}'.");
 
-            var usuario = new Usuario(
-                id: dto.Id,
-                nombreUsuario: dto.NombreUsuario,
-                email: dto.Email,
-                clave: dto.Clave,
-                salt: dto.Salt,
-                habilitado: dto.Habilitado,
-                privilegio: dto.Privilegio,
-                personaId: dto.PersonaId
-            );
+            var usuario = new Usuario();
+            usuario.NombreUsuario = dto.NombreUsuario;
+            usuario.Email = dto.Email;
+            usuario.Habilitado = dto.Habilitado;
+            usuario.Privilegio = dto.Privilegio;
+            usuario.PersonaId = dto.PersonaId;
+
+            // Hashea la clave y genera el salt
+            usuario.SetClave(dto.Clave);
 
             usuarioRepository.Add(usuario);
             dto.Id = usuario.Id;
