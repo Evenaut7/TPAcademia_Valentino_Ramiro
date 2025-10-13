@@ -11,6 +11,6 @@ namespace DTOs
         public string Cargo { get; set; } = string.Empty;
         // Otros campos específicos de Profesor
         public UsuarioDTO Usuario { get; set; } = null!;
-        public int UsuarioId { get; set; }
+        public int? UsuarioId { get; set; }
     }
 }

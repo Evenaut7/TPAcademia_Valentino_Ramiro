@@ -82,6 +82,7 @@ namespace Data
                 .HasOne(p => p.Usuario)
                 .WithOne() 
                 .HasForeignKey<Profesor>(p => p.UsuarioId)
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AlumnoInscripcion>()
