@@ -99,5 +99,15 @@ namespace Data
             }
             return false;
         }
+
+        public Usuario? GetUserRole(int userId)
+        {
+            using var context = CreateContext();
+
+            // Include the Persona navigation property
+            return context.Usuarios
+                .Include(u => u.Persona)
+                .FirstOrDefault(u => u.Id == userId);
+        }
     }
 }

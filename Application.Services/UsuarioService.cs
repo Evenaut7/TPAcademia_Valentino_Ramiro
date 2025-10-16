@@ -45,6 +45,26 @@ namespace Application.Services
             }).ToList();
         }
 
+        public string GetUserRole(int usuarioId)
+        {
+            var usuarioRepository = new UsuarioRepository();
+            var usuario = usuarioRepository.GetUserRole(usuarioId);
+
+            if (usuario == null) throw new Exception("Usuario no encontrado");
+
+            if (usuario.Id == -10 && usuario.PersonaId == -1)
+                return "Administrador";
+
+            if (usuario.Persona != null)
+            {
+                if (usuario.Persona is Alumno)
+                    return "Alumno";
+                if (usuario.Persona is Profesor)
+                    return "Profesor";
+            }
+            throw new Exception("Rol no reconocido");
+        }
+
         public UsuarioDTO Add(UsuarioDTO dto)
         {
             var usuarioRepository = new UsuarioRepository();
