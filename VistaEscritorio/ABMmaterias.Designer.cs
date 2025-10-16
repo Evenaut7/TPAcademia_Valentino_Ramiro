@@ -51,7 +51,7 @@
             // listarMaterias
             // 
             listarMaterias.Dock = DockStyle.Right;
-            listarMaterias.Location = new Point(554, 5);
+            listarMaterias.Location = new Point(479, 5);
             listarMaterias.Name = "listarMaterias";
             listarMaterias.Size = new Size(75, 30);
             listarMaterias.TabIndex = 1;
@@ -62,7 +62,7 @@
             // agegarMaterias
             // 
             agegarMaterias.Dock = DockStyle.Right;
-            agegarMaterias.Location = new Point(629, 5);
+            agegarMaterias.Location = new Point(554, 5);
             agegarMaterias.Name = "agegarMaterias";
             agegarMaterias.Size = new Size(75, 30);
             agegarMaterias.TabIndex = 2;
@@ -73,7 +73,7 @@
             // eliminarMaterias
             // 
             eliminarMaterias.Dock = DockStyle.Right;
-            eliminarMaterias.Location = new Point(479, 5);
+            eliminarMaterias.Location = new Point(704, 5);
             eliminarMaterias.Name = "eliminarMaterias";
             eliminarMaterias.Size = new Size(75, 30);
             eliminarMaterias.TabIndex = 3;
@@ -84,7 +84,7 @@
             // modificarMateria
             // 
             modificarMateria.Dock = DockStyle.Right;
-            modificarMateria.Location = new Point(704, 5);
+            modificarMateria.Location = new Point(629, 5);
             modificarMateria.Name = "modificarMateria";
             modificarMateria.Size = new Size(75, 30);
             modificarMateria.TabIndex = 4;
@@ -94,10 +94,10 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(eliminarMaterias);
             panel1.Controls.Add(listarMaterias);
             panel1.Controls.Add(agegarMaterias);
             panel1.Controls.Add(modificarMateria);
+            panel1.Controls.Add(eliminarMaterias);
             panel1.Dock = DockStyle.Bottom;
             panel1.Location = new Point(0, 421);
             panel1.Name = "panel1";

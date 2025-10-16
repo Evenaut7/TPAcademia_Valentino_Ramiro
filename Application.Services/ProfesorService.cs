@@ -24,8 +24,7 @@ namespace Application.Services
                 Apellido = profesor.Apellido,
                 Dni = profesor.Dni,
                 FechaNacimiento = profesor.FechaNacimiento,
-                Cargo = profesor.Cargo,
-                UsuarioId = profesor.UsuarioId,
+                Cargo = profesor.Cargo
             };
         }
         public IEnumerable<ProfesorDTO> GetAll()
@@ -39,8 +38,7 @@ namespace Application.Services
                 Apellido = profesor.Apellido,
                 Dni = profesor.Dni,
                 FechaNacimiento = profesor.FechaNacimiento,
-                Cargo = profesor.Cargo,
-                UsuarioId = profesor.UsuarioId,
+                Cargo = profesor.Cargo
             }).ToList();
         }
         public ProfesorDTO Add(ProfesorDTO dto)
@@ -52,8 +50,7 @@ namespace Application.Services
                 apellido: dto.Apellido,
                 dni: dto.Dni,
                 fechaNacimiento: dto.FechaNacimiento,
-                cargo: dto.Cargo,
-                usuarioId: dto.UsuarioId
+                cargo: dto.Cargo
             );
             profesorRepository.Add(profesor);
             dto.Id = profesor.Id; // Asignar el Id generado al DTO
@@ -70,7 +67,6 @@ namespace Application.Services
             profesor.Dni = dto.Dni;
             profesor.FechaNacimiento = dto.FechaNacimiento;
             profesor.Cargo = dto.Cargo;
-            profesor.UsuarioId = dto.UsuarioId;
             return profesorRepository.Update(profesor);
         }
         public bool Delete(int id)
