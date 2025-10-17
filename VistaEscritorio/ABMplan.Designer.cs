@@ -40,7 +40,7 @@ namespace VistaEscritorio
             listarPlanes.Dock = DockStyle.Right;
             listarPlanes.Location = new Point(479, 5);
             listarPlanes.Name = "listarPlanes";
-            listarPlanes.Size = new Size(75, 35);
+            listarPlanes.Size = new Size(75, 30);
             listarPlanes.TabIndex = 1;
             listarPlanes.Text = "Listar";
             listarPlanes.Click += listarPlanes_Click;
@@ -50,7 +50,7 @@ namespace VistaEscritorio
             agregarPlanes.Dock = DockStyle.Right;
             agregarPlanes.Location = new Point(554, 5);
             agregarPlanes.Name = "agregarPlanes";
-            agregarPlanes.Size = new Size(75, 35);
+            agregarPlanes.Size = new Size(75, 30);
             agregarPlanes.TabIndex = 2;
             agregarPlanes.Text = "Agregar";
             agregarPlanes.Click += agregarPlanes_Click;
@@ -60,7 +60,7 @@ namespace VistaEscritorio
             eliminarPlanes.Dock = DockStyle.Right;
             eliminarPlanes.Location = new Point(704, 5);
             eliminarPlanes.Name = "eliminarPlanes";
-            eliminarPlanes.Size = new Size(75, 35);
+            eliminarPlanes.Size = new Size(75, 30);
             eliminarPlanes.TabIndex = 4;
             eliminarPlanes.Text = "Eliminar";
             eliminarPlanes.Click += eliminarPlanes_Click;
@@ -70,7 +70,7 @@ namespace VistaEscritorio
             modificarPlanes.Dock = DockStyle.Right;
             modificarPlanes.Location = new Point(629, 5);
             modificarPlanes.Name = "modificarPlanes";
-            modificarPlanes.Size = new Size(75, 35);
+            modificarPlanes.Size = new Size(75, 30);
             modificarPlanes.TabIndex = 3;
             modificarPlanes.Text = "Modificar";
             modificarPlanes.Click += modificarPlanes_Click;
@@ -82,10 +82,10 @@ namespace VistaEscritorio
             panel1.Controls.Add(modificarPlanes);
             panel1.Controls.Add(eliminarPlanes);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 416);
+            panel1.Location = new Point(0, 421);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(5);
-            panel1.Size = new Size(784, 45);
+            panel1.Size = new Size(784, 40);
             panel1.TabIndex = 5;
             // 
             // ABMplan

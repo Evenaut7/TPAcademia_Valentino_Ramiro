@@ -71,7 +71,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, profesoresToolStripMenuItem, cursosActualesToolStripMenu, inscripcionCursoToolStripMenu });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(157, 511);
+            menuStrip1.Size = new Size(191, 511);
             menuStrip1.TabIndex = 6;
             menuStrip1.Text = "menuStrip1";
             menuStrip1.ItemClicked += menuStrip1_ItemClicked;
@@ -85,7 +85,7 @@
             materiasToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
             materiasToolStripMenuItem.Margin = new Padding(2);
             materiasToolStripMenuItem.Name = "materiasToolStripMenuItem";
-            materiasToolStripMenuItem.Size = new Size(140, 29);
+            materiasToolStripMenuItem.Size = new Size(174, 29);
             materiasToolStripMenuItem.Text = "Materias";
             materiasToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             materiasToolStripMenuItem.Click += materiasToolStripMenuItem_Click;
@@ -99,7 +99,7 @@
             planesToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
             planesToolStripMenuItem.Margin = new Padding(2);
             planesToolStripMenuItem.Name = "planesToolStripMenuItem";
-            planesToolStripMenuItem.Size = new Size(140, 29);
+            planesToolStripMenuItem.Size = new Size(174, 29);
             planesToolStripMenuItem.Text = "Planes";
             planesToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             planesToolStripMenuItem.Click += planesToolStripMenuItem_Click;
@@ -113,7 +113,7 @@
             especialidadesToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
             especialidadesToolStripMenuItem.Margin = new Padding(2);
             especialidadesToolStripMenuItem.Name = "especialidadesToolStripMenuItem";
-            especialidadesToolStripMenuItem.Size = new Size(140, 29);
+            especialidadesToolStripMenuItem.Size = new Size(174, 29);
             especialidadesToolStripMenuItem.Text = "Especialidades";
             especialidadesToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             especialidadesToolStripMenuItem.Click += especialidadesToolStripMenuItem_Click;
@@ -127,7 +127,7 @@
             Comisiones.Font = new Font("Segoe UI", 14.25F);
             Comisiones.Margin = new Padding(2);
             Comisiones.Name = "Comisiones";
-            Comisiones.Size = new Size(140, 29);
+            Comisiones.Size = new Size(174, 29);
             Comisiones.Text = "Comisiones";
             Comisiones.TextAlign = ContentAlignment.MiddleLeft;
             Comisiones.Click += Comisiones_Click;
@@ -141,7 +141,7 @@
             cursosToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
             cursosToolStripMenuItem.Margin = new Padding(2);
             cursosToolStripMenuItem.Name = "cursosToolStripMenuItem";
-            cursosToolStripMenuItem.Size = new Size(140, 29);
+            cursosToolStripMenuItem.Size = new Size(174, 29);
             cursosToolStripMenuItem.Text = "Cursos";
             cursosToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             cursosToolStripMenuItem.Click += cursosToolStripMenuItem_Click;
@@ -155,7 +155,7 @@
             usuariosToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
             usuariosToolStripMenuItem.Margin = new Padding(2);
             usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            usuariosToolStripMenuItem.Size = new Size(140, 29);
+            usuariosToolStripMenuItem.Size = new Size(174, 29);
             usuariosToolStripMenuItem.Text = "Usuarios";
             usuariosToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             usuariosToolStripMenuItem.Click += usuariosToolStripMenuItem_Click;
@@ -169,7 +169,7 @@
             alumnosToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
             alumnosToolStripMenuItem.Margin = new Padding(2);
             alumnosToolStripMenuItem.Name = "alumnosToolStripMenuItem";
-            alumnosToolStripMenuItem.Size = new Size(140, 29);
+            alumnosToolStripMenuItem.Size = new Size(174, 29);
             alumnosToolStripMenuItem.Text = "Alumnos";
             alumnosToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             alumnosToolStripMenuItem.Click += alumnosToolStripMenuItem_Click_1;
@@ -183,31 +183,36 @@
             profesoresToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
             profesoresToolStripMenuItem.Margin = new Padding(2);
             profesoresToolStripMenuItem.Name = "profesoresToolStripMenuItem";
-            profesoresToolStripMenuItem.Size = new Size(140, 29);
+            profesoresToolStripMenuItem.Size = new Size(174, 29);
             profesoresToolStripMenuItem.Text = "Profesores";
             profesoresToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             profesoresToolStripMenuItem.Click += profesoresToolStripMenuItem_Click;
             // 
             // cursosActualesToolStripMenu
             // 
-            cursosActualesToolStripMenu.ImageAlign = ContentAlignment.MiddleLeft;
+            cursosActualesToolStripMenu.Font = new Font("Segoe UI", 14.25F);
             cursosActualesToolStripMenu.Name = "cursosActualesToolStripMenu";
-            cursosActualesToolStripMenu.Size = new Size(144, 24);
+            cursosActualesToolStripMenu.RightToLeft = RightToLeft.No;
+            cursosActualesToolStripMenu.Size = new Size(178, 29);
             cursosActualesToolStripMenu.Text = "Cursos Actuales";
+            cursosActualesToolStripMenu.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // inscripcionCursoToolStripMenu
             // 
+            inscripcionCursoToolStripMenu.Font = new Font("Segoe UI", 14.25F);
             inscripcionCursoToolStripMenu.Name = "inscripcionCursoToolStripMenu";
-            inscripcionCursoToolStripMenu.Size = new Size(144, 24);
+            inscripcionCursoToolStripMenu.RightToLeft = RightToLeft.No;
+            inscripcionCursoToolStripMenu.Size = new Size(178, 29);
             inscripcionCursoToolStripMenu.Text = "Inscripcion a Curso";
+            inscripcionCursoToolStripMenu.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // ABMPanel
             // 
             ABMPanel.Controls.Add(label1);
             ABMPanel.Dock = DockStyle.Fill;
-            ABMPanel.Location = new Point(157, 0);
+            ABMPanel.Location = new Point(191, 0);
             ABMPanel.Name = "ABMPanel";
-            ABMPanel.Size = new Size(927, 511);
+            ABMPanel.Size = new Size(893, 511);
             ABMPanel.TabIndex = 7;
             // 
             // label1

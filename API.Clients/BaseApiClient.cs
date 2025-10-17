@@ -32,7 +32,7 @@ namespace API.Clients
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] Intentando leer configuración...");
 
                 // 1. Primero revisar variable de entorno
-                string? envUrl = Environment.GetEnvironmentVariable("TPI_API_BASE_URL");
+                string? envUrl = Environment.GetEnvironmentVariable("http://localhost:5124");
                 if (!string.IsNullOrEmpty(envUrl))
                 {
                     System.Diagnostics.Debug.WriteLine($"[DEBUG] URL desde variable de entorno: {envUrl}");
@@ -55,7 +55,7 @@ namespace API.Clients
             }
 
             // URL por defecto para Windows/otras plataformas
-            string defaultUrl = "https://localhost:7111/";
+            string defaultUrl = "http://localhost:5124";
             System.Diagnostics.Debug.WriteLine($"[DEBUG] Usando URL por defecto: {defaultUrl}");
             return defaultUrl;
         }

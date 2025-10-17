@@ -98,6 +98,42 @@ namespace Data
                 .HasForeignKey(pc => pc.CursoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+
+
+            modelBuilder.Entity<Persona>().HasData(new Persona
+            {
+                Id = 1,
+                Nombre = "Admin",
+                Apellido = "Sistema",
+                Dni = ""
+            });
+
+            var adminSalt = Guid.NewGuid().ToString();
+            var adminClave = HashPassword("1234", adminSalt);
+
+            modelBuilder.Entity<Usuario>().HasData(new Usuario
+            {
+                Id = 1,
+                NombreUsuario = "admin",
+                Email = "admin@correo.com",
+                Clave = adminClave,
+                Salt = adminSalt,
+                Habilitado = true,
+                Privilegio = "Administrador",
+                PersonaId = 1
+            });
         }
-    } 
+
+        private static string HashPassword(string password, string salt)
+        {
+            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            {
+                var combined = password + salt;
+                var hashBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(combined));
+                return Convert.ToBase64String(hashBytes);
+            }
+        }
+
+
+    }
 }

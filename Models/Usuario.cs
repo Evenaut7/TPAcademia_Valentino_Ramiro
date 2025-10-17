@@ -26,7 +26,7 @@ namespace Domain.Model
         {
             Id = id;
             NombreUsuario = nombreUsuario;
-            Clave = clave;
+            SetClave(clave);
             Salt = salt;
             Email = email;
             Habilitado = habilitado;

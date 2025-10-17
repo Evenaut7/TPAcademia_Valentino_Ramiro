@@ -50,19 +50,18 @@ namespace Application.Services
             var usuarioRepository = new UsuarioRepository();
             var usuario = usuarioRepository.GetUserRole(usuarioId);
 
-            if (usuario == null) throw new Exception("Usuario no encontrado");
-
-            if (usuario.Id == -10 && usuario.PersonaId == -1)
-                return "Administrador";
-
-            if (usuario.Persona != null)
+            if (usuario == null)
             {
-                if (usuario.Persona is Alumno)
-                    return "Alumno";
-                if (usuario.Persona is Profesor)
-                    return "Profesor";
+                throw new Exception("Usuario no encontrado");
             }
-            throw new Exception("Rol no reconocido");
+            else if (!usuario.Habilitado)
+            {
+                throw new Exception("Usuario inhabilitado");
+            }
+            else
+            {
+                return usuario.Privilegio;
+            }
         }
 
         public UsuarioDTO Add(UsuarioDTO dto)

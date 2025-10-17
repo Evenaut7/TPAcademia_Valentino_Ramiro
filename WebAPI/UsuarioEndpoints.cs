@@ -114,6 +114,23 @@ namespace WebAPI
             .Produces<bool>(StatusCodes.Status200OK)
             .WithOpenApi();
 
+            app.MapGet("/usuarios/rol/{userId}", (int userId) =>
+            {
+                try
+                {
+                    var usuarioService = new UsuarioService();
+                    var rol = usuarioService.GetUserRole(userId);
+                    return Results.Ok(rol);
+                }
+                catch (Exception ex)
+                {
+                    return Results.BadRequest(new { error = ex.Message });
+                }
+            })
+            .WithName("GetUserRole")
+            .Produces<string>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .WithOpenApi();
         }
     }
 }

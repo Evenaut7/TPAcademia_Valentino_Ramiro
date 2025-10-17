@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
+using System.Text;
 
 namespace API.Clients
 {
@@ -160,6 +161,20 @@ namespace API.Clients
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al validar usuario: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task<string> getUserRole(int userId)
+        {
+            try
+            {
+                UsuarioDTO usuario = await GetAsync(userId);
+                HttpResponseMessage response = await client.GetAsync($"usuarios/rol/{userId}");
+                return await response.Content.ReadAsAsync<string>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener el rol del usuario con Id {userId}: {ex.Message}", ex);
             }
         }
     }

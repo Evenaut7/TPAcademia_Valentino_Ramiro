@@ -7,12 +7,10 @@ namespace VistaEscritorio
 {
     public partial class Inicio : Form
     {
-        private readonly UsuarioService _usuarioService;
 
-        public Inicio(UsuarioService usuarioService)
+        public Inicio()
         {
             InitializeComponent();
-            _usuarioService = usuarioService;
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -36,6 +34,8 @@ namespace VistaEscritorio
 
                     this.DialogResult = DialogResult.OK;
                     this.Close();
+                    var menuPrincipal = new ABMMenu();
+                    menuPrincipal.Show();
                 }
                 else
                 {

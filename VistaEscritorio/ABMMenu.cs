@@ -14,13 +14,11 @@ namespace VistaEscritorio
 {
     public partial class ABMMenu : Form
     {
-        private readonly UsuarioService _usuarioService;
         private string? _username;
 
-        public ABMMenu(UsuarioService usuarioService)
+        public ABMMenu()
         {
             InitializeComponent();
-            _usuarioService = usuarioService;
         }
         public async Task CargarDatosUsuarioAsync()
         {
@@ -50,18 +48,15 @@ namespace VistaEscritorio
                     return;
                 }
 
-                string rol = _usuarioService.GetUserRole(usuarioId);
+                string rol = await UsuarioApiClient.getUserRole(usuarioId);
 
                 switch (rol)
                 {
                     case "Administrador":
                         ConfigurarMenuAdministrador();
                         break;
-                    case "Alumno":
+                    case "Usuario":
                         ConfigurarMenuAlumno();
-                        break;
-                    case "Profesor":
-                        ConfigurarMenuProfesor();
                         break;
                     default:
                         MessageBox.Show("Rol no reconocido");
@@ -129,14 +124,24 @@ namespace VistaEscritorio
         {
             // Mostrar todas las opciones del menú
             menuStrip1.Visible = true;
+            inscripcionCursoToolStripMenu.Visible = false;
+            cursosActualesToolStripMenu.Visible = false;
         }
 
         private void ConfigurarMenuAlumno()
         {
             // Mostrar solo las opciones para alumnos
-            menuStrip1.Visible = false;
+            menuStrip1.Visible = true;
             inscripcionCursoToolStripMenu.Visible = true;
             cursosActualesToolStripMenu.Visible = true;
+            materiasToolStripMenuItem.Visible = false;
+            planesToolStripMenuItem.Visible = false;
+            especialidadesToolStripMenuItem.Visible = false;
+            Comisiones.Visible = false;
+            cursosToolStripMenuItem.Visible = false;
+            usuariosToolStripMenuItem.Visible = false;
+            alumnosToolStripMenuItem.Visible = false;
+            profesoresToolStripMenuItem.Visible = false;
         }
 
         private void ConfigurarMenuProfesor()
