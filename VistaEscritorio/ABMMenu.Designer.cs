@@ -40,6 +40,8 @@
             usuariosToolStripMenuItem = new ToolStripMenuItem();
             alumnosToolStripMenuItem = new ToolStripMenuItem();
             profesoresToolStripMenuItem = new ToolStripMenuItem();
+            cursosActualesToolStripMenu = new ToolStripMenuItem();
+            inscripcionCursoToolStripMenu = new ToolStripMenuItem();
             ABMPanel = new Panel();
             label1 = new Label();
             menuStrip1.SuspendLayout();
@@ -66,7 +68,7 @@
             menuStrip1.Font = new Font("Segoe UI", 11F);
             menuStrip1.GripMargin = new Padding(2);
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, profesoresToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, profesoresToolStripMenuItem, cursosActualesToolStripMenu, inscripcionCursoToolStripMenu });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(157, 511);
@@ -186,6 +188,19 @@
             profesoresToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             profesoresToolStripMenuItem.Click += profesoresToolStripMenuItem_Click;
             // 
+            // cursosActualesToolStripMenu
+            // 
+            cursosActualesToolStripMenu.ImageAlign = ContentAlignment.MiddleLeft;
+            cursosActualesToolStripMenu.Name = "cursosActualesToolStripMenu";
+            cursosActualesToolStripMenu.Size = new Size(144, 24);
+            cursosActualesToolStripMenu.Text = "Cursos Actuales";
+            // 
+            // inscripcionCursoToolStripMenu
+            // 
+            inscripcionCursoToolStripMenu.Name = "inscripcionCursoToolStripMenu";
+            inscripcionCursoToolStripMenu.Size = new Size(144, 24);
+            inscripcionCursoToolStripMenu.Text = "Inscripcion a Curso";
+            // 
             // ABMPanel
             // 
             ABMPanel.Controls.Add(label1);
@@ -208,6 +223,7 @@
             label1.TabIndex = 0;
             label1.Text = "Menu Inicio";
             label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Click += label1_Click;
             // 
             // ABMMenu
             // 
@@ -252,5 +268,7 @@
         private ToolStripMenuItem Comisiones;
         private Panel ABMPanel;
         private Label label1;
+        private ToolStripMenuItem cursosActualesToolStripMenu;
+        private ToolStripMenuItem inscripcionCursoToolStripMenu;
     }
 }

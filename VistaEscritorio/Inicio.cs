@@ -1,32 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Application.Services;
 using API.Clients;
 
 namespace VistaEscritorio
 {
     public partial class Inicio : Form
     {
-        public Inicio()
+        private readonly UsuarioService _usuarioService;
+
+        public Inicio(UsuarioService usuarioService)
         {
             InitializeComponent();
-        }
-
-        private void nuevaCuentaButton_Click(object sender, EventArgs e)
-        {
-            CargarUsuario usuarioRegistrar = new CargarUsuario();
-            usuarioRegistrar.ShowDialog();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
+            _usuarioService = usuarioService;
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -35,18 +21,20 @@ namespace VistaEscritorio
             {
                 string usuario = usuarioTextBox.Text;
                 string clave = passwordTextBox.Text;
+
                 if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(clave))
                 {
                     MessageBox.Show("Por favor, ingrese usuario y clave.");
                     return;
                 }
-                bool response = await UsuarioApiClient.ValidarUsuario(usuario, clave);
+
+                // ✅ Autenticar a través del AuthServiceProvider
+                bool response = await AuthServiceProvider.Instance.LoginAsync(usuario, clave);
                 if (response)
                 {
                     MessageBox.Show("Inicio de sesión exitoso.");
-                    this.Hide();
-                    ABMMenu mainForm = new ABMMenu();
-                    mainForm.ShowDialog();
+
+                    this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
                 else
@@ -58,6 +46,12 @@ namespace VistaEscritorio
             {
                 MessageBox.Show($"Error al iniciar sesión: {ex.Message}");
             }
+        }
+
+        private void nuevaCuentaButton_Click(object sender, EventArgs e)
+        {
+            var usuarioRegistrar = new CargarUsuario();
+            usuarioRegistrar.ShowDialog();
         }
     }
 }

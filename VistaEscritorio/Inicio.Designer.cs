@@ -111,7 +111,6 @@
             Name = "Inicio";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Academia";
-            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }

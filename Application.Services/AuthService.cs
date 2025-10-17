@@ -37,7 +37,8 @@ namespace Application.Services
             {
                 Token = token,
                 ExpiresAt = expiresAt,
-                NombreUsuario = usuario.NombreUsuario
+                NombreUsuario = usuario.NombreUsuario,
+                UsuarioId = usuario.Id
             };
         }
 

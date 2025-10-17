@@ -5,5 +5,6 @@
         public string Token { get; set; } = string.Empty;
         public DateTime ExpiresAt { get; set; }
         public string NombreUsuario { get; set; } = string.Empty;
+        public int UsuarioId { get; set; }
     }
 }

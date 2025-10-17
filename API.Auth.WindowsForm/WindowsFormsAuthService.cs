@@ -8,6 +8,7 @@ namespace API.Auth.WindowsForms
         private static string? _currentToken;
         private static DateTime _tokenExpiration;
         private static string? _currentUsername;
+        private static int _currentUserId;
 
         public event Action<bool>? AuthenticationStateChanged;
 
@@ -44,6 +45,7 @@ namespace API.Auth.WindowsForms
                 _currentToken = response.Token;
                 _tokenExpiration = response.ExpiresAt;
                 _currentUsername = response.NombreUsuario;
+                _currentUserId = response.UsuarioId;
 
                 AuthenticationStateChanged?.Invoke(true);
                 return true;
@@ -57,6 +59,7 @@ namespace API.Auth.WindowsForms
             _currentToken = null;
             _tokenExpiration = default;
             _currentUsername = null;
+            _currentUserId = 0;
 
             AuthenticationStateChanged?.Invoke(false);
         }
@@ -68,5 +71,12 @@ namespace API.Auth.WindowsForms
                 await LogoutAsync();
             }
         }
+
+        public async Task<int> GetUserIdAsync()
+        {
+            var isAuth = await IsAuthenticatedAsync();
+            return isAuth ? _currentUserId : 0;
+        }
+
     }
 }

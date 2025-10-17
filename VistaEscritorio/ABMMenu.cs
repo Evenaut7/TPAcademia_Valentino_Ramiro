@@ -1,4 +1,6 @@
-﻿using System;
+﻿using API.Clients;
+using Application.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,66 @@ namespace VistaEscritorio
 {
     public partial class ABMMenu : Form
     {
-        public ABMMenu()
+        private readonly UsuarioService _usuarioService;
+        private string? _username;
+
+        public ABMMenu(UsuarioService usuarioService)
         {
             InitializeComponent();
+            _usuarioService = usuarioService;
+        }
+        public async Task CargarDatosUsuarioAsync()
+        {
+            var username = await AuthServiceProvider.Instance.GetUsernameAsync();
+            if (username == null)
+            {
+                MessageBox.Show("No hay usuario autenticado.");
+                return;
+            }
+
+            _username = username;
+            this.Text = $"Menú principal - {username}";
+        }
+
+        private async void ABMMenu_Load(object sender, EventArgs e)
+        {
+            await CargarDatosUsuarioAsync();
+
+            try
+            {
+                int usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
+
+                if (usuarioId == 0)
+                {
+                    MessageBox.Show("No hay usuario autenticado.");
+                    Close();
+                    return;
+                }
+
+                string rol = _usuarioService.GetUserRole(usuarioId);
+
+                switch (rol)
+                {
+                    case "Administrador":
+                        ConfigurarMenuAdministrador();
+                        break;
+                    case "Alumno":
+                        ConfigurarMenuAlumno();
+                        break;
+                    case "Profesor":
+                        ConfigurarMenuProfesor();
+                        break;
+                    default:
+                        MessageBox.Show("Rol no reconocido");
+                        Close();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar el menú: {ex.Message}");
+                Close();
+            }
         }
 
         private void AbrirFormularioEnPanel(Form formHijo)
@@ -66,10 +125,23 @@ namespace VistaEscritorio
         {
             AbrirFormularioEnPanel(new ABMComision());
         }
-
-        private void ABMMenu_Load(object sender, EventArgs e)
+        private void ConfigurarMenuAdministrador()
         {
+            // Mostrar todas las opciones del menú
+            menuStrip1.Visible = true;
+        }
 
+        private void ConfigurarMenuAlumno()
+        {
+            // Mostrar solo las opciones para alumnos
+            menuStrip1.Visible = false;
+            inscripcionCursoToolStripMenu.Visible = true;
+            cursosActualesToolStripMenu.Visible = true;
+        }
+
+        private void ConfigurarMenuProfesor()
+        {
+            // Mostrar solo las opciones para profesores
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -80,6 +152,16 @@ namespace VistaEscritorio
         private void alumnosToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel(new ABMAlumno());
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cursosActualesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
