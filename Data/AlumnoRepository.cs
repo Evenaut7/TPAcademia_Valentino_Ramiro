@@ -55,7 +55,6 @@ namespace Data
                 existingAlumno.Dni = alumno.Dni;
                 existingAlumno.FechaNacimiento = alumno.FechaNacimiento;
                 existingAlumno.Legajo = alumno.Legajo;
-                existingAlumno.UsuarioId = alumno.UsuarioId;
 
                 context.SaveChanges();
                 return true;

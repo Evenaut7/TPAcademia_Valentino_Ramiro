@@ -58,7 +58,6 @@ namespace Data
                 existingProfesor.Dni = profesor.Dni;
                 existingProfesor.FechaNacimiento = profesor.FechaNacimiento;
                 existingProfesor.Cargo = profesor.Cargo;
-                existingProfesor.UsuarioId = profesor.UsuarioId;
                 context.SaveChanges();
                 return true;
             }

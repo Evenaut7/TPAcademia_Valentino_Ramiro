@@ -13,15 +13,12 @@ namespace Domain.Model
             Id = id;
         }
 
-        public Alumno(int id, string nombre, string apellido, string dni, DateTime fechaNacimiento, string legajo, int? usuarioId)
+        public Alumno(int id, string nombre, string apellido, string dni, DateTime fechaNacimiento, string legajo)
             : base(id, nombre, apellido, dni, fechaNacimiento)
         {
             Legajo = legajo;
-            UsuarioId = usuarioId;
         }
 
         public string Legajo { get; set; } = string.Empty;
-        public int? UsuarioId { get; set; }
-        public Usuario Usuario { get; set; } = null!;
     }
 }

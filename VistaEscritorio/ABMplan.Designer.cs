@@ -38,7 +38,7 @@ namespace VistaEscritorio
             // listarPlanes
             // 
             listarPlanes.Dock = DockStyle.Right;
-            listarPlanes.Location = new Point(629, 5);
+            listarPlanes.Location = new Point(479, 5);
             listarPlanes.Name = "listarPlanes";
             listarPlanes.Size = new Size(75, 35);
             listarPlanes.TabIndex = 1;
@@ -48,7 +48,7 @@ namespace VistaEscritorio
             // agregarPlanes
             // 
             agregarPlanes.Dock = DockStyle.Right;
-            agregarPlanes.Location = new Point(704, 5);
+            agregarPlanes.Location = new Point(554, 5);
             agregarPlanes.Name = "agregarPlanes";
             agregarPlanes.Size = new Size(75, 35);
             agregarPlanes.TabIndex = 2;
@@ -58,7 +58,7 @@ namespace VistaEscritorio
             // eliminarPlanes
             // 
             eliminarPlanes.Dock = DockStyle.Right;
-            eliminarPlanes.Location = new Point(479, 5);
+            eliminarPlanes.Location = new Point(704, 5);
             eliminarPlanes.Name = "eliminarPlanes";
             eliminarPlanes.Size = new Size(75, 35);
             eliminarPlanes.TabIndex = 4;
@@ -68,7 +68,7 @@ namespace VistaEscritorio
             // modificarPlanes
             // 
             modificarPlanes.Dock = DockStyle.Right;
-            modificarPlanes.Location = new Point(554, 5);
+            modificarPlanes.Location = new Point(629, 5);
             modificarPlanes.Name = "modificarPlanes";
             modificarPlanes.Size = new Size(75, 35);
             modificarPlanes.TabIndex = 3;
@@ -77,10 +77,10 @@ namespace VistaEscritorio
             // 
             // panel1
             // 
-            panel1.Controls.Add(eliminarPlanes);
-            panel1.Controls.Add(modificarPlanes);
             panel1.Controls.Add(listarPlanes);
             panel1.Controls.Add(agregarPlanes);
+            panel1.Controls.Add(modificarPlanes);
+            panel1.Controls.Add(eliminarPlanes);
             panel1.Dock = DockStyle.Bottom;
             panel1.Location = new Point(0, 416);
             panel1.Name = "panel1";

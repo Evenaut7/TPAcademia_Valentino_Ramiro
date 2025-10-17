@@ -45,10 +45,10 @@
             // listarButton
             // 
             listarButton.Dock = DockStyle.Right;
-            listarButton.Location = new Point(629, 5);
+            listarButton.Location = new Point(479, 5);
             listarButton.Name = "listarButton";
-            listarButton.Size = new Size(75, 35);
-            listarButton.TabIndex = 1;
+            listarButton.Size = new Size(75, 30);
+            listarButton.TabIndex = 6;
             listarButton.Text = "Listar";
             listarButton.UseVisualStyleBackColor = true;
             listarButton.Click += listarButton_Click;
@@ -56,9 +56,9 @@
             // agregarButton
             // 
             agregarButton.Dock = DockStyle.Right;
-            agregarButton.Location = new Point(479, 5);
+            agregarButton.Location = new Point(554, 5);
             agregarButton.Name = "agregarButton";
-            agregarButton.Size = new Size(75, 35);
+            agregarButton.Size = new Size(75, 30);
             agregarButton.TabIndex = 2;
             agregarButton.Text = "Agregar";
             agregarButton.UseVisualStyleBackColor = true;
@@ -67,9 +67,9 @@
             // modificarButton
             // 
             modificarButton.Dock = DockStyle.Right;
-            modificarButton.Location = new Point(554, 5);
+            modificarButton.Location = new Point(629, 5);
             modificarButton.Name = "modificarButton";
-            modificarButton.Size = new Size(75, 35);
+            modificarButton.Size = new Size(75, 30);
             modificarButton.TabIndex = 3;
             modificarButton.Text = "Modificar";
             modificarButton.UseVisualStyleBackColor = true;
@@ -80,7 +80,7 @@
             eliminarButton.Dock = DockStyle.Right;
             eliminarButton.Location = new Point(704, 5);
             eliminarButton.Name = "eliminarButton";
-            eliminarButton.Size = new Size(75, 35);
+            eliminarButton.Size = new Size(75, 30);
             eliminarButton.TabIndex = 4;
             eliminarButton.Text = "Eliminar";
             eliminarButton.UseVisualStyleBackColor = true;
@@ -88,15 +88,15 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(listarButton);
             panel1.Controls.Add(agregarButton);
             panel1.Controls.Add(modificarButton);
-            panel1.Controls.Add(listarButton);
             panel1.Controls.Add(eliminarButton);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 416);
+            panel1.Location = new Point(0, 421);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(5);
-            panel1.Size = new Size(784, 45);
+            panel1.Size = new Size(784, 40);
             panel1.TabIndex = 5;
             // 
             // dgvAlumnos
@@ -105,7 +105,7 @@
             dgvAlumnos.Dock = DockStyle.Fill;
             dgvAlumnos.Location = new Point(0, 0);
             dgvAlumnos.Name = "dgvAlumnos";
-            dgvAlumnos.Size = new Size(784, 416);
+            dgvAlumnos.Size = new Size(784, 421);
             dgvAlumnos.TabIndex = 6;
             dgvAlumnos.CellContentClick += dgvAlumnos_CellContentClick;
             // 

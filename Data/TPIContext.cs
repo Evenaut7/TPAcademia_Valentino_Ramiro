@@ -42,11 +42,14 @@ namespace Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // TPT configuration: each type gets its own table
-            modelBuilder.Entity<Persona>().ToTable("Personas");
-            modelBuilder.Entity<Alumno>().ToTable("Alumnos");
-            modelBuilder.Entity<Profesor>().ToTable("Profesores");
+            // Configurar TPH: una sola tabla para Persona, Alumno y Profesor
+            modelBuilder.Entity<Persona>()
+                .HasDiscriminator<string>("TipoPersona")
+                .HasValue<Persona>("Persona")
+                .HasValue<Alumno>("Alumno")
+                .HasValue<Profesor>("Profesor");
 
+            // Relaciones
             modelBuilder.Entity<Materia>()
                 .HasOne(p => p.Plan)
                 .WithMany()
@@ -71,20 +74,6 @@ namespace Data
                 .HasForeignKey<Usuario>(u => u.PersonaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Alumno>()
-                .HasOne(a => a.Usuario)
-                .WithOne()
-                .HasForeignKey<Alumno>(a => a.UsuarioId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Profesor>()
-                .HasOne(p => p.Usuario)
-                .WithOne() 
-                .HasForeignKey<Profesor>(p => p.UsuarioId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<AlumnoInscripcion>()
                 .HasOne(ai => ai.Alumno)
                 .WithMany()
@@ -102,7 +91,7 @@ namespace Data
                 .WithMany()
                 .HasForeignKey(pc => pc.ProfesorId)
                 .OnDelete(DeleteBehavior.Cascade);
-    
+
             modelBuilder.Entity<ProfesorCurso>()
                 .HasOne(pc => pc.Curso)
                 .WithMany()
