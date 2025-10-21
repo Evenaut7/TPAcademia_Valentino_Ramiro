@@ -62,14 +62,12 @@ namespace Application.Services
         {
             var materiaRepository = new MateriaRepository();
 
-            // Validar que no exista duplicado de descripción en el mismo plan (excluyendo la materia actual)
-            if (materiaRepository.DescripcionExists(dto.Descripcion, dto.PlanId))
+            if (materiaRepository.DescripcionExists(dto.Descripcion, dto.Id))
             {
                 throw new ArgumentException($"Ya existe otra materia con la descripción '{dto.Descripcion}' en este plan.");
             }
 
             Materia materia = new Materia(dto.Id, dto.Descripcion, dto.HsSemanales, dto.HsTotales, dto.PlanId);
-
             return materiaRepository.Update(materia);
         }
 

@@ -25,20 +25,28 @@ namespace VistaEscritorio
 
         private async void agregarMateria_Click(object sender, EventArgs e)
         {
+
             if (string.IsNullOrWhiteSpace(descBox.Text) ||
-                string.IsNullOrWhiteSpace(horaHastaBox.Text) ||
-                string.IsNullOrWhiteSpace(horaDesdeBox.Text) ||
-                idPlanBox.SelectedValue == null)
+            string.IsNullOrWhiteSpace(horaHastaBox.Text) ||
+            string.IsNullOrWhiteSpace(horaDesdeBox.Text) ||
+            idPlanBox.SelectedValue == null)
             {
                 MessageBox.Show("Todos los campos son obligatorios.");
+                return;
+            }
+
+            if (!int.TryParse(horaDesdeBox.Text, out int hsSemanales) ||
+                !int.TryParse(horaHastaBox.Text, out int hsTotales))
+            {
+                MessageBox.Show("Las horas deben ser números válidos.");
                 return;
             }
 
             var nuevaMateria = new MateriaDTO
             {
                 Descripcion = descBox.Text,
-                HsSemanales = horaDesdeBox.Text,
-                HsTotales = horaHastaBox.Text,
+                HsSemanales = hsSemanales,
+                HsTotales = hsTotales,
                 PlanId = (int)idPlanBox.SelectedValue
             };
 

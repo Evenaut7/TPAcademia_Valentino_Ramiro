@@ -1,0 +1,265 @@
+﻿@page "/materias"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject MateriaApiClient MateriaApiClient
+@inject PlanApiClient PlanApiClient
+@inject IJSRuntime js
+
+<PageTitle>Materias</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Materias</h3>
+    <button class="btn btn-primary" @onclick="MostrarModal">
+        <i class="bi bi-plus-circle"></i> Nueva Materia
+    </button>
+</div>
+
+@if (materias == null)
+{
+    <p><em>Cargando Materias...</em></p>
+}
+else if (!materias.Any())
+{
+    <p>No hay materias cargadas</p>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Hrs Semanales</th>
+                <th>Hrs Totales</th>
+                <th>Plan</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var materia in materias)
+            {
+                <tr>
+                    <td>@materia.Id</td>
+                    <td>@materia.Descripcion</td>
+                    <td>@materia.HsSemanales</td>
+                    <td>@materia.HsTotales</td>
+                    <td>@GetPlanDesc(materia.PlanId)</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="@(() => ModificarMateria(materia))">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" @onclick="@(() => EliminarMateria(materia.Id))">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (mostrarModal)
+{
+    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+
+    <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(esEdicion ? "Editar Materia" : "Nueva Materia")</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@nuevaMateria" OnValidSubmit="GuardarMateria">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary class="alert alert-danger" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Descripción:</label>
+                            <InputText class="form-control" @bind-Value="nuevaMateria.Descripcion" placeholder="Ingrese descripción" />
+                            <ValidationMessage For="@(() => nuevaMateria.Descripcion)" class="text-danger small" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Horas Semanales:</label>
+                            <InputNumber class="form-control" @bind-Value="nuevaMateria.HsSemanales" min="1" />
+                            <ValidationMessage For="@(() => nuevaMateria.HsSemanales)" class="text-danger small" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Horas Totales:</label>
+                            <InputNumber class="form-control" @bind-Value="nuevaMateria.HsTotales" min="1" />
+                            <ValidationMessage For="@(() => nuevaMateria.HsTotales)" class="text-danger small" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Plan:</label>
+                            @if (planes != null && planes.Any())
+                            {
+                                <InputSelect class="form-control" @bind-Value="nuevaMateria.PlanId">
+                                    <option value="0">-- Seleccione un Plan --</option>
+                                    @foreach (var plan in planes)
+                                    {
+                                        <option value="@plan.Id">@plan.Descripcion</option>
+                                    }
+                                </InputSelect>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Cargando planes...</p>
+                            }
+                            <ValidationMessage For="@(() => nuevaMateria.PlanId)" class="text-danger small" />
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success me-2">Guardar</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<MateriaDTO>? materias;
+    private List<PlanDTO>? planes;
+    private bool mostrarModal = false;
+    private bool esEdicion = false;
+    private MateriaDTO nuevaMateria = new MateriaDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarMaterias();
+        await CargarPlanes();
+    }
+
+    private async Task CargarMaterias()
+    {
+        try
+        {
+            var result = await MateriaApiClient.GetAllAsync();
+            materias = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar materias: {ex.Message}");
+        }
+    }
+
+    private async Task CargarPlanes()
+    {
+        try
+        {
+            var result = await PlanApiClient.GetAllAsync();
+            planes = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar planes: {ex.Message}");
+        }
+    }
+
+    private void MostrarModal()
+    {
+        esEdicion = false;
+        nuevaMateria = new MateriaDTO();
+        mostrarModal = true;
+    }
+
+    private void ModificarMateria(MateriaDTO materia)
+    {
+        esEdicion = true;
+        nuevaMateria = new MateriaDTO
+        {
+            Id = materia.Id,
+            Descripcion = materia.Descripcion,
+            HsSemanales = materia.HsSemanales,
+            HsTotales = materia.HsTotales,
+            PlanId = materia.PlanId
+        };
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+        esEdicion = false;
+        nuevaMateria = new MateriaDTO();
+    }
+
+    private async Task GuardarMateria()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(nuevaMateria.Descripcion))
+            {
+                await js.InvokeVoidAsync("alert", "La descripción es obligatoria");
+                return;
+            }
+
+            if (nuevaMateria.HsSemanales <= 0)
+            {
+                await js.InvokeVoidAsync("alert", "Las horas semanales deben ser mayor a 0");
+                return;
+            }
+
+            if (nuevaMateria.HsTotales <= 0)
+            {
+                await js.InvokeVoidAsync("alert", "Las horas totales deben ser mayor a 0");
+                return;
+            }
+
+            if (nuevaMateria.PlanId == 0)
+            {
+                await js.InvokeVoidAsync("alert", "Debe seleccionar un plan");
+                return;
+            }
+
+            if (esEdicion)
+            {
+                await MateriaApiClient.UpdateAsync(nuevaMateria);
+                await js.InvokeVoidAsync("alert", "Materia modificada correctamente");
+            }
+            else
+            {
+                await MateriaApiClient.AddAsync(nuevaMateria);
+                await js.InvokeVoidAsync("alert", "Materia creada correctamente");
+            }
+
+            CerrarModal();
+            await CargarMaterias();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarMateria(int id)
+    {
+        if (await js.InvokeAsync<bool>("confirm", "¿Estás seguro de que deseas eliminar esta materia?"))
+        {
+            try
+            {
+                await MateriaApiClient.DeleteAsync(id);
+                await CargarMaterias();
+                StateHasChanged();
+                await js.InvokeVoidAsync("alert", "Materia eliminada correctamente");
+            }
+            catch (Exception ex)
+            {
+                await js.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+            }
+        }
+    }
+
+    private string GetPlanDesc(int planId)
+    {
+        if (planes == null) return "Desconocido";
+        var plan = planes.FirstOrDefault(p => p.Id == planId);
+        return plan?.Descripcion ?? "Desconocido";
+    }
+}

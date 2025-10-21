@@ -1,6 +1,7 @@
-using VistaWeb.Components;
+using BlazorServer.Components;
+using API.Clients;
 
-namespace VistaWeb
+namespace BlazorServer
 {
     public class Program
     {
@@ -12,18 +13,20 @@ namespace VistaWeb
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
+            builder.Services.AddScoped<AlumnoApiClient>();
+            builder.Services.AddScoped<MateriaApiClient>();
+            builder.Services.AddScoped<PlanApiClient>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
-
             app.UseStaticFiles();
             app.UseAntiforgery();
 

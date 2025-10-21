@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DTOs;
 using API.Clients;
-
 namespace VistaEscritorio
 {
     public partial class ModificarMateria : Form
     {
         private MateriaDTO materia;
-
         public ModificarMateria(MateriaDTO materiaAModificar)
         {
             InitializeComponent();
@@ -18,17 +16,15 @@ namespace VistaEscritorio
             idMateria.Text = materia.Id.ToString();
             idMateria.Enabled = false;
             descBox.Text = materia.Descripcion;
-            horaDesdeBox.Text = materia.HsSemanales;
-            horaHastaBox.Text = materia.HsTotales;
+            horaDesdeBox.Text = materia.HsSemanales.ToString();
+            horaHastaBox.Text = materia.HsTotales.ToString();
             idPlanBox.Text = materia.PlanId.ToString();
         }
-
         private async Task CargarIdsAsync()
         {
             var listaPlanes = await PlanApiClient.GetAllAsync();
             idPlanBox.DataSource = listaPlanes.Select(p => p.Id).ToList();
         }
-
         private async void agregarMateria_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(descBox.Text) ||
@@ -40,11 +36,18 @@ namespace VistaEscritorio
                 return;
             }
 
-            materia.Descripcion = descBox.Text;
-            materia.HsSemanales = horaDesdeBox.Text;
-            materia.HsTotales = horaHastaBox.Text;
-            materia.PlanId = int.Parse(idPlanBox.Text);
+            if (!int.TryParse(horaDesdeBox.Text, out int hsSemanales) ||
+                !int.TryParse(horaHastaBox.Text, out int hsTotales) ||
+                !int.TryParse(idPlanBox.Text, out int planId))
+            {
+                MessageBox.Show("Las horas y el ID del plan deben ser números válidos.");
+                return;
+            }
 
+            materia.Descripcion = descBox.Text;
+            materia.HsSemanales = hsSemanales;
+            materia.HsTotales = hsTotales;
+            materia.PlanId = planId;
             try
             {
                 await MateriaApiClient.UpdateAsync(materia);
@@ -56,7 +59,6 @@ namespace VistaEscritorio
                 MessageBox.Show($"Error al modificar la materia: {ex.Message}");
             }
         }
-
         private async void ModificarMateria_Load(object sender, EventArgs e)
         {
             await CargarIdsAsync();

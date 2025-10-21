@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API.Auth.BlazorServer\API.Auth.BlazorServer.csproj" />
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
+    <ProjectReference Include="..\DTOs\DTOs.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Shared\" />
+    <Folder Include="Components\Styles\" />
   </ItemGroup>
 
 </Project>

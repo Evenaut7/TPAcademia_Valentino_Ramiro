@@ -7,7 +7,7 @@ using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data
-{ 
+{
     public class MateriaRepository
     {
         private TPIContext CreateContext()
@@ -66,8 +66,10 @@ namespace Data
             var existingMateria = context.Materias.Find(materia.Id);
             if (existingMateria != null)
             {
-                existingMateria.Descripcion= materia.Descripcion;
-
+                existingMateria.Descripcion = materia.Descripcion;
+                existingMateria.HsSemanales = materia.HsSemanales;
+                existingMateria.HsTotales = materia.HsTotales;
+                existingMateria.PlanId = materia.PlanId;
                 context.SaveChanges();
                 return true;
             }
