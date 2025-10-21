@@ -20,10 +20,9 @@ namespace VistaEscritorio
         private async Task CargarPersonasAsync()
         {
             var alumnos = await AlumnoApiClient.GetAllAsync();
-            var profesores = await ProfesorApiClient.GetAllAsync();
 
-            var lista = alumnos.Select(a => new { a.Id, Nombre = a.Nombre + " (Alumno)" })
-                .Concat(profesores.Select(p => new { p.Id, Nombre = p.Nombre + " (Profesor)" }))
+            var lista = alumnos
+                .Select(a => new { a.Id, a.Nombre})
                 .ToList();
 
             personaComboBox.DataSource = lista;
@@ -40,7 +39,9 @@ namespace VistaEscritorio
             emailBox.Text = usuario.Email;
             privilegioBox.Text = usuario.Privilegio;
             habilitadoCheck.Checked = usuario.Habilitado;
-            personaComboBox.SelectedValue = usuario.PersonaId;
+
+            if (personaComboBox.Items.Count > 0)
+                personaComboBox.SelectedValue = usuario.PersonaId;
         }
 
         private async void modificarButton_Click(object sender, EventArgs e)

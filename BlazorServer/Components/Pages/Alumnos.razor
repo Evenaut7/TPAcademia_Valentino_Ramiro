@@ -32,6 +32,7 @@ else
                 <th>Dni</th>
                 <th>Legajo</th>
                 <th>Fecha De Nacimiento</th>
+                <th>Usuario Asignado</th>
                 <th>Opciones</th>
             </tr>
         </thead>
@@ -45,6 +46,7 @@ else
                     <td>@alumno.Dni</td>
                     <td>@alumno.Legajo</td>
                     <td>@alumno.FechaNacimiento.ToShortDateString()</td>
+                    <td>@(alumno.Usuario?.NombreUsuario ?? "Sin usuario")</td>
                     <td>
                         <button class="btn btn-warning btn-sm" @onclick="@(async () => await ModificarAlumno(alumno))">
                             <i class="bi bi-pencil"></i> Editar
@@ -126,7 +128,19 @@ else
     {
         try
         {
-            alumnos = await AlumnoApiClient.GetAllAsync();
+            var alumnosList = await AlumnoApiClient.GetAllAsync();
+            var usuariosList = await UsuarioApiClient.GetAllAsync();
+
+            alumnos = alumnosList.Select(a => new AlumnoDTO
+                {
+                    Id = a.Id,
+                    Nombre = a.Nombre,
+                    Apellido = a.Apellido,
+                    Dni = a.Dni,
+                    FechaNacimiento = a.FechaNacimiento,
+                    Legajo = a.Legajo,
+                    Usuario = usuariosList.FirstOrDefault(u => u.PersonaId == a.Id)
+                }).ToList();
         }
         catch (Exception ex)
         {

@@ -19,18 +19,21 @@ namespace VistaEscritorio
 
         private async Task CargarTablaAsync()
         {
-            listaAlumnos = await AlumnoApiClient.GetAllAsync();
-            dgvAlumnos.DataSource = listaAlumnos
-                .Select(a => new
-                {
-                    a.Id,
-                    a.Nombre,
-                    a.Apellido,
-                    a.Dni,
-                    a.FechaNacimiento,
-                    a.Legajo,
-                    Usuario = a.Usuario == null ? "Sin usuario" : a.Usuario.NombreUsuario
-                }).ToList();
+            var alumnos = await AlumnoApiClient.GetAllAsync();
+            var usuarios = await UsuarioApiClient.GetAllAsync();
+
+            var listaConUsuario = alumnos.Select(a => new
+            {
+                a.Id,
+                a.Nombre,
+                a.Apellido,
+                a.Dni,
+                a.FechaNacimiento,
+                a.Legajo,
+                Usuario = usuarios.FirstOrDefault(u => u.PersonaId == a.Id)?.NombreUsuario ?? "Sin usuario"
+            }).ToList();
+
+            dgvAlumnos.DataSource = listaConUsuario;
         }
 
         private async void listarButton_Click(object sender, EventArgs e)

@@ -17,10 +17,9 @@ namespace VistaEscritorio
         private async Task CargarPersonasAsync()
         {
             var alumnos = await AlumnoApiClient.GetAllAsync();
-            var profesores = await ProfesorApiClient.GetAllAsync();
 
-            var lista = alumnos.Select(a => new { a.Id, Nombre = a.Nombre + " (Alumno)" })
-                .Concat(profesores.Select(p => new { p.Id, Nombre = p.Nombre + " (Profesor)" }))
+            var lista = alumnos
+                .Select(a => new { a.Id, a.Nombre })
                 .ToList();
 
             personaComboBox.DataSource = lista;
@@ -68,6 +67,11 @@ namespace VistaEscritorio
         private void cancelarButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

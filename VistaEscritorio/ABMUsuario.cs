@@ -11,7 +11,7 @@ namespace VistaEscritorio
     public partial class ABMUsuario : Form
     {
         private IEnumerable<UsuarioDTO>? listaUsuarios;
-        private List<dynamic>? listaPersonas; // alumnos + profesores
+        private List<dynamic>? listaAlumnos;
 
         public ABMUsuario()
         {
@@ -21,25 +21,25 @@ namespace VistaEscritorio
         private async Task CargarTablaAsync()
         {
             listaUsuarios = await UsuarioApiClient.GetAllAsync();
+            var alumnos = await AlumnoApiClient.GetAllAsync();
 
-            var listaAlumnos = await AlumnoApiClient.GetAllAsync();
-            var listaProfesores = await ProfesorApiClient.GetAllAsync();
-
-            listaPersonas = listaAlumnos
-                .Select(a => new { a.Id, Nombre = a.Nombre + " (Alumno)" })
-                .Concat(listaProfesores.Select(p => new { p.Id, Nombre = p.Nombre + " (Profesor)" }))
+            listaAlumnos = alumnos
+                .Select(a => new { a.Id, a.Nombre})
                 .Cast<dynamic>()
                 .ToList();
 
-            var listaConNombre = listaUsuarios.Select(u => new
-            {
-                u.Id,
-                u.NombreUsuario,
-                u.Email,
-                u.Privilegio,
-                u.Habilitado,
-                Persona = listaPersonas.FirstOrDefault(p => p.Id == u.PersonaId)?.Nombre ?? "No asignado"
-            }).ToList();
+            var idsAlumnos = listaAlumnos.Select(a => a.Id).ToHashSet();
+            var listaConNombre = listaUsuarios
+                .Select(u => new
+                {
+                    u.Id,
+                    u.NombreUsuario,
+                    u.Email,
+                    u.Privilegio,
+                    u.Habilitado,
+                    Alumno = listaAlumnos.FirstOrDefault(a => a.Id == u.PersonaId)?.Nombre ?? "No asignado"
+                })
+                .ToList();
 
             dgvUsuario.DataSource = listaConNombre;
         }
