@@ -99,16 +99,41 @@ namespace Application.Services
             if (usuarioRepository.EmailExists(dto.Email, excludeId: dto.Id))
                 throw new ArgumentException($"Ya existe otro usuario con el email '{dto.Email}'.");
 
-            var usuario = new Usuario(
-                id: dto.Id,
-                nombreUsuario: dto.NombreUsuario,
-                email: dto.Email,
-                clave: dto.Clave,
-                salt: dto.Salt,
-                habilitado: dto.Habilitado,
-                privilegio: dto.Privilegio,
-                personaId: dto.PersonaId
-            );
+            // Obtener el usuario actual de la base de datos
+            var usuarioActual = usuarioRepository.Get(dto.Id);
+            if (usuarioActual == null)
+                return false;
+
+            Usuario usuario;
+            if (!string.IsNullOrWhiteSpace(dto.Clave))
+            {
+                // Si se ingresó una nueva clave, hashearla y generar nuevo salt
+                usuario = new Usuario
+                {
+                    Id = dto.Id,
+                    NombreUsuario = dto.NombreUsuario,
+                    Email = dto.Email,
+                    Habilitado = dto.Habilitado,
+                    Privilegio = dto.Privilegio,
+                    PersonaId = dto.PersonaId
+                };
+                usuario.SetClave(dto.Clave);
+            }
+            else
+            {
+                // Si no se ingresó clave, mantener la actual
+                usuario = new Usuario
+                {
+                    Id = dto.Id,
+                    NombreUsuario = dto.NombreUsuario,
+                    Email = dto.Email,
+                    Habilitado = dto.Habilitado,
+                    Privilegio = dto.Privilegio,
+                    PersonaId = dto.PersonaId,
+                    Clave = usuarioActual.Clave,
+                    Salt = usuarioActual.Salt
+                };
+            }
 
             return usuarioRepository.Update(usuario);
         }

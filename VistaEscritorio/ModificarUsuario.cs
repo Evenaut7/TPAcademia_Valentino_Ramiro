@@ -35,7 +35,7 @@ namespace VistaEscritorio
             await CargarPersonasAsync();
 
             nombreUsuarioBox.Text = usuario.NombreUsuario;
-            claveBox.Text = usuario.Clave;
+            claveBox.Text = ""; // <-- No mostrar la clave hasheada
             emailBox.Text = usuario.Email;
             privilegioBox.Text = usuario.Privilegio;
             habilitadoCheck.Checked = usuario.Habilitado;

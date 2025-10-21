@@ -41,6 +41,7 @@
             claveBox.Name = "claveBox";
             claveBox.Size = new Size(100, 23);
             claveBox.TabIndex = 1;
+            this.claveBox.PasswordChar = '*';
             // 
             // emailBox
             // 
