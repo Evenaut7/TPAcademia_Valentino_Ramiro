@@ -44,6 +44,15 @@ namespace Application.Services
         public AlumnoDTO Add(AlumnoDTO dto)
         {
             var alumnoRepository = new AlumnoRepository();
+
+            // Validación: DNI único
+            if (alumnoRepository.GetAll().Any(a => a.Dni == dto.Dni))
+                throw new ArgumentException($"Ya existe un alumno con el DNI '{dto.Dni}'.");
+
+            // Validación: Legajo único
+            if (alumnoRepository.GetAll().Any(a => a.Legajo == dto.Legajo))
+                throw new ArgumentException($"Ya existe un alumno con el legajo '{dto.Legajo}'.");
+
             var alumno = new Alumno(
                 id: dto.Id,
                 nombre: dto.Nombre,
