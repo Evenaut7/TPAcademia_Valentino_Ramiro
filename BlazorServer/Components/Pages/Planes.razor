@@ -1,0 +1,174 @@
+﻿@page "/planes"
+@rendermode InteractiveServer
+@inject PlanApiClient PlanApiClient
+@inject IJSRuntime js
+
+<PageTitle>Planes</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Planes</h3>
+    <button class="btn btn-primary" @onclick="MostrarModal">
+        <i class="bi bi-plus-circle"></i> Nuevo Plan
+    </button>
+</div>
+
+@if (planes == null)
+{
+    <p><em>Cargando planes...</em></p>
+}
+else if (!planes.Any())
+{
+    <p>No hay planes registrados.</p>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Especialidad</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var plan in planes)
+            {
+                <tr>
+                    <td>@plan.Id</td>
+                    <td>@plan.Descripcion</td>
+                    <td>@plan.EspecialidadId</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => ModificarPlan(plan)">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarPlan(plan.Id)">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (mostrarModal)
+{
+    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(esEdicion ? "Editar Plan" : "Nuevo Plan")</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@nuevoPlan" OnValidSubmit="GuardarPlan">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label>Descripción:</label>
+                            <InputText class="form-control" @bind-Value="nuevoPlan.Descripcion" />
+                        </div>
+                        <div class="mb-3">
+                            <label>EspecialidadId:</label>
+                            <InputNumber class="form-control" @bind-Value="nuevoPlan.EspecialidadId" />
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success me-2">Guardar</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<PlanDTO>? planes;
+    private bool mostrarModal = false;
+    private bool esEdicion = false;
+    private PlanDTO nuevoPlan = new PlanDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarPlanes();
+    }
+
+    private async Task CargarPlanes()
+    {
+        try
+        {
+            var result = await PlanApiClient.GetAllAsync();
+            planes = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar planes: {ex.Message}");
+        }
+    }
+
+    private void MostrarModal()
+    {
+        esEdicion = false;
+        nuevoPlan = new PlanDTO();
+        mostrarModal = true;
+    }
+
+    private void ModificarPlan(PlanDTO plan)
+    {
+        esEdicion = true;
+        nuevoPlan = new PlanDTO
+        {
+            Id = plan.Id,
+            Descripcion = plan.Descripcion,
+            EspecialidadId = plan.EspecialidadId
+        };
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+        esEdicion = false;
+    }
+
+    private async Task GuardarPlan()
+    {
+        try
+        {
+            if (esEdicion)
+            {
+                await PlanApiClient.UpdateAsync(nuevoPlan);
+            }
+            else
+            {
+                await PlanApiClient.AddAsync(nuevoPlan);
+            }
+            await CargarPlanes();
+            mostrarModal = false;
+            esEdicion = false;
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarPlan(int id)
+    {
+        if (await js.InvokeAsync<bool>("confirm", "¿Estás seguro de que deseas eliminar este plan?"))
+        {
+            try
+            {
+                await PlanApiClient.DeleteAsync(id);
+                await CargarPlanes();
+            }
+            catch (Exception ex)
+            {
+                await js.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+            }
+        }
+    }
+}

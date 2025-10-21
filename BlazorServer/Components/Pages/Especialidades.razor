@@ -1,0 +1,177 @@
+﻿@page "/especialidades"
+@rendermode InteractiveServer
+@inject EspecialidadApiClient EspecialidadApiClient
+@inject IJSRuntime js
+
+<PageTitle>Especialidades</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Especialidades</h3>
+    <button class="btn btn-primary" @onclick="MostrarModal">
+        <i class="bi bi-plus-circle"></i> Nueva Especialidad
+    </button>
+</div>
+
+@if (especialidades == null)
+{
+    <p><em>Cargando especialidades...</em></p>
+}
+else if (!especialidades.Any())
+{
+    <p>No hay especialidades registradas.</p>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var especialidad in especialidades)
+            {
+                <tr>
+                    <td>@especialidad.Id</td>
+                    <td>@especialidad.Descripcion</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => ModificarEspecialidad(especialidad)">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarEspecialidad(especialidad.Id)">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (mostrarModal)
+{
+    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(esEdicion ? "Editar Especialidad" : "Nueva Especialidad")</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@nuevaEspecialidad" OnValidSubmit="GuardarEspecialidad">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label>Descripción:</label>
+                            <InputText class="form-control" @bind-Value="nuevaEspecialidad.Descripcion" />
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success me-2">Guardar</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<EspecialidadDTO>? especialidades;
+    private bool mostrarModal = false;
+    private bool esEdicion = false;
+    private EspecialidadDTO nuevaEspecialidad = new EspecialidadDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarEspecialidades();
+    }
+
+    private async Task CargarEspecialidades()
+    {
+        try
+        {
+            var result = await EspecialidadApiClient.GetAllAsync();
+            especialidades = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar especialidades: {ex.Message}");
+        }
+    }
+
+    private void MostrarModal()
+    {
+        esEdicion = false;
+        nuevaEspecialidad = new EspecialidadDTO();
+        mostrarModal = true;
+    }
+
+    private void ModificarEspecialidad(EspecialidadDTO especialidad)
+    {
+        esEdicion = true;
+        nuevaEspecialidad = new EspecialidadDTO
+        {
+            Id = especialidad.Id,
+            Descripcion = especialidad.Descripcion
+        };
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+        esEdicion = false;
+    }
+
+    private async Task GuardarEspecialidad()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(nuevaEspecialidad.Descripcion))
+            {
+                await js.InvokeVoidAsync("alert", "La descripción es obligatoria");
+                return;
+            }
+
+            if (esEdicion)
+            {
+                await EspecialidadApiClient.UpdateAsync(nuevaEspecialidad);
+                await js.InvokeVoidAsync("alert", "Especialidad modificada correctamente");
+            }
+            else
+            {
+                await EspecialidadApiClient.AddAsync(nuevaEspecialidad);
+                await js.InvokeVoidAsync("alert", "Especialidad creada correctamente");
+            }
+            CerrarModal();
+            await CargarEspecialidades();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarEspecialidad(int id)
+    {
+        if (await js.InvokeAsync<bool>("confirm", "¿Estás seguro de que deseas eliminar esta especialidad?"))
+        {
+            try
+            {
+                await EspecialidadApiClient.DeleteAsync(id);
+                await CargarEspecialidades();
+                StateHasChanged();
+                await js.InvokeVoidAsync("alert", "Especialidad eliminada correctamente");
+            }
+            catch (Exception ex)
+            {
+                await js.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+            }
+        }
+    }
+}

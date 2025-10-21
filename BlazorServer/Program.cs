@@ -16,6 +16,10 @@ namespace BlazorServer
             builder.Services.AddScoped<AlumnoApiClient>();
             builder.Services.AddScoped<MateriaApiClient>();
             builder.Services.AddScoped<PlanApiClient>();
+            builder.Services.AddScoped<ComisionApiClient>();
+            builder.Services.AddScoped<ProfesorApiClient>();
+            builder.Services.AddScoped<CursoApiClient>();
+            builder.Services.AddScoped<EspecialidadApiClient>();
 
             var app = builder.Build();
 

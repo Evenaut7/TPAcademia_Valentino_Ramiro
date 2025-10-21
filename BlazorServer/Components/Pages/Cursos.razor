@@ -1,0 +1,285 @@
+﻿@page "/cursos"
+@rendermode InteractiveServer
+@inject CursoApiClient CursoApiClient
+@inject ComisionApiClient ComisionApiClient
+@inject MateriaApiClient MateriaApiClient
+@inject IJSRuntime js
+
+<PageTitle>Cursos</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Cursos</h3>
+    <button class="btn btn-primary" @onclick="MostrarModal">
+        <i class="bi bi-plus-circle"></i> Nuevo Curso
+    </button>
+</div>
+
+@if (cursos == null)
+{
+    <p><em>Cargando cursos...</em></p>
+}
+else if (!cursos.Any())
+{
+    <p>No hay cursos registrados.</p>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Año Calendario</th>
+                <th>Cupo</th>
+                <th>Materia</th>
+                <th>Comisión</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var curso in cursos)
+            {
+                <tr>
+                    <td>@curso.Id</td>
+                    <td>@curso.AnioCalendario</td>
+                    <td>@curso.Cupo</td>
+                    <td>@GetMateriaDesc(curso.MateriaId)</td>
+                    <td>@GetComisionDesc(curso.ComisionId)</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => ModificarCurso(curso)">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarCurso(curso.Id)">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (mostrarModal)
+{
+    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(esEdicion ? "Editar Curso" : "Nuevo Curso")</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@nuevoCurso" OnValidSubmit="GuardarCurso">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label>Año Calendario:</label>
+                            <InputNumber class="form-control" @bind-Value="nuevoCurso.AnioCalendario" min="2000" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Cupo:</label>
+                            <InputNumber class="form-control" @bind-Value="nuevoCurso.Cupo" min="1" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Materia:</label>
+                            @if (materias != null && materias.Any())
+                            {
+                                <InputSelect class="form-control" @bind-Value="nuevoCurso.MateriaId">
+                                    <option value="0">-- Seleccione una Materia --</option>
+                                    @foreach (var materia in materias)
+                                    {
+                                        <option value="@materia.Id">@materia.Descripcion</option>
+                                    }
+                                </InputSelect>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Cargando materias...</p>
+                            }
+                        </div>
+                        <div class="mb-3">
+                            <label>Comisión:</label>
+                            @if (comisiones != null && comisiones.Any())
+                            {
+                                <InputSelect class="form-control" @bind-Value="nuevoCurso.ComisionId">
+                                    <option value="0">-- Seleccione una Comisión --</option>
+                                    @foreach (var comision in comisiones)
+                                    {
+                                        <option value="@comision.Id">@comision.Nombre</option>
+                                    }
+                                </InputSelect>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Cargando comisiones...</p>
+                            }
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success me-2">Guardar</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<CursoDTO>? cursos;
+    private List<MateriaDTO>? materias;
+    private List<ComisionDTO>? comisiones;
+    private bool mostrarModal = false;
+    private bool esEdicion = false;
+    private CursoDTO nuevoCurso = new CursoDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarCursos();
+        await CargarMaterias();
+        await CargarComisiones();
+    }
+
+    private async Task CargarCursos()
+    {
+        try
+        {
+            var result = await CursoApiClient.GetAllAsync();
+            cursos = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar cursos: {ex.Message}");
+        }
+    }
+
+    private async Task CargarMaterias()
+    {
+        try
+        {
+            var result = await MateriaApiClient.GetAllAsync();
+            materias = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar materias: {ex.Message}");
+        }
+    }
+
+    private async Task CargarComisiones()
+    {
+        try
+        {
+            var result = await ComisionApiClient.GetAllAsync();
+            comisiones = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar comisiones: {ex.Message}");
+        }
+    }
+
+    private void MostrarModal()
+    {
+        esEdicion = false;
+        nuevoCurso = new CursoDTO();
+        mostrarModal = true;
+    }
+
+    private void ModificarCurso(CursoDTO curso)
+    {
+        esEdicion = true;
+        nuevoCurso = new CursoDTO
+        {
+            Id = curso.Id,
+            AnioCalendario = curso.AnioCalendario,
+            Cupo = curso.Cupo,
+            MateriaId = curso.MateriaId,
+            ComisionId = curso.ComisionId
+        };
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+        esEdicion = false;
+    }
+
+    private async Task GuardarCurso()
+    {
+        try
+        {
+            if (nuevoCurso.AnioCalendario < 2000)
+            {
+                await js.InvokeVoidAsync("alert", "El año calendario debe ser mayor o igual a 2000");
+                return;
+            }
+            if (nuevoCurso.Cupo <= 0)
+            {
+                await js.InvokeVoidAsync("alert", "El cupo debe ser mayor a 0");
+                return;
+            }
+            if (nuevoCurso.MateriaId == 0)
+            {
+                await js.InvokeVoidAsync("alert", "Debe seleccionar una materia");
+                return;
+            }
+            if (nuevoCurso.ComisionId == 0)
+            {
+                await js.InvokeVoidAsync("alert", "Debe seleccionar una comisión");
+                return;
+            }
+
+            if (esEdicion)
+            {
+                await CursoApiClient.UpdateAsync(nuevoCurso);
+                await js.InvokeVoidAsync("alert", "Curso modificado correctamente");
+            }
+            else
+            {
+                await CursoApiClient.AddAsync(nuevoCurso);
+                await js.InvokeVoidAsync("alert", "Curso creado correctamente");
+            }
+            CerrarModal();
+            await CargarCursos();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarCurso(int id)
+    {
+        if (await js.InvokeAsync<bool>("confirm", "¿Estás seguro de que deseas eliminar este curso?"))
+        {
+            try
+            {
+                await CursoApiClient.DeleteAsync(id);
+                await CargarCursos();
+                StateHasChanged();
+                await js.InvokeVoidAsync("alert", "Curso eliminado correctamente");
+            }
+            catch (Exception ex)
+            {
+                await js.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+            }
+        }
+    }
+
+    private string GetMateriaDesc(int materiaId)
+    {
+        if (materias == null) return "Desconocida";
+        var materia = materias.FirstOrDefault(m => m.Id == materiaId);
+        return materia?.Descripcion ?? "Desconocida";
+    }
+
+    private string GetComisionDesc(int comisionId)
+    {
+        if (comisiones == null) return "Desconocida";
+        var comision = comisiones.FirstOrDefault(c => c.Id == comisionId);
+        return comision?.Nombre ?? "Desconocida";
+    }
+}
