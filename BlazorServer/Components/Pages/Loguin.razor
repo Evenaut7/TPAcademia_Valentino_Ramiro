@@ -1,0 +1,67 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@inject UsuarioApiClient UsuarioApiClient
+@inject NavigationManager Navigation
+@inject IJSRuntime js
+
+<PageTitle>Login</PageTitle>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4>Iniciar Sesión</h4>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@loginModel" OnValidSubmit="OnLogin">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="mb-3">
+                        <label>Usuario</label>
+                        <InputText class="form-control" @bind-Value="loginModel.Usuario" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Contraseña</label>
+                        <InputText class="form-control" @bind-Value="loginModel.Clave" type="password" />
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginModel loginModel = new();
+
+    private async Task OnLogin()
+    {
+        bool valido = false;
+        try
+        {
+            valido = await UsuarioApiClient.ValidarUsuario(loginModel.Usuario, loginModel.Clave);
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", $"Error de conexión: {ex.Message}");
+            return;
+        }
+
+        if (valido)
+        {
+            // Aquí podrías guardar el estado de sesión (ejemplo: en localStorage, o en un servicio de autenticación)
+            await js.InvokeVoidAsync("alert", "Login exitoso");
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Usuario o contraseña incorrectos");
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Usuario { get; set; } = string.Empty;
+        public string Clave { get; set; } = string.Empty;
+    }
+}
