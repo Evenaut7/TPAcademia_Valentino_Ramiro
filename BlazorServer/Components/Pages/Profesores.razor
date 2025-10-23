@@ -82,7 +82,7 @@ else
                         </div>
                         <div class="mb-3">
                             <label>DNI:</label>
-                            <InputText class="form-control" @bind-Value="nuevoProfesor.Dni" />
+                            <InputNumber class="form-control" @bind-Value="nuevoProfesor.Dni" />
                         </div>
                         <div class="mb-3">
                             <label>Fecha de nacimiento:</label>
@@ -162,6 +162,7 @@ else
     {
         try
         {
+            // Validar campos obligatorios
             if (string.IsNullOrWhiteSpace(nuevoProfesor.Nombre))
             {
                 await js.InvokeVoidAsync("alert", "El nombre es obligatorio");
@@ -172,14 +173,19 @@ else
                 await js.InvokeVoidAsync("alert", "El apellido es obligatorio");
                 return;
             }
-            if (string.IsNullOrWhiteSpace(nuevoProfesor.Dni))
+            if (nuevoProfesor.Dni < 1000000 || nuevoProfesor.Dni > 99999999)
             {
-                await js.InvokeVoidAsync("alert", "El DNI es obligatorio");
+                await js.InvokeVoidAsync("alert", "El DNI debe tener entre 7 y 8 dígitos");
                 return;
             }
             if (string.IsNullOrWhiteSpace(nuevoProfesor.Cargo))
             {
                 await js.InvokeVoidAsync("alert", "El cargo es obligatorio");
+                return;
+            }
+            if (nuevoProfesor.Cargo.Length > 100)
+            {
+                await js.InvokeVoidAsync("alert", "El cargo no puede superar los 100 caracteres");
                 return;
             }
 

@@ -8,8 +8,7 @@ namespace DTOs
 {
     public class AlumnoDTO : PersonaDTO
     {
-        public string Legajo { get; set; } = string.Empty;
-        // Otros campos específicos de Alumno
+        public int Legajo { get; set; }        
         public UsuarioDTO Usuario { get; set; } = null!;
         public int? UsuarioId { get; set; }
     }

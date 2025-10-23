@@ -1,4 +1,4 @@
-﻿using API.Clients; 
+﻿using API.Clients;
 using DTOs;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ namespace VistaEscritorio
     public partial class ABMProfesor : Form
     {
         private IEnumerable<ProfesorDTO>? listaProfesores;
-        private IEnumerable<UsuarioDTO>? listaUsuarios; 
+        private IEnumerable<UsuarioDTO>? listaUsuarios;
 
         public ABMProfesor()
         {
@@ -27,9 +27,10 @@ namespace VistaEscritorio
             {
                 p.Id,
                 p.Nombre,
-                p.Apellido, 
-                p.Dni, 
-                p.Cargo, 
+                p.Apellido,
+                p.Dni,
+                FechaNacimiento = p.FechaNacimiento.ToShortDateString(),
+                p.Cargo,
                 Usuario = listaUsuarios.FirstOrDefault(item => item.Id == p.UsuarioId)?.NombreUsuario ?? "Usuario no asignado"
             }).ToList();
 
@@ -62,6 +63,7 @@ namespace VistaEscritorio
             }
 
             int filaSeleccionada = dgvProfesor.SelectedRows[0].Index;
+
             if (listaProfesores == null)
             {
                 MessageBox.Show("No hay profesores cargados");
@@ -69,7 +71,6 @@ namespace VistaEscritorio
             }
 
             var profesorAModificarDTO = listaProfesores.ToList()[filaSeleccionada];
-
             ModificarProfesor modificarProfesorForm = new ModificarProfesor(profesorAModificarDTO);
             modificarProfesorForm.ShowDialog();
             listarButton_Click(sender, e);
@@ -93,15 +94,27 @@ namespace VistaEscritorio
 
             var profesorAEliminar = listaProfesores.ToList()[filaSeleccionada];
 
+            var confirmResult = MessageBox.Show(
+                $"¿Está seguro de eliminar al profesor {profesorAEliminar.Nombre} {profesorAEliminar.Apellido}?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (confirmResult != DialogResult.Yes)
+            {
+                return;
+            }
+
             try
             {
                 await ProfesorApiClient.DeleteAsync(profesorAEliminar.Id);
                 MessageBox.Show("Profesor eliminado correctamente.");
                 await CargarTablaAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("No se pudo eliminar el profesor.");
+                MessageBox.Show($"No se pudo eliminar el profesor: {ex.Message}");
             }
         }
     }

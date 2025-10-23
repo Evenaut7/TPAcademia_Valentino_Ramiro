@@ -44,7 +44,6 @@ namespace Application.Services
         {
             var materiaRepository = new MateriaRepository();
 
-            // Validar que no exista otra materia con la misma descripción en el mismo plan
             if (materiaRepository.DescripcionExists(dto.Descripcion))
             {
                 throw new ArgumentException($"Ya existe una materia con la descripción '{dto.Descripcion}' en este plan.");

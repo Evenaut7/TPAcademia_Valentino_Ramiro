@@ -105,7 +105,7 @@ namespace Data
                 Id = 1,
                 Nombre = "Admin",
                 Apellido = "Sistema",
-                Dni = ""
+                Dni = 1
             });
 
             var adminSalt = Guid.NewGuid().ToString();

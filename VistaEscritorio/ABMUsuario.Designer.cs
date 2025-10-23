@@ -29,6 +29,7 @@
             dgvUsuario.Dock = DockStyle.Fill;
             dgvUsuario.Location = new Point(0, 0);
             dgvUsuario.Name = "dgvUsuario";
+            dgvUsuario.RowHeadersWidth = 51;
             dgvUsuario.Size = new Size(784, 461);
             dgvUsuario.TabIndex = 0;
             // 
@@ -38,6 +39,7 @@
             eliminarButton.Location = new Point(704, 5);
             eliminarButton.Name = "eliminarButton";
             eliminarButton.Size = new Size(75, 30);
+            eliminarButton.TabIndex = 3;
             eliminarButton.Text = "Eliminar";
             eliminarButton.UseVisualStyleBackColor = true;
             eliminarButton.Click += eliminarButton_Click;
@@ -48,6 +50,7 @@
             modificarButton.Location = new Point(629, 5);
             modificarButton.Name = "modificarButton";
             modificarButton.Size = new Size(75, 30);
+            modificarButton.TabIndex = 2;
             modificarButton.Text = "Modificar";
             modificarButton.UseVisualStyleBackColor = true;
             modificarButton.Click += modificarButton_Click;
@@ -58,6 +61,7 @@
             agregarButton.Location = new Point(554, 5);
             agregarButton.Name = "agregarButton";
             agregarButton.Size = new Size(75, 30);
+            agregarButton.TabIndex = 1;
             agregarButton.Text = "Agregar";
             agregarButton.UseVisualStyleBackColor = true;
             agregarButton.Click += agregarButton_Click;
@@ -68,6 +72,7 @@
             listarButton.Location = new Point(479, 5);
             listarButton.Name = "listarButton";
             listarButton.Size = new Size(75, 30);
+            listarButton.TabIndex = 0;
             listarButton.Text = "Listar";
             listarButton.UseVisualStyleBackColor = true;
             listarButton.Click += listarButton_Click;
@@ -80,8 +85,10 @@
             panel1.Controls.Add(eliminarButton);
             panel1.Dock = DockStyle.Bottom;
             panel1.Location = new Point(0, 421);
+            panel1.Name = "panel1";
             panel1.Padding = new Padding(5);
             panel1.Size = new Size(784, 40);
+            panel1.TabIndex = 0;
             // 
             // ABMUsuario
             // 

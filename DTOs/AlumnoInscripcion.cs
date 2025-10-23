@@ -12,6 +12,6 @@ namespace DTOs
         public int AlumnoId { get; set; }
         public int CursoId { get; set; }
         public string Condicion { get; set; } = string.Empty;
-        public int Nota { get; set; }
+        public int? Nota { get; set; } = null;
     }
 }

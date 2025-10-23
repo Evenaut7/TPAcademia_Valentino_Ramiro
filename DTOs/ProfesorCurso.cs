@@ -8,7 +8,7 @@ namespace DTOs
 {
     public class ProfesorCursoDTO
     {
-        public int Cargo { get; set; }
+        public string Cargo { get; set; } = string.Empty;
         public int Id { get; set; }
         public int CursoId { get; set; }
         public int ProfesorId { get; set; }

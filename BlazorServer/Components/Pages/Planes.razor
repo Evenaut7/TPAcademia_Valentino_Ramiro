@@ -1,6 +1,6 @@
 ﻿@page "/planes"
 @rendermode InteractiveServer
-@inject PlanApiClient PlanApiClient
+@using API.Clients
 @inject IJSRuntime js
 
 <PageTitle>Planes</PageTitle>
@@ -37,7 +37,7 @@ else
                 <tr>
                     <td>@plan.Id</td>
                     <td>@plan.Descripcion</td>
-                    <td>@plan.EspecialidadId</td>
+                    <td>@GetEspecialidadNombre(plan.EspecialidadId)</td>
                     <td>
                         <button class="btn btn-warning btn-sm" @onclick="() => ModificarPlan(plan)">
                             <i class="bi bi-pencil"></i> Editar
@@ -66,14 +66,30 @@ else
                     <EditForm Model="@nuevoPlan" OnValidSubmit="GuardarPlan">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
+
                         <div class="mb-3">
                             <label>Descripción:</label>
                             <InputText class="form-control" @bind-Value="nuevoPlan.Descripcion" />
                         </div>
+
                         <div class="mb-3">
-                            <label>EspecialidadId:</label>
-                            <InputNumber class="form-control" @bind-Value="nuevoPlan.EspecialidadId" />
+                            <label>Especialidad:</label>
+                            @if (especialidades != null && especialidades.Any())
+                            {
+                                <InputSelect class="form-control" @bind-Value="nuevoPlan.EspecialidadId">
+                                    <option value="0">-- Seleccione una Especialidad --</option>
+                                    @foreach (var especialidad in especialidades)
+                                    {
+                                        <option value="@especialidad.Id">@especialidad.Descripcion</option>
+                                    }
+                                </InputSelect>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Cargando especialidades...</p>
+                            }
                         </div>
+
                         <div class="text-end">
                             <button type="submit" class="btn btn-success me-2">Guardar</button>
                             <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
@@ -87,6 +103,7 @@ else
 
 @code {
     private List<PlanDTO>? planes;
+    private List<EspecialidadDTO>? especialidades;
     private bool mostrarModal = false;
     private bool esEdicion = false;
     private PlanDTO nuevoPlan = new PlanDTO();
@@ -94,6 +111,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await CargarPlanes();
+        await CargarEspecialidades();
     }
 
     private async Task CargarPlanes()
@@ -105,7 +123,21 @@ else
         }
         catch (Exception ex)
         {
+            await js.InvokeVoidAsync("alert", $"Error al cargar planes: {ex.Message}");
             Console.WriteLine($"Error al cargar planes: {ex.Message}");
+        }
+    }
+
+    private async Task CargarEspecialidades()
+    {
+        try
+        {
+            var result = await EspecialidadApiClient.GetAllAsync();
+            especialidades = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar especialidades: {ex.Message}");
         }
     }
 
@@ -138,17 +170,39 @@ else
     {
         try
         {
+            // Validar campos obligatorios
+            if (string.IsNullOrWhiteSpace(nuevoPlan.Descripcion))
+            {
+                await js.InvokeVoidAsync("alert", "La descripción es obligatoria");
+                return;
+            }
+
+            if (nuevoPlan.Descripcion.Length > 100)
+            {
+                await js.InvokeVoidAsync("alert", "La descripción no puede superar los 100 caracteres");
+                return;
+            }
+
+            if (nuevoPlan.EspecialidadId == 0)
+            {
+                await js.InvokeVoidAsync("alert", "Debe seleccionar una especialidad");
+                return;
+            }
+
             if (esEdicion)
             {
                 await PlanApiClient.UpdateAsync(nuevoPlan);
+                await js.InvokeVoidAsync("alert", "Plan modificado correctamente");
             }
             else
             {
                 await PlanApiClient.AddAsync(nuevoPlan);
+                await js.InvokeVoidAsync("alert", "Plan creado correctamente");
             }
+
+            CerrarModal();
             await CargarPlanes();
-            mostrarModal = false;
-            esEdicion = false;
+            StateHasChanged();
         }
         catch (Exception ex)
         {
@@ -164,11 +218,20 @@ else
             {
                 await PlanApiClient.DeleteAsync(id);
                 await CargarPlanes();
+                StateHasChanged();
+                await js.InvokeVoidAsync("alert", "Plan eliminado correctamente");
             }
             catch (Exception ex)
             {
                 await js.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
             }
         }
+    }
+
+    private string GetEspecialidadNombre(int especialidadId)
+    {
+        if (especialidades == null) return "No asignada";
+        var especialidad = especialidades.FirstOrDefault(e => e.Id == especialidadId);
+        return especialidad?.Descripcion ?? "No asignada";
     }
 }

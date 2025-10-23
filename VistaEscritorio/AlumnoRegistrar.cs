@@ -22,17 +22,30 @@ namespace VistaEscritorio
                     return;
                 }
 
-                // Solo crear Alumno
+                // Convertir DNI y Legajo a int
+                if (!int.TryParse(dniTextBox.Text, out int dni))
+                {
+                    MessageBox.Show("El DNI debe ser un número válido.");
+                    return;
+                }
+
+                if (!int.TryParse(legajoTextBox.Text, out int legajo))
+                {
+                    MessageBox.Show("El legajo debe ser un número válido.");
+                    return;
+                }
+
+                // Crear Alumno con int
                 var alumno = new AlumnoDTO
                 {
                     Nombre = nombreTextBox.Text,
                     Apellido = apellidoTextBox.Text,
-                    Dni = dniTextBox.Text,
+                    Dni = dni,
                     FechaNacimiento = fechaNacimientoPicker.Value,
-                    Legajo = legajoTextBox.Text
+                    Legajo = legajo
                 };
-                await AlumnoApiClient.AddAsync(alumno);
 
+                await AlumnoApiClient.AddAsync(alumno);
                 MessageBox.Show("Alumno registrado correctamente.");
                 Close();
             }
@@ -60,6 +73,7 @@ namespace VistaEscritorio
                 MessageBox.Show("El nombre solo puede contener letras.");
                 return false;
             }
+
             if (!System.Text.RegularExpressions.Regex.IsMatch(apellidoTextBox.Text, @"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$"))
             {
                 MessageBox.Show("El apellido solo puede contener letras.");
@@ -72,9 +86,24 @@ namespace VistaEscritorio
                 MessageBox.Show("El DNI solo puede contener números.");
                 return false;
             }
+
             if (!System.Text.RegularExpressions.Regex.IsMatch(legajoTextBox.Text, @"^\d+$"))
             {
                 MessageBox.Show("El legajo solo puede contener números.");
+                return false;
+            }
+
+            // Validar que DNI esté en rango válido (7-8 dígitos)
+            if (!int.TryParse(dniTextBox.Text, out int dni) || dni < 1000000 || dni > 99999999)
+            {
+                MessageBox.Show("El DNI debe tener entre 7 y 8 dígitos.");
+                return false;
+            }
+
+            // Validar que legajo sea positivo
+            if (!int.TryParse(legajoTextBox.Text, out int legajo) || legajo <= 0)
+            {
+                MessageBox.Show("El legajo debe ser un número positivo.");
                 return false;
             }
 
@@ -90,32 +119,26 @@ namespace VistaEscritorio
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void fechaNacimientoLabel_Click(object sender, EventArgs e)
         {
-
         }
 
         private void AlumnoRegistrar_Load_1(object sender, EventArgs e)
         {
-
         }
 
         private void legajoLabel_Click(object sender, EventArgs e)
         {
-
         }
 
         private void nombreLabel_Click(object sender, EventArgs e)
         {
-
         }
 
         private void apellidoLabel_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

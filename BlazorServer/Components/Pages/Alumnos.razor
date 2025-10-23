@@ -89,7 +89,7 @@ else
 
                         <div class="mb-3">
                             <label>DNI:</label>
-                            <InputText class="form-control" @bind-Value="nuevoAlumno.Dni" />
+                            <InputNumber class="form-control" @bind-Value="nuevoAlumno.Dni" />
                         </div>
 
                         <div class="mb-3">
@@ -99,7 +99,7 @@ else
 
                         <div class="mb-3">
                             <label>Legajo:</label>
-                            <InputText class="form-control" @bind-Value="nuevoAlumno.Legajo" />
+                            <InputNumber class="form-control" @bind-Value="nuevoAlumno.Legajo" />
                         </div>
 
                         <div class="text-end">
@@ -132,15 +132,15 @@ else
             var usuariosList = await UsuarioApiClient.GetAllAsync();
 
             alumnos = alumnosList.Select(a => new AlumnoDTO
-                {
-                    Id = a.Id,
-                    Nombre = a.Nombre,
-                    Apellido = a.Apellido,
-                    Dni = a.Dni,
-                    FechaNacimiento = a.FechaNacimiento,
-                    Legajo = a.Legajo,
-                    Usuario = usuariosList.FirstOrDefault(u => u.PersonaId == a.Id)
-                }).ToList();
+            {
+                Id = a.Id,
+                Nombre = a.Nombre,
+                Apellido = a.Apellido,
+                Dni = a.Dni,
+                FechaNacimiento = a.FechaNacimiento,
+                Legajo = a.Legajo,
+                Usuario = usuariosList.FirstOrDefault(u => u.PersonaId == a.Id)
+            }).ToList();
         }
         catch (Exception ex)
         {
@@ -152,9 +152,9 @@ else
     {
         esEdicion = false;
         nuevoAlumno = new AlumnoDTO
-            {
-                FechaNacimiento = DateTime.Today
-            };
+        {
+            FechaNacimiento = DateTime.Today
+        };
         mostrarModal = true;
         StateHasChanged();
     }
@@ -186,21 +186,51 @@ else
     {
         try
         {
+            // Validar campos obligatorios
+            if (string.IsNullOrWhiteSpace(nuevoAlumno.Nombre))
+            {
+                await js.InvokeVoidAsync("alert", "El nombre es obligatorio");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(nuevoAlumno.Apellido))
+            {
+                await js.InvokeVoidAsync("alert", "El apellido es obligatorio");
+                return;
+            }
+            if (nuevoAlumno.Dni < 1000000 || nuevoAlumno.Dni > 99999999)
+            {
+                await js.InvokeVoidAsync("alert", "El DNI debe tener entre 7 y 8 dígitos");
+                return;
+            }
+            if (nuevoAlumno.Legajo <= 0)
+            {
+                await js.InvokeVoidAsync("alert", "El legajo debe ser un número positivo");
+                return;
+            }
+            if (nuevoAlumno.FechaNacimiento > DateTime.Today)
+            {
+                await js.InvokeVoidAsync("alert", "La fecha de nacimiento no puede ser futura");
+                return;
+            }
+
             if (esEdicion)
             {
                 await AlumnoApiClient.UpdateAsync(nuevoAlumno);
+                await js.InvokeVoidAsync("alert", "Alumno modificado correctamente");
             }
             else
             {
                 await AlumnoApiClient.AddAsync(nuevoAlumno);
+                await js.InvokeVoidAsync("alert", "Alumno creado correctamente");
             }
+
             await CargarAlumnos();
-            mostrarModal = false;
-            esEdicion = false;
+            CerrarModal();
+            StateHasChanged();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al guardar: {ex.Message}");
+            await js.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
         }
     }
 
@@ -212,10 +242,11 @@ else
             {
                 await AlumnoApiClient.DeleteAsync(id);
                 await CargarAlumnos();
+                await js.InvokeVoidAsync("alert", "Alumno eliminado correctamente");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al eliminar: {ex.Message}");
+                await js.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
             }
         }
     }
