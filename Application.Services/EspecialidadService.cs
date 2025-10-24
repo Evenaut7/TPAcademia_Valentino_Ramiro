@@ -36,7 +36,11 @@ namespace Application.Services
         }
         public EspecialidadDTO Add(EspecialidadDTO dto)
         {
-            var especialidadRepository = new EspecialidadRepository();
+            var especialidadRepository = new EspecialidadRepository()
+
+            if (especialidadRepository.GetAll().Any(e => e.Descripcion == dto.Descripcion))
+                throw new ArgumentException($"Ya existe una especialidad con la descripción '{dto.Descripcion}'.");
+            
             Especialidad especialidad = new Especialidad();
             especialidad.Descripcion = dto.Descripcion;
             especialidadRepository.Add(especialidad);

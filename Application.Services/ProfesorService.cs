@@ -44,6 +44,16 @@ namespace Application.Services
         public ProfesorDTO Add(ProfesorDTO dto)
         {
             var profesorRepository = new ProfesorRepository();
+            var alumnoRepository = new AlumnoRepository();
+
+            // Validación: DNI único en profesores
+            if (profesorRepository.GetAll().Any(p => p.Dni == dto.Dni))
+                throw new ArgumentException($"Ya existe un profesor con el DNI '{dto.Dni}'.");
+
+            // Validación: DNI único en alumnos
+            if (alumnoRepository.GetAll().Any(a => a.Dni == dto.Dni))
+                throw new ArgumentException($"Ya existe un alumno con el DNI '{dto.Dni}'.");
+
             var profesor = new Profesor(
                 id: dto.Id,
                 nombre: dto.Nombre,
@@ -59,6 +69,16 @@ namespace Application.Services
         public bool Update(ProfesorDTO dto)
         {
             var profesorRepository = new ProfesorRepository();
+            var alumnoRepository = new AlumnoRepository();
+
+            // Validación: DNI único en profesores (excluyendo el actual)
+            if (profesorRepository.GetAll().Any(p => p.Dni == dto.Dni && p.Id != dto.Id))
+                throw new ArgumentException($"Ya existe un profesor con el DNI '{dto.Dni}'.");
+
+            // Validación: DNI único en alumnos
+            if (alumnoRepository.GetAll().Any(a => a.Dni == dto.Dni))
+                throw new ArgumentException($"Ya existe un alumno con el DNI '{dto.Dni}'.");
+
             var profesor = profesorRepository.Get(dto.Id);
             if (profesor == null)
                 return false;

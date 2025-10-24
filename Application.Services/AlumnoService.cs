@@ -44,12 +44,17 @@ namespace Application.Services
         public AlumnoDTO Add(AlumnoDTO dto)
         {
             var alumnoRepository = new AlumnoRepository();
+            var profesorRepository = new ProfesorRepository();
 
-            // Validación: DNI único
+            // Validación: DNI único en alumnos
             if (alumnoRepository.GetAll().Any(a => a.Dni == dto.Dni))
                 throw new ArgumentException($"Ya existe un alumno con el DNI '{dto.Dni}'.");
 
-            // Validación: Legajo único
+            // Validación: DNI único en profesores
+            if (profesorRepository.GetAll().Any(p => p.Dni == dto.Dni))
+                throw new ArgumentException($"Ya existe un profesor con el DNI '{dto.Dni}'.");
+
+            // Validación: Legajo único en alumnos
             if (alumnoRepository.GetAll().Any(a => a.Legajo == dto.Legajo))
                 throw new ArgumentException($"Ya existe un alumno con el legajo '{dto.Legajo}'.");
 
@@ -68,6 +73,20 @@ namespace Application.Services
         public bool Update(AlumnoDTO dto)
         {
             var alumnoRepository = new AlumnoRepository();
+            var profesorRepository = new ProfesorRepository();
+
+            // Validación: DNI único en alumnos (excluyendo el actual)
+            if (alumnoRepository.GetAll().Any(a => a.Dni == dto.Dni && a.Id != dto.Id))
+                throw new ArgumentException($"Ya existe un alumno con el DNI '{dto.Dni}'.");
+
+            // Validación: DNI único en profesores
+            if (profesorRepository.GetAll().Any(p => p.Dni == dto.Dni))
+                throw new ArgumentException($"Ya existe un profesor con el DNI '{dto.Dni}'.");
+
+            // Validación: Legajo único en alumnos (excluyendo el actual)
+            if (alumnoRepository.GetAll().Any(a => a.Legajo == dto.Legajo && a.Id != dto.Id))
+                throw new ArgumentException($"Ya existe un alumno con el legajo '{dto.Legajo}'.");
+
             var alumno = alumnoRepository.Get(dto.Id);
             if (alumno == null)
                 return false;
