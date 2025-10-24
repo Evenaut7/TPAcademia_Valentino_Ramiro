@@ -14,7 +14,6 @@
     </button>
 </div>
 
-<!-- 🔍 BUSCADOR -->
 <div class="row mb-3">
     <div class="col-md-4">
         <input type="text" class="form-control" placeholder="Buscar por Materia"
@@ -153,7 +152,6 @@ else
     private bool esEdicion = false;
     private CursoDTO nuevoCurso = new CursoDTO();
 
-    // 🔍 Filtros
     private string filtroMateria = string.Empty;
     private string filtroComision = string.Empty;
 
@@ -203,7 +201,6 @@ else
         }
     }
 
-    // 🔍 Método para buscar cursos filtrando por materia y comisión
     private async Task BuscarCursos()
     {
         try
