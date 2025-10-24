@@ -75,5 +75,20 @@ namespace Application.Services
             var cursoRepository = new Data.CursoRepository();
             return cursoRepository.Delete(id);
         }
+
+        public IEnumerable<CursoDTO> Buscar(string? comision, string? materia)
+        {
+            var cursoRepository = new Data.CursoRepository();
+            var cursos = cursoRepository.Buscar(comision, materia);
+
+            return cursos.Select(curso => new CursoDTO
+            {
+                Id = curso.Id,
+                AnioCalendario = curso.AnioCalendario,
+                Cupo = curso.Cupo,
+                MateriaId = curso.MateriaId,
+                ComisionId = curso.ComisionId
+            }).ToList();
+        }
     }
 }

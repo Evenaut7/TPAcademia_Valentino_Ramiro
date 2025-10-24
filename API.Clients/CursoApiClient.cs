@@ -163,5 +163,29 @@ namespace API.Clients
                 throw new Exception($"Timeout al eliminar curso con Id {id}: {ex.Message}", ex);
             }
         }
+
+        public static async Task<IEnumerable<CursoDTO>> BuscarAsync(string comision, string materia)
+        {
+            try
+            {
+                string url = $"cursos/buscar?comision={comision}&materia={materia}";
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IEnumerable<CursoDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al buscar cursos. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al buscar cursos: {ex.Message}", ex);
+            }
+        }
+
     }
 }
