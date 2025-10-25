@@ -84,5 +84,24 @@ namespace Data
             }
             return false;
         }
+
+        public IEnumerable<Curso> Buscar(string? comision, string? materia)
+        {
+            using var context = CreateContext();
+            {
+                var query = context.Cursos
+                    .Include(c => c.Comision)
+                    .Include(c => c.Materia)
+                    .AsQueryable();
+
+                if (!string.IsNullOrEmpty(comision))
+                    query = query.Where(c => c.Comision.Nombre.Contains(comision));
+
+                if (!string.IsNullOrEmpty(materia))
+                    query = query.Where(c => c.Materia.Descripcion.Contains(materia));
+
+                return query.ToList();
+            }
+        }
     }
 }

@@ -14,7 +14,6 @@ namespace Application.Services
         public AlumnoInscripcionDTO Add(AlumnoInscripcionDTO dto)
         {
             var alumnoInscripcionRepository = new AlumnoInscripcionRepository();
-            // Validar que no exista otra inscripción para el mismo alumno y curso
             if (alumnoInscripcionRepository.Exists(dto.AlumnoId, dto.CursoId))
             {
                 throw new ArgumentException($"El alumno con ID '{dto.AlumnoId}' ya está inscrito en el curso con ID '{dto.CursoId}'.");

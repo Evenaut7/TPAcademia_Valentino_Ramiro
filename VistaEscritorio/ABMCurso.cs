@@ -2,11 +2,8 @@
 using DTOs;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,10 +14,12 @@ namespace VistaEscritorio
         private IEnumerable<CursoDTO>? listaCursos;
         private IEnumerable<MateriaDTO>? listaMaterias;
         private IEnumerable<ComisionDTO>? listaComisiones;
+
         public ABMCurso()
         {
             InitializeComponent();
         }
+
         private async Task CargarTablaAsync()
         {
             listaCursos = await CursoApiClient.GetAllAsync();
@@ -38,10 +37,12 @@ namespace VistaEscritorio
 
             dgvCurso.DataSource = listaConNombre;
         }
+
         private async void listarButton_Click(object sender, EventArgs e)
         {
             await CargarTablaAsync();
         }
+
         private async void eliminarButton_Click(object sender, EventArgs e)
         {
             if (dgvCurso.SelectedRows.Count == 0)
@@ -49,6 +50,7 @@ namespace VistaEscritorio
                 MessageBox.Show("Debe seleccionar una fila para eliminar.");
                 return;
             }
+
             int filaSeleccionada = dgvCurso.SelectedRows[0].Index;
             var listaCursos = await CursoApiClient.GetAllAsync();
             if (listaCursos == null)
@@ -56,6 +58,7 @@ namespace VistaEscritorio
                 MessageBox.Show("No hay cursos cargados.");
                 return;
             }
+
             var cursoAEliminar = listaCursos.ToList()[filaSeleccionada];
             try
             {
@@ -97,7 +100,6 @@ namespace VistaEscritorio
             }
 
             var cursoAModificarDTO = listaCursos.ToList()[filaSeleccionada];
-
             ModificarCurso cargaCursosForm = new ModificarCurso(cursoAModificarDTO);
             cargaCursosForm.ShowDialog();
             listarButton_Click(sender, e);
@@ -110,6 +112,7 @@ namespace VistaEscritorio
                 MessageBox.Show("Debe seleccionar una fila para eliminar.");
                 return;
             }
+
             int filaSeleccionada = dgvCurso.SelectedRows[0].Index;
             var listaCursos = dgvCurso.DataSource as List<CursoDTO>;
             if (listaCursos == null)
@@ -117,6 +120,7 @@ namespace VistaEscritorio
                 MessageBox.Show("No hay cursos cargados.");
                 return;
             }
+
             var cursoAEliminar = listaCursos[filaSeleccionada];
             try
             {
@@ -128,7 +132,36 @@ namespace VistaEscritorio
             {
                 MessageBox.Show("No se pudo eliminar el curso.");
             }
+        }
 
+        // 🔍 NUEVO MÉTODO DE BÚSQUEDA
+        private async void btnBuscar_Click(object sender, EventArgs e)
+        {
+            string materia = txtMateria.Text.Trim();
+            string comision = txtComision.Text.Trim();
+
+            try
+            {
+                var cursos = await CursoApiClient.BuscarAsync(comision, materia);
+
+                listaMaterias ??= await MateriaApiClient.GetAllAsync();
+                listaComisiones ??= await ComisionApiClient.GetAllAsync();
+
+                var listaConNombre = cursos.Select(c => new
+                {
+                    c.Id,
+                    c.AnioCalendario,
+                    c.Cupo,
+                    Materia = listaMaterias.FirstOrDefault(item => item.Id == c.MateriaId)?.Descripcion ?? "Materia no encontrada",
+                    Comision = listaComisiones.FirstOrDefault(item => item.Id == c.ComisionId)?.Nombre ?? "Comisión no encontrada"
+                }).ToList();
+
+                dgvCurso.DataSource = listaConNombre;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar cursos: " + ex.Message);
+            }
         }
     }
 }

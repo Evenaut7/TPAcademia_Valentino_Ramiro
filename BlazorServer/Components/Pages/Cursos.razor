@@ -14,6 +14,25 @@
     </button>
 </div>
 
+<div class="row mb-3">
+    <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Buscar por Materia"
+               @bind="filtroMateria" @bind:event="oninput" />
+    </div>
+    <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Buscar por Comisión"
+               @bind="filtroComision" @bind:event="oninput" />
+    </div>
+    <div class="col-md-4 text-end">
+        <button class="btn btn-secondary me-2" @onclick="BuscarCursos">
+            <i class="bi bi-search"></i> Buscar
+        </button>
+        <button class="btn btn-outline-secondary" @onclick="LimpiarFiltros">
+            <i class="bi bi-x-circle"></i> Limpiar
+        </button>
+    </div>
+</div>
+
 @if (cursos == null)
 {
     <p><em>Cargando cursos...</em></p>
@@ -133,6 +152,9 @@ else
     private bool esEdicion = false;
     private CursoDTO nuevoCurso = new CursoDTO();
 
+    private string filtroMateria = string.Empty;
+    private string filtroComision = string.Empty;
+
     protected override async Task OnInitializedAsync()
     {
         await CargarCursos();
@@ -179,6 +201,26 @@ else
         }
     }
 
+    private async Task BuscarCursos()
+    {
+        try
+        {
+            var result = await CursoApiClient.BuscarAsync(filtroComision, filtroMateria);
+            cursos = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", $"Error al buscar cursos: {ex.Message}");
+        }
+    }
+
+    private async Task LimpiarFiltros()
+    {
+        filtroMateria = string.Empty;
+        filtroComision = string.Empty;
+        await CargarCursos();
+    }
+
     private void MostrarModal()
     {
         esEdicion = false;
@@ -190,13 +232,13 @@ else
     {
         esEdicion = true;
         nuevoCurso = new CursoDTO
-        {
-            Id = curso.Id,
-            AnioCalendario = curso.AnioCalendario,
-            Cupo = curso.Cupo,
-            MateriaId = curso.MateriaId,
-            ComisionId = curso.ComisionId
-        };
+            {
+                Id = curso.Id,
+                AnioCalendario = curso.AnioCalendario,
+                Cupo = curso.Cupo,
+                MateriaId = curso.MateriaId,
+                ComisionId = curso.ComisionId
+            };
         mostrarModal = true;
     }
 
@@ -241,6 +283,7 @@ else
                 await CursoApiClient.AddAsync(nuevoCurso);
                 await js.InvokeVoidAsync("alert", "Curso creado correctamente");
             }
+
             CerrarModal();
             await CargarCursos();
             StateHasChanged();

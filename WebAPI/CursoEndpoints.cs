@@ -90,6 +90,16 @@ namespace WebAPI
                 .Produces(StatusCodes.Status204NoContent)
                 .Produces(StatusCodes.Status404NotFound)
                 .WithOpenApi();
+
+            app.MapGet("/cursos/buscar", (string? comision, string? materia) =>
+            {
+                CursoService cursoService = new CursoService();
+                var resultados = cursoService.Buscar(comision, materia);
+                return Results.Ok(resultados);
+            })
+                .WithName("BuscarCursos")
+                .Produces<List<CursoDTO>>(StatusCodes.Status200OK)
+                .WithOpenApi();
         }
     }
 }
