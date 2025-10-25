@@ -69,10 +69,20 @@ namespace Data
             return false;
         }
 
-        public bool Exists(int alumnoId, int profesorId)
+        public bool Exists(int alumnoId, int cursoId)
         {
             using var context = CreateContext();
-            return context.Alumnos.Any(a => a.Id == alumnoId) || context.Profesores.Any(p => p.Id == profesorId);
+            return context.AlumnosInscripciones.Any(ai => ai.AlumnoId == alumnoId && ai.CursoId == cursoId);
+        }
+
+        public IEnumerable<AlumnoInscripcion> GetByAlumnoId(int alumnoId)
+        {
+            using var context = CreateContext();
+            return context.AlumnosInscripciones
+                .Include(ai => ai.Alumno)
+                .Include(ai => ai.Curso)
+                .Where(ai => ai.AlumnoId == alumnoId)
+                .ToList();
         }
     }
 }

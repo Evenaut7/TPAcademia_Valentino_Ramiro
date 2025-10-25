@@ -122,7 +122,6 @@ namespace VistaEscritorio
         }
         private void ConfigurarMenuAdministrador()
         {
-            // Mostrar todas las opciones del menú
             menuStrip1.Visible = true;
             inscripcionCursoToolStripMenu.Visible = false;
             cursosActualesToolStripMenu.Visible = false;
@@ -130,7 +129,6 @@ namespace VistaEscritorio
 
         private void ConfigurarMenuAlumno()
         {
-            // Mostrar solo las opciones para alumnos
             menuStrip1.Visible = true;
             inscripcionCursoToolStripMenu.Visible = true;
             cursosActualesToolStripMenu.Visible = true;
@@ -177,6 +175,11 @@ namespace VistaEscritorio
         private void inscripcionCursoToolStripMenu_Click(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel(new InscripcionCurso());
+        }
+
+        private void cursosActualesToolStripMenu_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new MisCursos());
         }
     }
 }
