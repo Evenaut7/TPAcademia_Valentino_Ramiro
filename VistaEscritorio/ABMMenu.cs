@@ -168,5 +168,15 @@ namespace VistaEscritorio
         {
 
         }
+
+        private void ABMPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void inscripcionCursoToolStripMenu_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new InscripcionCurso());
+        }
     }
 }

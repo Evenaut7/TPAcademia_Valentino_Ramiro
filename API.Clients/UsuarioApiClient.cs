@@ -169,8 +169,7 @@ namespace API.Clients
             try
             {
                 UsuarioDTO usuario = await GetAsync(userId);
-                HttpResponseMessage response = await client.GetAsync($"usuarios/rol/{userId}");
-                return await response.Content.ReadAsAsync<string>();
+                return usuario.Privilegio;
             }
             catch (Exception ex)
             {

@@ -34,8 +34,6 @@ namespace VistaEscritorio
 
                     this.DialogResult = DialogResult.OK;
                     this.Close();
-                    var menuPrincipal = new ABMMenu();
-                    menuPrincipal.Show();
                 }
                 else
                 {
