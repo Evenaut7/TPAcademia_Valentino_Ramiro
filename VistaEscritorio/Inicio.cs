@@ -51,5 +51,10 @@ namespace VistaEscritorio
             var usuarioRegistrar = new CargarUsuario();
             usuarioRegistrar.ShowDialog();
         }
+
+        private void Inicio_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

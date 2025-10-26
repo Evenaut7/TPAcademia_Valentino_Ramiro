@@ -1,4 +1,17 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject IAuthService AuthService
+
+@code {
+    private bool isAuthenticated;
+    private string? userRole;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAuthenticated = await AuthService.IsAuthenticatedAsync();
+        userRole = await AuthService.GetUserRoleAsync();
+    }
+}
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Autogestion Alumnos</a>
     </div>
@@ -8,58 +21,79 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="alumnos">
-                <span class="bi bi-mortarboard-fill" aria-hidden="true"></span> Alumnos
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Usuarios">
-                <span class="bi bi-person-circle" aria-hidden="true"></span> Usuarios
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="materias">
-                <span class="bi bi-book-fill" aria-hidden="true"></span> Materias
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="especialidades">
-                <span class="bi bi-briefcase-fill" aria-hidden="true"></span> Especialidades
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="planes">
-                <span class="bi bi-list-check" aria-hidden="true"></span> Planes
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="profesores">
-                <span class="bi bi-person-video3" aria-hidden="true"></span> Profesores
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="cursos">
-                <span class="bi bi-collection-fill" aria-hidden="true"></span> Cursos
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="comisiones">
-                <span class="bi bi-people-fill" aria-hidden="true"></span> Comisiones
-            </NavLink>
-        </div>
+        @if (!isAuthenticated)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/login">
+                    <span class="bi bi-box-arrow-in-right" aria-hidden="true"></span> Iniciar Sesión
+                </NavLink>
+            </div>
+        }
+        else if (userRole == "Administrador")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="alumnos">
+                    <span class="bi bi-mortarboard-fill" aria-hidden="true"></span> Alumnos
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="Usuarios">
+                    <span class="bi bi-person-circle" aria-hidden="true"></span> Usuarios
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="materias">
+                    <span class="bi bi-book-fill" aria-hidden="true"></span> Materias
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="especialidades">
+                    <span class="bi bi-briefcase-fill" aria-hidden="true"></span> Especialidades
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="planes">
+                    <span class="bi bi-list-check" aria-hidden="true"></span> Planes
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="profesores">
+                    <span class="bi bi-person-video3" aria-hidden="true"></span> Profesores
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="cursos">
+                    <span class="bi bi-collection-fill" aria-hidden="true"></span> Cursos
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="comisiones">
+                    <span class="bi bi-people-fill" aria-hidden="true"></span> Comisiones
+                </NavLink>
+            </div>
+        }
+        else if (userRole == "Usuario")
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/cursos-actuales" Match="NavLinkMatch.All">
+                    Cursos Actuales
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/inscripcion-curso" Match="NavLinkMatch.All">
+                    Inscripción a Curso
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>

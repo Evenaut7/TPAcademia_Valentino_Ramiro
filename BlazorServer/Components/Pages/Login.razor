@@ -1,67 +1,81 @@
 ﻿@page "/login"
 @rendermode InteractiveServer
-@inject UsuarioApiClient UsuarioApiClient
+@using API.Auth.Blazor.Server
+@using System.ComponentModel.DataAnnotations
+@layout Layout.LoginLayout
 @inject NavigationManager Navigation
-@inject IJSRuntime js
+@inject IAuthService AuthService
 
-<PageTitle>Login</PageTitle>
+<h3 class="mb-4 text-center">Iniciar Sesión</h3>
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header text-center">
-                <h4>Iniciar Sesión</h4>
-            </div>
-            <div class="card-body">
-                <EditForm Model="@loginModel" OnValidSubmit="OnLogin">
-                    <DataAnnotationsValidator />
-                    <ValidationSummary />
-                    <div class="mb-3">
-                        <label>Usuario</label>
-                        <InputText class="form-control" @bind-Value="loginModel.Usuario" /> 
-                    </div>
-                    <div class="mb-3">
-                        <label>Contraseña</label>
-                        <InputText class="form-control" @bind-Value="loginModel.Clave" type="password" />
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-                </EditForm>
-            </div>
-        </div>
+@if (showDebug)
+{
+    <div class="alert alert-info">
+        <strong>Debug:</strong> El método HandleLogin fue ejecutado.
+        Usuario: @loginModel.Usuario, Clave: @loginModel.Clave
     </div>
-</div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin" FormName="loginForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="usuario" class="form-label">Usuario</label>
+        <InputText id="usuario" class="form-control" @bind-Value="loginModel.Usuario" />
+    </div>
+    <div class="mb-3">
+        <label for="clave" class="form-label">Clave</label>
+        <InputText id="clave" type="password" class="form-control" @bind-Value="loginModel.Clave" />
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+</EditForm>
 
 @code {
     private LoginModel loginModel = new();
+    private bool showDebug = false;
+    private string errorMessage = string.Empty;
 
-    private async Task OnLogin()
+    private async Task HandleLogin()
     {
-        bool valido = false;
+        showDebug = true;
+        errorMessage = string.Empty;
+        Console.WriteLine($"Usuario: {loginModel.Usuario}, Clave: {loginModel.Clave}");
+
         try
         {
-            valido = await UsuarioApiClient.ValidarUsuario(loginModel.Usuario, loginModel.Clave);
+            var success = await AuthService.LoginAsync(loginModel.Usuario, loginModel.Clave);
+            if (success)
+            {
+                var role = await AuthService.GetUserRoleAsync();
+                Navigation.NavigateTo("/");
+                // Optionally, you can redirect to different pages based on role here
+            }
+            else
+            {
+                errorMessage = "Usuario o clave incorrectos."; // Show error in UI
+            }
         }
         catch (Exception ex)
         {
-            await js.InvokeVoidAsync("alert", $"Error de conexión: {ex.Message}");
-            return;
-        }
-
-        if (valido)
-        {
-            // Aquí podrías guardar el estado de sesión (ejemplo: en localStorage, o en un servicio de autenticación)
-            await js.InvokeVoidAsync("alert", "Login exitoso");
-            Navigation.NavigateTo("/");
-        }
-        else
-        {
-            await js.InvokeVoidAsync("alert", "Usuario o contraseña incorrectos");
+            errorMessage = ex.Message; // Show backend error in UI
+            Console.WriteLine($"Exception: {ex}");
         }
     }
 
     public class LoginModel
     {
+        [Required(ErrorMessage = "El usuario es obligatorio")]
         public string Usuario { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La clave es obligatoria")]
         public string Clave { get; set; } = string.Empty;
     }
 }

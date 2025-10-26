@@ -1,5 +1,6 @@
 using BlazorServer.Components;
 using API.Clients;
+using API.Auth.Blazor.Server;
 
 namespace BlazorServer
 {
@@ -22,7 +23,14 @@ namespace BlazorServer
             builder.Services.AddScoped<EspecialidadApiClient>();
             builder.Services.AddScoped<UsuarioApiClient>();
 
+            builder.Services.AddSingleton<IAuthService, BlazorServerAuthService>();
+
             var app = builder.Build();
+
+
+            // Configurar AuthServiceProvider para ApiClients
+            var authService = app.Services.GetRequiredService<IAuthService>();
+            AuthServiceProvider.Register(authService);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

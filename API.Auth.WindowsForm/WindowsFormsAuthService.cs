@@ -9,6 +9,7 @@ namespace API.Auth.WindowsForms
         private static DateTime _tokenExpiration;
         private static string? _currentUsername;
         private static int _currentUserId;
+        private static string? _currentUserRole; // Agrega campo para el rol
 
         public event Action<bool>? AuthenticationStateChanged;
 
@@ -47,6 +48,16 @@ namespace API.Auth.WindowsForms
                 _currentUsername = response.NombreUsuario;
                 _currentUserId = response.UsuarioId;
 
+                // Obtener el rol desde la API usando el ID
+                try
+                {
+                    _currentUserRole = await UsuarioApiClient.getUserRole(_currentUserId);
+                }
+                catch
+                {
+                    _currentUserRole = null;
+                }
+
                 AuthenticationStateChanged?.Invoke(true);
                 return true;
             }
@@ -60,6 +71,7 @@ namespace API.Auth.WindowsForms
             _tokenExpiration = default;
             _currentUsername = null;
             _currentUserId = 0;
+            _currentUserRole = null;
 
             AuthenticationStateChanged?.Invoke(false);
         }
@@ -78,5 +90,10 @@ namespace API.Auth.WindowsForms
             return isAuth ? _currentUserId : 0;
         }
 
+        public async Task<string?> GetUserRoleAsync()
+        {
+            var isAuth = await IsAuthenticatedAsync();
+            return isAuth ? _currentUserRole : null;
+        }
     }
 }

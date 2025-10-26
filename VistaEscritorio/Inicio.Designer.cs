@@ -49,9 +49,6 @@
             tituloInicio.Text = "Autogestion Academia";
             tituloInicio.TextAlign = ContentAlignment.TopCenter;
             // 
-            // nuevaCuentaButton
-            // 
-            // 
             // inicioSesionButton
             // 
             inicioSesionButton.Location = new Point(325, 289);
@@ -111,6 +108,7 @@
             Name = "Inicio";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Academia";
+            Load += Inicio_Load;
             ResumeLayout(false);
             PerformLayout();
         }

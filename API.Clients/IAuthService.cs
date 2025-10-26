@@ -17,5 +17,6 @@ namespace API.Clients
         Task LogoutAsync();
         Task CheckTokenExpirationAsync();
         Task<int> GetUserIdAsync();
+        Task<string?> GetUserRoleAsync();
     }
 }
