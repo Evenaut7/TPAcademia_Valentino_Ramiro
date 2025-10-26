@@ -45,16 +45,23 @@ namespace VistaEscritorio
         {
             try
             {
-                // Cargar datos de las APIs
                 listaCursos = await CursoApiClient.GetAllAsync();
                 listaMaterias = await MateriaApiClient.GetAllAsync();
                 listaComisiones = await ComisionApiClient.GetAllAsync();
 
-                if (listaCursos == null || listaMaterias == null || listaComisiones == null)
-                {
-                    MessageBox.Show("No se pudieron cargar los datos de las APIs.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                // Obtener inscripciones del usuario actual
+                int alumnoId = await AuthServiceProvider.Instance.GetUserIdAsync();
+                var inscripciones = await API.Clients.AlumnoInscripcionApiClient.GetAllAsync();
+                var cursosInscriptoIds = inscripciones
+                    .Where(i => i.AlumnoId == alumnoId)
+                    .Select(i => i.CursoId)
+                    .ToHashSet();
+
+                // Filtrar cursos: año actual, cupo > 0, no inscripto
+                int anioActual = DateTime.Now.Year;
+                listaCursos = listaCursos?
+                    .Where(c => c.AnioCalendario == anioActual && c.Cupo > 0 && !cursosInscriptoIds.Contains(c.Id))
+                    .ToList();
 
                 ActualizarGridCursos();
             }

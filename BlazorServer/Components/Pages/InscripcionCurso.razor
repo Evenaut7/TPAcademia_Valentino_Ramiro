@@ -1,8 +1,176 @@
 ﻿@page "/inscripcion-curso"
+@rendermode InteractiveServer
+@inject IAuthService AuthService
+@inject CursoApiClient CursoApiClient
+@inject MateriaApiClient MateriaApiClient
+@inject ComisionApiClient ComisionApiClient
+@inject AlumnoInscripcionApiClient AlumnoInscripcionApiClient
 
-    <h3>Inscripción a Curso</h3>
-<!-- Página vacía por ahora -->
+<h3 class="mb-4">Inscripción a Curso</h3>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+@if (successMessage != null)
+{
+    <div class="alert alert-success">@successMessage</div>
+}
+
+@if (isLoading)
+{
+    <div class="text-center my-4">
+        <span class="spinner-border"></span> Cargando cursos...
+    </div>
+}
+else if (cursos?.Any() == true)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Materia</th>
+                <th>Comisión</th>
+                <th>Año</th>
+                <th>Cupo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var curso in cursos)
+            {
+                <tr>
+                    <td>@curso.Materia</td>
+                    <td>@curso.Comision</td>
+                    <td>@curso.AnioCalendario</td>
+                    <td>@curso.Cupo</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm"
+                                disabled="@isProcessing"
+                                @onclick="() => InscribirseAsync(curso.Id)">
+                            Inscribirse
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">No hay cursos disponibles para el año actual.</div>
+}
 
 @code {
+    private List<CursoViewModel> cursos = new();
+    private bool isLoading = true;
+    private bool isProcessing = false;
+    private string? errorMessage;
+    private string? successMessage;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarCursosAsync();
+    }
+
+    private async Task CargarCursosAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+        successMessage = null;
+        cursos.Clear();
+
+        try
+        {
+            var listaCursos = await CursoApiClient.GetAllAsync();
+            var listaMaterias = await MateriaApiClient.GetAllAsync();
+            var listaComisiones = await ComisionApiClient.GetAllAsync();
+
+            // Obtener inscripciones del usuario actual
+            int userId = await AuthService.GetUserIdAsync();
+            var inscripciones = await AlumnoInscripcionApiClient.GetAllAsync();
+            var cursosInscriptoIds = inscripciones
+                .Where(i => i.AlumnoId == userId)
+                .Select(i => i.CursoId)
+                .ToHashSet();
+
+            int anioActual = DateTime.Now.Year;
+
+            cursos = listaCursos
+                .Where(c => c.AnioCalendario == anioActual && c.Cupo > 0 && !cursosInscriptoIds.Contains(c.Id))
+                .Select(c => new CursoViewModel
+                {
+                    Id = c.Id,
+                    AnioCalendario = c.AnioCalendario,
+                    Cupo = c.Cupo,
+                    Materia = listaMaterias.FirstOrDefault(m => m.Id == c.MateriaId)?.Descripcion ?? "Materia no encontrada",
+                    Comision = listaComisiones.FirstOrDefault(co => co.Id == c.ComisionId)?.Nombre ?? "Comisión no encontrada"
+                })
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error al cargar los cursos: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task InscribirseAsync(int cursoId)
+    {
+        errorMessage = null;
+        successMessage = null;
+        isProcessing = true;
+
+        try
+        {
+            Console.WriteLine($"[DEBUG] InscribirseAsync llamado con cursoId={cursoId}");
+
+            var userId = await AuthService.GetUserIdAsync();
+            var role = await AuthService.GetUserRoleAsync();
+
+            Console.WriteLine($"[DEBUG] userId={userId}, role={role}");
+
+            if (role != "Usuario")
+            {
+                errorMessage = "Solo los alumnos pueden inscribirse en cursos.";
+                return;
+            }
+
+            var inscripcionDto = new AlumnoInscripcionDTO
+            {
+                AlumnoId = userId,
+                CursoId = cursoId,
+                Condicion = "Inscripto",
+                Nota = null
+            };
+
+            Console.WriteLine("[DEBUG] Enviando inscripcion...");
+            await AlumnoInscripcionApiClient.AddAsync(inscripcionDto);
+
+            // Solo aquí mostramos el mensaje de éxito
+            successMessage = "Inscripción realizada correctamente.";
+            await CargarCursosAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            Console.WriteLine($"[ERROR] {ex}");
+        }
+        finally
+        {
+            isProcessing = false;
+            Console.WriteLine("[DEBUG] isProcessing = false");
+        }
+    }
+
+    private class CursoViewModel
+    {
+        public int Id { get; set; }
+        public int AnioCalendario { get; set; }
+        public int Cupo { get; set; }
+        public string Materia { get; set; } = "";
+        public string Comision { get; set; } = "";
+    }
 }

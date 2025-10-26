@@ -22,6 +22,7 @@ namespace BlazorServer
             builder.Services.AddScoped<CursoApiClient>();
             builder.Services.AddScoped<EspecialidadApiClient>();
             builder.Services.AddScoped<UsuarioApiClient>();
+            builder.Services.AddScoped<AlumnoInscripcionApiClient>();
 
             builder.Services.AddSingleton<IAuthService, BlazorServerAuthService>();
 
