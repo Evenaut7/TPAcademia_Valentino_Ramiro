@@ -196,6 +196,7 @@
             cursosActualesToolStripMenu.Size = new Size(178, 29);
             cursosActualesToolStripMenu.Text = "Cursos Actuales";
             cursosActualesToolStripMenu.TextAlign = ContentAlignment.MiddleLeft;
+            cursosActualesToolStripMenu.Click += cursosActualesToolStripMenu_Click;
             // 
             // inscripcionCursoToolStripMenu
             // 
