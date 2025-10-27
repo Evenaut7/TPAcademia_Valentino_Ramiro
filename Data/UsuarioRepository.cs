@@ -92,6 +92,7 @@ namespace Data
                 existingUsuario.Privilegio = usuario.Privilegio;
                 existingUsuario.Habilitado = usuario.Habilitado;
                 existingUsuario.PersonaId = usuario.PersonaId;
+                existingUsuario.PlanId = usuario.PlanId;
 
 
                 context.SaveChanges();
@@ -108,6 +109,14 @@ namespace Data
             return context.Usuarios
                 .Include(u => u.Persona)
                 .FirstOrDefault(u => u.Id == userId);
+        }
+
+        public Usuario? GetByAlumnoId(int alumnoId)
+        {
+            using var context = CreateContext();
+            // PersonaId in Usuario is the foreign key to Alumno/Persona
+            return context.Usuarios
+                .FirstOrDefault(u => u.PersonaId == alumnoId);
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Application.Services
                 Clave = usuario.Clave,
                 Salt = usuario.Salt,
                 PersonaId = usuario.PersonaId,
+                PlanId = usuario.PlanId
             };
         }
 
@@ -41,7 +42,8 @@ namespace Application.Services
                 Privilegio = u.Privilegio,
                 Clave = u.Clave,
                 Salt = u.Salt,
-                PersonaId = u.PersonaId
+                PersonaId = u.PersonaId,
+                PlanId = u.PlanId
             }).ToList();
         }
 
@@ -80,6 +82,7 @@ namespace Application.Services
             usuario.Habilitado = dto.Habilitado;
             usuario.Privilegio = dto.Privilegio;
             usuario.PersonaId = dto.PersonaId;
+            usuario.PlanId = dto.PlanId;
 
             // Hashea la clave y genera el salt
             usuario.SetClave(dto.Clave);
@@ -115,7 +118,8 @@ namespace Application.Services
                     Email = dto.Email,
                     Habilitado = dto.Habilitado,
                     Privilegio = dto.Privilegio,
-                    PersonaId = dto.PersonaId
+                    PersonaId = dto.PersonaId,
+                    PlanId = dto.PlanId
                 };
                 usuario.SetClave(dto.Clave);
             }
@@ -131,7 +135,8 @@ namespace Application.Services
                     Privilegio = dto.Privilegio,
                     PersonaId = dto.PersonaId,
                     Clave = usuarioActual.Clave,
-                    Salt = usuarioActual.Salt
+                    Salt = usuarioActual.Salt,
+                    Plan = usuarioActual.Plan
                 };
             }
 

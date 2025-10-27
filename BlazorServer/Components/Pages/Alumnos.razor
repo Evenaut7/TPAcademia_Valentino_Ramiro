@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 @inject AlumnoApiClient AlumnoApiClient
+@inject IAuthService AuthService
 @inject IJSRuntime js
 
 <PageTitle>Alumnos</PageTitle>
@@ -118,6 +119,24 @@ else
     private bool mostrarModal = false;
     private bool esEdicion = false;
     private AlumnoDTO nuevoAlumno = new AlumnoDTO();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Verificar autenticación antes de cargar datos
+            var role = await AuthService.GetUserRoleAsync();
+            if (role == null || role != "Administrador")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            await CargarAlumnos();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
 
     protected override async Task OnInitializedAsync()
     {

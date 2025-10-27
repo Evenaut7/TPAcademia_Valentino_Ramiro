@@ -17,12 +17,14 @@ namespace Domain.Model
         public string Privilegio { get; set; } = "Usuario"; // Valor por defecto "Usuario"
         public int PersonaId { get; set; } // Clave foránea a Persona
         public Persona? Persona { get; set; } = null!; // Propiedad de navegación a Persona
+        public int? PlanId { get; set; } 
+        public Plan? Plan { get; set; }
 
         public Usuario()
         {
         }
 
-        public Usuario(int id, string nombreUsuario, string clave, string salt, string email, bool habilitado, string privilegio, int personaId)
+        public Usuario(int id, string nombreUsuario, string clave, string salt, string email, bool habilitado, string privilegio, int personaId, int? planId)
         {
             Id = id;
             NombreUsuario = nombreUsuario;
@@ -32,6 +34,7 @@ namespace Domain.Model
             Habilitado = habilitado;
             Privilegio = privilegio;
             PersonaId = personaId;
+            PlanId = planId;
         }
 
         // Método para establecer la clave (hasheada)

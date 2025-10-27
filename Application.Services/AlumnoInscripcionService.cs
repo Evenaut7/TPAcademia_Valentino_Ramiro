@@ -13,6 +13,15 @@ namespace Application.Services
     {
         public AlumnoInscripcionDTO Add(AlumnoInscripcionDTO dto)
         {
+            var usuarioRepository = new UsuarioRepository();
+            var comisionRepository = new ComisionRepository();
+            var cursoRepository = new CursoRepository();
+            var usuario = usuarioRepository.GetByAlumnoId(dto.AlumnoId);
+            var curso = cursoRepository.Get(dto.CursoId);
+            var comision = comisionRepository.Get(curso.ComisionId);
+
+            if (usuario.PlanId != comision.PlanId)
+                throw new ArgumentException("No puedes inscribirte en cursos fuera de tu plan.");
             var alumnoInscripcionRepository = new AlumnoInscripcionRepository();
             if (alumnoInscripcionRepository.Exists(dto.AlumnoId, dto.CursoId))
             {

@@ -74,6 +74,12 @@ namespace Data
                 .HasForeignKey<Usuario>(u => u.PersonaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Plan)
+                .WithMany()
+                .HasForeignKey(u => u.PlanId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<AlumnoInscripcion>()
                 .HasOne(ai => ai.Alumno)
                 .WithMany()

@@ -11,5 +11,7 @@
         public bool Habilitado { get; set; }
         public int PersonaId { get; set; }
         public PersonaDTO? Persona { get; set; }
+        public int? PlanId { get; set; }
+        public PlanDTO? Plan { get; set; }
     }
 }

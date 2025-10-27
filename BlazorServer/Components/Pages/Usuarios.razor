@@ -31,6 +31,7 @@ else
                 <th>Email</th>
                 <th>Privilegio</th>
                 <th>Persona</th>
+                <th>Plan</th>
                 <th>Habilitado</th>
                 <th>Opciones</th>
             </tr>
@@ -63,6 +64,16 @@ else
                         <button class="btn btn-danger btn-sm" @onclick="() => EliminarUsuario(usuario.Id)">
                             <i class="bi bi-trash"></i> Eliminar
                         </button>
+                    </td>
+                    <td>
+                        @if (usuario.Plan != null)
+                        {
+                            <span>@usuario.Plan.Descripcion (@GetEspecialidadDescripcion(usuario.Plan.EspecialidadId))</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Sin plan</span>
+                        }
                     </td>
                 </tr>
             }
@@ -114,6 +125,7 @@ else
                                 <option value="Administrador">Administrador</option>
                                 <option value="Docente">Docente</option>
                                 <option value="Alumno">Alumno</option>
+                                <option value="Plan">Plan</option>
                             </InputSelect>
                         </div>
 
@@ -132,6 +144,24 @@ else
                             else
                             {
                                 <p class="text-muted">Cargando personas...</p>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Plan:</label>
+                            @if (listaPlanes != null && listaPlanes.Any())
+                            {
+                                <InputSelect class="form-control" @bind-Value="nuevoUsuario.PlanId">
+                                    <option value="">-- Seleccione un Plan --</option>
+                                    @foreach (var plan in listaPlanes)
+                                    {
+                                        <option value="@plan.Id">@plan.Descripcion (@GetEspecialidadDescripcion(plan.EspecialidadId))</option>
+                                    }
+                                </InputSelect>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Cargando planes...</p>
                             }
                         </div>
 
@@ -159,6 +189,8 @@ else
     private bool mostrarModal = false;
     private bool esEdicion = false;
     private UsuarioDTO nuevoUsuario = new UsuarioDTO();
+    private List<EspecialidadDTO> especialidades = new();
+    private List<PlanDTO> listaPlanes = new();
 
     private class PersonaItem
     {
@@ -170,6 +202,38 @@ else
     {
         await CargarUsuarios();
         await CargarPersonas();
+        await CargarEspecialidades();
+        await CargarPlanes();
+    }
+
+    private async Task CargarPlanes()
+    {
+        try
+        {
+            listaPlanes = (await PlanApiClient.GetAllAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar planes: {ex.Message}");
+        }
+    }
+
+    private async Task CargarEspecialidades()
+    {
+        try
+        {
+            especialidades = (await EspecialidadApiClient.GetAllAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar especialidades: {ex.Message}");
+        }
+    }
+
+    private string GetEspecialidadDescripcion(int especialidadId)
+    {
+        var esp = especialidades.FirstOrDefault(e => e.Id == especialidadId);
+        return esp?.Descripcion ?? "Sin especialidad";
     }
 
     private async Task CargarUsuarios()
@@ -223,6 +287,7 @@ else
                 Email = usuario.Email,
                 Privilegio = usuario.Privilegio,
                 PersonaId = usuario.PersonaId,
+            PlanId = usuario.PlanId,
                 Habilitado = usuario.Habilitado,
                 Clave = "", 
                 Salt = usuario.Salt 
