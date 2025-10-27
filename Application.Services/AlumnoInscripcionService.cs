@@ -22,18 +22,30 @@ namespace Application.Services
 
             if (usuario.PlanId != comision.PlanId)
                 throw new ArgumentException("No puedes inscribirte en cursos fuera de tu plan.");
+
+            if (curso.Cupo <= 0)
+                throw new ArgumentException("No hay cupo disponible para este curso.");
+
             var alumnoInscripcionRepository = new AlumnoInscripcionRepository();
             if (alumnoInscripcionRepository.Exists(dto.AlumnoId, dto.CursoId))
             {
                 throw new ArgumentException($"El alumno con ID '{dto.AlumnoId}' ya está inscrito en el curso con ID '{dto.CursoId}'.");
             }
-            Domain.Model.AlumnoInscripcion alumnoInscripcion = new Domain.Model.AlumnoInscripcion();
-            
-            alumnoInscripcion.Condicion = dto.Condicion;
-            alumnoInscripcion.Nota = dto.Nota;
-            alumnoInscripcion.CursoId = dto.CursoId;
-            alumnoInscripcion.AlumnoId = dto.AlumnoId;
+
+            AlumnoInscripcion alumnoInscripcion = new AlumnoInscripcion
+            {
+                Condicion = dto.Condicion,
+                Nota = dto.Nota,
+                CursoId = dto.CursoId,
+                AlumnoId = dto.AlumnoId
+            };
+
             alumnoInscripcionRepository.Add(alumnoInscripcion);
+
+            // Reduce cupo
+            curso.Cupo -= 1;
+            cursoRepository.Update(curso);
+
             dto.Id = alumnoInscripcion.Id;
             return dto;
         }
@@ -41,6 +53,22 @@ namespace Application.Services
         public bool Delete(int id)
         {
             var alumnoInscripcionRepository = new AlumnoInscripcionRepository();
+            var cursoRepository = new CursoRepository();
+
+            // Obtener la inscripción
+            var inscripcion = alumnoInscripcionRepository.Get(id);
+            if (inscripcion == null)
+                return false;
+
+            // Obtener el curso y aumentar el cupo
+            var curso = cursoRepository.Get(inscripcion.CursoId);
+            if (curso != null)
+            {
+                curso.Cupo += 1;
+                cursoRepository.Update(curso);
+            }
+
+            // Eliminar la inscripción
             return alumnoInscripcionRepository.Delete(id);
         }
 

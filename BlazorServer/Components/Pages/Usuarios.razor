@@ -149,7 +149,11 @@ else
 
                         <div class="mb-3">
                             <label>Plan:</label>
-                            @if (listaPlanes != null && listaPlanes.Any())
+                            @if (esEdicion)
+                            {
+                                <input class="form-control" type="text" value="@GetPlanDescripcion(nuevoUsuario.PlanId)" readonly />
+                            }
+                            else if (listaPlanes != null && listaPlanes.Any())
                             {
                                 <InputSelect class="form-control" @bind-Value="nuevoUsuario.PlanId">
                                     <option value="">-- Seleccione un Plan --</option>
@@ -236,6 +240,14 @@ else
         return esp?.Descripcion ?? "Sin especialidad";
     }
 
+    private string GetPlanDescripcion(int? planId)
+    {
+        if (planId == null) return "Sin plan";
+        var plan = listaPlanes.FirstOrDefault(p => p.Id == planId.Value);
+        if (plan == null) return "Sin plan";
+        return $"{plan.Descripcion} ({GetEspecialidadDescripcion(plan.EspecialidadId)})";
+    }
+
     private async Task CargarUsuarios()
     {
         try
@@ -287,7 +299,7 @@ else
                 Email = usuario.Email,
                 Privilegio = usuario.Privilegio,
                 PersonaId = usuario.PersonaId,
-            PlanId = usuario.PlanId,
+                PlanId = usuario.PlanId,
                 Habilitado = usuario.Habilitado,
                 Clave = "", 
                 Salt = usuario.Salt 
@@ -326,6 +338,18 @@ else
             if (nuevoUsuario.PersonaId == 0)
             {
                 await js.InvokeVoidAsync("alert", "Debe seleccionar una persona");
+                return;
+            }
+
+            // VALIDACIÓN DE PLAN SEGÚN PRIVILEGIO
+            if (nuevoUsuario.Privilegio == "Usuario" && (!nuevoUsuario.PlanId.HasValue || nuevoUsuario.PlanId == 0))
+            {
+                await js.InvokeVoidAsync("alert", "Debe seleccionar un plan para usuarios de tipo 'Usuario'");
+                return;
+            }
+            if (nuevoUsuario.Privilegio == "Administrador" && (nuevoUsuario.PlanId.HasValue && nuevoUsuario.PlanId != 0))
+            {
+                await js.InvokeVoidAsync("alert", "No debe seleccionar un plan para usuarios de tipo 'Administrador'");
                 return;
             }
 

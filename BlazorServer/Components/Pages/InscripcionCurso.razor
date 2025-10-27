@@ -138,9 +138,18 @@ else
                 return;
             }
 
+            // Obtener el usuario actual y su PersonaId (que es el AlumnoId)
+            var usuario = await UsuarioApiClient.GetByIdAsync(userId);
+            if (usuario == null)
+            {
+                errorMessage = "No se pudo obtener el usuario actual.";
+                return;
+            }
+            var alumnoId = usuario.PersonaId;
+
             var inscripcionDto = new AlumnoInscripcionDTO
             {
-                AlumnoId = userId,
+                AlumnoId = alumnoId,
                 CursoId = cursoId,
                 Condicion = "Inscripto",
                 Nota = null
@@ -149,7 +158,6 @@ else
             Console.WriteLine("[DEBUG] Enviando inscripcion...");
             await AlumnoInscripcionApiClient.AddAsync(inscripcionDto);
 
-            // Solo aquí mostramos el mensaje de éxito
             successMessage = "Inscripción realizada correctamente.";
             await CargarCursosAsync();
         }

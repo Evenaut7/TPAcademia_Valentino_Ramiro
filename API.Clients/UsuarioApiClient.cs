@@ -22,6 +22,32 @@ namespace API.Clients
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public static async Task<UsuarioDTO?> GetByIdAsync(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync("usuarios/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<UsuarioDTO>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener usuario con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener usuario con Id {id}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener usuario con Id {id}: {ex.Message}", ex);
+            }
+        }
+
         public static async Task<UsuarioDTO> GetAsync(int id)
         {
             try

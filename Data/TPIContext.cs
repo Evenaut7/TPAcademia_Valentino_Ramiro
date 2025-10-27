@@ -70,8 +70,8 @@ namespace Data
 
             modelBuilder.Entity<Usuario>()
                 .HasOne(u => u.Persona)
-                .WithOne()
-                .HasForeignKey<Usuario>(u => u.PersonaId)
+                .WithMany()
+                .HasForeignKey(u => u.PersonaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Usuario>()

@@ -73,9 +73,6 @@ namespace Application.Services
             if (usuarioRepository.UsernameExists(dto.NombreUsuario))
                 throw new ArgumentException($"Ya existe un usuario con el nombre de usuario '{dto.NombreUsuario}'.");
 
-            if (usuarioRepository.EmailExists(dto.Email))
-                throw new ArgumentException($"Ya existe un usuario con el email '{dto.Email}'.");
-
             var usuario = new Usuario();
             usuario.NombreUsuario = dto.NombreUsuario;
             usuario.Email = dto.Email;
@@ -146,7 +143,16 @@ namespace Application.Services
         public bool Delete(int id)
         {
             var usuarioRepository = new UsuarioRepository();
-            return usuarioRepository.Delete(id);
+            var usuario =  usuarioRepository.Get(id);
+            if (usuario.Privilegio == "Administrador")
+            {
+                return usuarioRepository.Delete(id);
+            }
+            else
+            {
+                usuario.Habilitado = false;
+                return usuarioRepository.Update(usuario);
+            }
         }
 
         public bool ValidarUsuario(string nombreUsuario, string clave)

@@ -115,8 +115,13 @@ namespace Data
         {
             using var context = CreateContext();
             // PersonaId in Usuario is the foreign key to Alumno/Persona
-            return context.Usuarios
+            var usuario = context.Usuarios
                 .FirstOrDefault(u => u.PersonaId == alumnoId);
+
+            if (usuario == null)
+                throw new ArgumentException($"No se encontró un usuario con AlumnoId '{alumnoId}'.");
+
+            return usuario;
         }
     }
 }
