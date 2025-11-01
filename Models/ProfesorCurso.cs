@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Domain.Model
 {
     public class ProfesorCurso
     {
         private string _cargo = string.Empty;
         private int _cursoId;
-        private int _profesorId;
-
+        private int _usuarioId;
         public int Id { get; set; }
-
         public string Cargo
         {
             get => _cargo;
@@ -26,7 +23,6 @@ namespace Domain.Model
                 _cargo = value;
             }
         }
-
         public int CursoId
         {
             get => _cursoId;
@@ -37,31 +33,27 @@ namespace Domain.Model
                 _cursoId = value;
             }
         }
-
-        public int ProfesorId
+        public int UsuarioId
         {
-            get => _profesorId;
+            get => _usuarioId;
             set
             {
                 if (value <= 0)
                     throw new ArgumentException("El ID del profesor debe ser un número positivo.");
-                _profesorId = value;
+                _usuarioId = value;
             }
         }
-
         public Curso Curso { get; set; } = null!;
-        public Profesor Profesor { get; set; } = null!;
-
+        public Usuario Usuario { get; set; } = null!;
         public ProfesorCurso()
         {
         }
-
-        public ProfesorCurso(int id, string cargo, int cursoId, int profesorId)
+        public ProfesorCurso(int id, string cargo, int cursoId, int usuarioId)
         {
             Id = id;
             Cargo = cargo;
             CursoId = cursoId;
-            ProfesorId = profesorId;
+            UsuarioId = usuarioId;
         }
     }
 }

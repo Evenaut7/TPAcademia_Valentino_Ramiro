@@ -7,34 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using DTOs;
 using Data;
+using Domain.Model;
 
 namespace Application.Services
 {
     public class ProfesorCursoService
     {
-        public ProfesorCursoDTO Add(ProfesorCursoDTO dto)
-        {
-            var profesorCursoRepository = new ProfesorCursoRepository();
-            // Validar que no exista otra inscripción para el mismo alumno y curso
-            if (profesorCursoRepository.Exists(dto.ProfesorId, dto.CursoId))
-            {
-                throw new ArgumentException($"El profesor con ID '{dto.ProfesorId}' ya está asignado al curso con ID '{dto.CursoId}'.");
-            }
-            Domain.Model.ProfesorCurso profesorCurso = new Domain.Model.ProfesorCurso();
-            profesorCurso.Cargo = dto.Cargo;
-            profesorCurso.CursoId = dto.CursoId;
-            profesorCurso.ProfesorId = dto.ProfesorId;
-            profesorCursoRepository.Add(profesorCurso);
-            dto.Id = profesorCurso.Id;
-            return dto;
-        }
-
-        public bool Delete(int id)
-        {
-            var profesorCursoRepository = new ProfesorCursoRepository();
-            return profesorCursoRepository.Delete(id);
-        }
-
         public ProfesorCursoDTO? Get(int id)
         {
             var profesorCursoRepository = new ProfesorCursoRepository();
@@ -46,7 +24,7 @@ namespace Application.Services
                 Id = profesorCurso.Id,
                 Cargo = profesorCurso.Cargo,
                 CursoId = profesorCurso.CursoId,
-                ProfesorId = profesorCurso.ProfesorId
+                UsuarioId = profesorCurso.UsuarioId
             };
         }
 
@@ -59,22 +37,57 @@ namespace Application.Services
                 Id = pc.Id,
                 Cargo = pc.Cargo,
                 CursoId = pc.CursoId,
-                ProfesorId = pc.ProfesorId
+                UsuarioId = pc.UsuarioId
             });
         }
 
-        public bool Update(ProfesorCursoDTO dto)
+        public ProfesorCursoDTO Add(ProfesorCursoDTO dto)
+        {
+            var usuarioRepository = new UsuarioRepository();
+            var profesorCursoRepository = new ProfesorCursoRepository();
+
+            // Validar que el usuario existe
+            var usuario = usuarioRepository.Get(dto.UsuarioId);
+            if (usuario == null)
+                throw new ArgumentException($"No existe un usuario con ID '{dto.UsuarioId}'.");
+
+            // Validar que sea profesor
+            if (usuario.Tipo != "Profesor")
+                throw new ArgumentException($"Solo los profesores pueden dictar cursos. El usuario es de tipo '{usuario.Tipo}'.");
+
+            // Validar que no exista otra asignación
+            if (profesorCursoRepository.Exists(dto.UsuarioId, dto.CursoId))
+                throw new ArgumentException($"El profesor con ID '{dto.UsuarioId}' ya está asignado al curso con ID '{dto.CursoId}'.");
+
+            Domain.Model.ProfesorCurso profesorCurso = new Domain.Model.ProfesorCurso();
+            profesorCurso.Cargo = dto.Cargo;
+            profesorCurso.CursoId = dto.CursoId;
+            profesorCurso.UsuarioId = dto.UsuarioId;
+
+            profesorCursoRepository.Add(profesorCurso);
+            dto.Id = profesorCurso.Id;
+            return dto;
+        }
+
+        public void Update(ProfesorCursoDTO dto)
         {
             var profesorCursoRepository = new ProfesorCursoRepository();
             var existingProfesorCurso = profesorCursoRepository.Get(dto.Id);
             if (existingProfesorCurso == null)
-            {
-                return false;
-            }
+                throw new ArgumentException($"No se encontró una asignación de profesor con ID {dto.Id} para actualizar.");
+
             existingProfesorCurso.Cargo = dto.Cargo;
             existingProfesorCurso.CursoId = dto.CursoId;
-            existingProfesorCurso.ProfesorId = dto.ProfesorId;
-            return profesorCursoRepository.Update(existingProfesorCurso);
+            existingProfesorCurso.UsuarioId = dto.UsuarioId;
+
+            if (!profesorCursoRepository.Update(existingProfesorCurso))
+                throw new ArgumentException($"Error al actualizar la asignación de profesor con ID {dto.Id}.");
+        }
+
+        public bool Delete(int id)
+        {
+            var profesorCursoRepository = new ProfesorCursoRepository();
+            return profesorCursoRepository.Delete(id);
         }
     }
 }

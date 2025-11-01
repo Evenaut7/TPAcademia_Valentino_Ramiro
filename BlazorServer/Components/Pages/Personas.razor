@@ -1,0 +1,229 @@
+﻿@page "/personas"
+@rendermode InteractiveServer
+@inject PersonaApiClient PersonaApiClient
+@inject IJSRuntime js
+
+<PageTitle>Personas</PageTitle>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Personas</h3>
+    <button class="btn btn-primary" @onclick="MostrarModal">
+        <i class="bi bi-plus-circle"></i> Nueva Persona
+    </button>
+</div>
+
+@if (personas == null)
+{
+    <p><em>Cargando personas...</em></p>
+}
+else if (!personas.Any())
+{
+    <p>No hay personas registradas.</p>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>DNI</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var persona in personas)
+            {
+                <tr>
+                    <td>@persona.Id</td>
+                    <td>@persona.Nombre</td>
+                    <td>@persona.Apellido</td>
+                    <td>@persona.Dni</td>
+                    <td>@persona.FechaNacimiento.ToShortDateString()</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => ModificarPersona(persona)">
+                            <i class="bi bi-pencil"></i> Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => EliminarPersona(persona.Id)">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (mostrarModal)
+{
+    <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
+    <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(esEdicion ? "Editar Persona" : "Nueva Persona")</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@nuevaPersona" OnValidSubmit="GuardarPersona">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label>Nombre:</label>
+                            <InputText class="form-control" @bind-Value="nuevaPersona.Nombre" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Apellido:</label>
+                            <InputText class="form-control" @bind-Value="nuevaPersona.Apellido" />
+                        </div>
+                        <div class="mb-3">
+                            <label>DNI:</label>
+                            <InputNumber class="form-control" @bind-Value="nuevaPersona.Dni" />
+                        </div>
+                        @if (esEdicion)
+                        {
+                            <div class="mb-3">
+                                <label>Fecha de Nacimiento:</label>
+                                <input class="form-control" type="text" value="@nuevaPersona.FechaNacimiento.ToShortDateString()" readonly />
+                                <small class="form-text text-muted">La fecha de nacimiento no se puede modificar.</small>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-3">
+                                <label>Fecha de Nacimiento:</label>
+                                <InputDate class="form-control" @bind-Value="nuevaPersona.FechaNacimiento" />
+                            </div>
+                        }
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success me-2">Guardar</button>
+                            <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<PersonaDTO>? personas;
+    private bool mostrarModal = false;
+    private bool esEdicion = false;
+    private PersonaDTO nuevaPersona = new PersonaDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarPersonas();
+    }
+
+    private async Task CargarPersonas()
+    {
+        try
+        {
+            var result = await PersonaApiClient.GetAllAsync();
+            personas = result?.ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar personas: {ex.Message}");
+        }
+    }
+
+    private void MostrarModal()
+    {
+        esEdicion = false;
+        nuevaPersona = new PersonaDTO();
+        mostrarModal = true;
+    }
+
+    private void ModificarPersona(PersonaDTO persona)
+    {
+        esEdicion = true;
+        nuevaPersona = new PersonaDTO
+            {
+                Id = persona.Id,
+                Nombre = persona.Nombre,
+                Apellido = persona.Apellido,
+                Dni = persona.Dni
+            };
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+        esEdicion = false;
+    }
+
+    private async Task GuardarPersona()
+    {
+        try
+        {
+            // Validar campos obligatorios
+            if (string.IsNullOrWhiteSpace(nuevaPersona.Nombre))
+            {
+                await js.InvokeVoidAsync("alert", "El nombre es obligatorio");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(nuevaPersona.Apellido))
+            {
+                await js.InvokeVoidAsync("alert", "El apellido es obligatorio");
+                return;
+            }
+            if (nuevaPersona.Dni < 1000000 || nuevaPersona.Dni > 99999999)
+            {
+                await js.InvokeVoidAsync("alert", "El DNI debe tener entre 7 y 8 dígitos");
+                return;
+            }
+            if (!esEdicion && nuevaPersona.FechaNacimiento == default(DateTime))
+            {
+                await js.InvokeVoidAsync("alert", "La fecha de nacimiento es obligatoria");
+                return;
+            }
+            if (!esEdicion && nuevaPersona.FechaNacimiento > DateTime.Today)
+            {
+                await js.InvokeVoidAsync("alert", "La fecha de nacimiento no puede ser en el futuro");
+                return;
+            }
+
+            if (esEdicion)
+            {
+                await PersonaApiClient.UpdateAsync(nuevaPersona);
+                await js.InvokeVoidAsync("alert", "Persona modificada correctamente");
+            }
+            else
+            {
+                await PersonaApiClient.AddAsync(nuevaPersona);
+                await js.InvokeVoidAsync("alert", "Persona creada correctamente");
+            }
+            CerrarModal();
+            await CargarPersonas();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await js.InvokeVoidAsync("alert", $"Error al guardar: {ex.Message}");
+        }
+    }
+
+    private async Task EliminarPersona(int id)
+    {
+        if (await js.InvokeAsync<bool>("confirm", "¿Estás seguro de que deseas eliminar esta persona?"))
+        {
+            try
+            {
+                await PersonaApiClient.DeleteAsync(id);
+                await CargarPersonas();
+                StateHasChanged();
+                await js.InvokeVoidAsync("alert", "Persona eliminada correctamente");
+            }
+            catch (Exception ex)
+            {
+                await js.InvokeVoidAsync("alert", $"Error al eliminar: {ex.Message}");
+            }
+        }
+    }
+}

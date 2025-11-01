@@ -11,6 +11,6 @@ namespace DTOs
         public string Cargo { get; set; } = string.Empty;
         public int Id { get; set; }
         public int CursoId { get; set; }
-        public int ProfesorId { get; set; }
+        public int UsuarioId { get; set; }
     }
 }

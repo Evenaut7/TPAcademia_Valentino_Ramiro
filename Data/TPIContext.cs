@@ -15,10 +15,9 @@ namespace Data
         public DbSet<Comision> Comisiones { get; set; }
         public DbSet<Curso> Cursos { get; set; }
         public DbSet<Persona> Personas { get; set; }
-        public DbSet<Alumno> Alumnos { get; set; }
-        public DbSet<Profesor> Profesores { get; set; }
         public DbSet<AlumnoInscripcion> AlumnosInscripciones { get; set; }
         public DbSet<ProfesorCurso> ProfesoresCursos { get; set; }
+
         public TPIContext()
         {
             this.Database.EnsureCreated();
@@ -41,13 +40,6 @@ namespace Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // Configurar TPH: una sola tabla para Persona, Alumno y Profesor
-            modelBuilder.Entity<Persona>()
-                .HasDiscriminator<string>("TipoPersona")
-                .HasValue<Persona>("Persona")
-                .HasValue<Alumno>("Alumno")
-                .HasValue<Profesor>("Profesor");
 
             // Relaciones
             modelBuilder.Entity<Materia>()
@@ -81,9 +73,9 @@ namespace Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<AlumnoInscripcion>()
-                .HasOne(ai => ai.Alumno)
+                .HasOne(ai => ai.Usuario)
                 .WithMany()
-                .HasForeignKey(ai => ai.AlumnoId)
+                .HasForeignKey(ai => ai.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AlumnoInscripcion>()
@@ -93,9 +85,9 @@ namespace Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ProfesorCurso>()
-                .HasOne(pc => pc.Profesor)
+                .HasOne(pc => pc.Usuario)
                 .WithMany()
-                .HasForeignKey(pc => pc.ProfesorId)
+                .HasForeignKey(pc => pc.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ProfesorCurso>()
@@ -104,8 +96,7 @@ namespace Data
                 .HasForeignKey(pc => pc.CursoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
-
+            // Datos semilla
             modelBuilder.Entity<Persona>().HasData(new Persona
             {
                 Id = 1,
@@ -125,8 +116,10 @@ namespace Data
                 Clave = adminClave,
                 Salt = adminSalt,
                 Habilitado = true,
-                Privilegio = "Administrador",
-                PersonaId = 1
+                Tipo = "Administrador",
+                Legajo = string.Empty,
+                PersonaId = 1,
+                PlanId = null
             });
         }
 
@@ -139,7 +132,5 @@ namespace Data
                 return Convert.ToBase64String(hashBytes);
             }
         }
-
-
     }
 }

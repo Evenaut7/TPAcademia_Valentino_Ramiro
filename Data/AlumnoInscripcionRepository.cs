@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data;
 using Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,14 +15,13 @@ namespace Data
         {
             return new TPIContext();
         }
-        
+
         public void Add(AlumnoInscripcion alumnoInscripcion)
         {
             using var context = CreateContext();
             context.AlumnosInscripciones.Add(alumnoInscripcion);
             context.SaveChanges();
         }
-
         public bool Delete(int id)
         {
             using var context = CreateContext();
@@ -34,32 +34,29 @@ namespace Data
             }
             return false;
         }
-
         public AlumnoInscripcion? Get(int id)
         {
             using var context = CreateContext();
             return context.AlumnosInscripciones
-                .Include(ai => ai.Alumno)
+                .Include(ai => ai.Usuario)
                 .Include(ai => ai.Curso)
                 .FirstOrDefault(ai => ai.Id == id);
         }
-
         public IEnumerable<AlumnoInscripcion> GetAll()
         {
             using var context = CreateContext();
             return context.AlumnosInscripciones
-                .Include(ai => ai.Alumno)
+                .Include(ai => ai.Usuario)
                 .Include(ai => ai.Curso)
                 .ToList();
         }
-
         public bool Update(AlumnoInscripcion alumnoInscripcion)
         {
             using var context = CreateContext();
             var existingAlumnoInscripcion = context.AlumnosInscripciones.Find(alumnoInscripcion.Id);
             if (existingAlumnoInscripcion != null)
             {
-                existingAlumnoInscripcion.AlumnoId = alumnoInscripcion.AlumnoId;
+                existingAlumnoInscripcion.UsuarioId = alumnoInscripcion.UsuarioId;
                 existingAlumnoInscripcion.CursoId = alumnoInscripcion.CursoId;
                 existingAlumnoInscripcion.Condicion = alumnoInscripcion.Condicion;
                 existingAlumnoInscripcion.Nota = alumnoInscripcion.Nota;
@@ -68,20 +65,18 @@ namespace Data
             }
             return false;
         }
-
-        public bool Exists(int alumnoId, int cursoId)
+        public bool Exists(int usuarioId, int cursoId)
         {
             using var context = CreateContext();
-            return context.AlumnosInscripciones.Any(ai => ai.AlumnoId == alumnoId && ai.CursoId == cursoId);
+            return context.AlumnosInscripciones.Any(ai => ai.UsuarioId == usuarioId && ai.CursoId == cursoId);
         }
-
-        public IEnumerable<AlumnoInscripcion> GetByAlumnoId(int alumnoId)
+        public IEnumerable<AlumnoInscripcion> GetByUsuarioId(int usuarioId)
         {
             using var context = CreateContext();
             return context.AlumnosInscripciones
-                .Include(ai => ai.Alumno)
+                .Include(ai => ai.Usuario)
                 .Include(ai => ai.Curso)
-                .Where(ai => ai.AlumnoId == alumnoId)
+                .Where(ai => ai.UsuarioId == usuarioId)
                 .ToList();
         }
     }

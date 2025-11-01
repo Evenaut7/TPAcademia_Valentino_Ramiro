@@ -20,7 +20,8 @@ namespace Application.Services
                 NombreUsuario = usuario.NombreUsuario,
                 Email = usuario.Email,
                 Habilitado = usuario.Habilitado,
-                Privilegio = usuario.Privilegio,
+                Tipo = usuario.Tipo,
+                Legajo = usuario.Legajo,
                 Clave = usuario.Clave,
                 Salt = usuario.Salt,
                 PersonaId = usuario.PersonaId,
@@ -39,7 +40,8 @@ namespace Application.Services
                 NombreUsuario = u.NombreUsuario,
                 Email = u.Email,
                 Habilitado = u.Habilitado,
-                Privilegio = u.Privilegio,
+                Tipo = u.Tipo,
+                Legajo = u.Legajo,
                 Clave = u.Clave,
                 Salt = u.Salt,
                 PersonaId = u.PersonaId,
@@ -62,7 +64,7 @@ namespace Application.Services
             }
             else
             {
-                return usuario.Privilegio;
+                return usuario.Tipo;
             }
         }
 
@@ -73,11 +75,15 @@ namespace Application.Services
             if (usuarioRepository.UsernameExists(dto.NombreUsuario))
                 throw new ArgumentException($"Ya existe un usuario con el nombre de usuario '{dto.NombreUsuario}'.");
 
+            if (usuarioRepository.EmailExists(dto.Email))
+                throw new ArgumentException($"Ya existe un usuario con el email '{dto.Email}'.");
+
             var usuario = new Usuario();
             usuario.NombreUsuario = dto.NombreUsuario;
             usuario.Email = dto.Email;
             usuario.Habilitado = dto.Habilitado;
-            usuario.Privilegio = dto.Privilegio;
+            usuario.Tipo = dto.Tipo;
+            usuario.Legajo = dto.Legajo;
             usuario.PersonaId = dto.PersonaId;
             usuario.PlanId = dto.PlanId;
 
@@ -114,7 +120,8 @@ namespace Application.Services
                     NombreUsuario = dto.NombreUsuario,
                     Email = dto.Email,
                     Habilitado = dto.Habilitado,
-                    Privilegio = dto.Privilegio,
+                    Tipo = dto.Tipo,
+                    Legajo = dto.Legajo,
                     PersonaId = dto.PersonaId,
                     PlanId = dto.PlanId
                 };
@@ -129,8 +136,10 @@ namespace Application.Services
                     NombreUsuario = dto.NombreUsuario,
                     Email = dto.Email,
                     Habilitado = dto.Habilitado,
-                    Privilegio = dto.Privilegio,
+                    Tipo = dto.Tipo,
+                    Legajo = dto.Legajo,
                     PersonaId = dto.PersonaId,
+                    PlanId = dto.PlanId,
                     Clave = usuarioActual.Clave,
                     Salt = usuarioActual.Salt,
                     Plan = usuarioActual.Plan
@@ -143,8 +152,11 @@ namespace Application.Services
         public bool Delete(int id)
         {
             var usuarioRepository = new UsuarioRepository();
-            var usuario =  usuarioRepository.Get(id);
-            if (usuario.Privilegio == "Administrador")
+            var usuario = usuarioRepository.Get(id);
+            if (usuario == null)
+                return false;
+
+            if (usuario.Tipo == "Administrador")
             {
                 return usuarioRepository.Delete(id);
             }
@@ -158,8 +170,12 @@ namespace Application.Services
         public bool ValidarUsuario(string nombreUsuario, string clave)
         {
             var usuarioRepository = new UsuarioRepository();
-            var usuarios = usuarioRepository.GetAll();
-            return usuarios.Any(u => u.NombreUsuario.Equals(nombreUsuario, StringComparison.OrdinalIgnoreCase) && u.Clave == clave);
+            var usuario = usuarioRepository.GetByNombreUsuario(nombreUsuario);
+
+            if (usuario == null)
+                return false;
+
+            return usuario.ValidarClave(clave);
         }
     }
 }

@@ -195,7 +195,7 @@ namespace API.Clients
             try
             {
                 UsuarioDTO usuario = await GetAsync(userId);
-                return usuario.Privilegio;
+                return usuario.Tipo;
             }
             catch (Exception ex)
             {

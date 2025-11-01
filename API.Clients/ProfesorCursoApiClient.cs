@@ -33,16 +33,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener ProfesorCurso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener profesor-curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener ProfesorCurso con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener profesor-curso con Id {id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener ProfesorCurso con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener profesor-curso con Id {id}: {ex.Message}", ex);
             }
         }
 
@@ -50,7 +50,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("profesoresCursos");
+                HttpResponseMessage response = await client.GetAsync("/profesoresCursos");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -59,38 +59,42 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de ProfesorCurso. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al obtener lista de profesor-cursos. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de ProfesorCurso: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al obtener lista de profesor-cursos: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de ProfesorCurso: {ex.Message}", ex);
+                throw new Exception($"Timeout al obtener lista de profesor-cursos: {ex.Message}", ex);
             }
         }
 
-        public static async Task AddAsync(ProfesorCursoDTO profesorCurso)
+        public static async Task<ProfesorCursoDTO> AddAsync(ProfesorCursoDTO profesorCurso)
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("profesoresCursos", profesorCurso);
+                HttpResponseMessage response = await client.PostAsJsonAsync("/profesoresCursos", profesorCurso);
 
-                if (!response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<ProfesorCursoDTO>();
+                }
+                else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al crear ProfesorCurso. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al crear profesor-curso. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al crear ProfesorCurso: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al crear profesor-curso: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al crear ProfesorCurso: {ex.Message}", ex);
+                throw new Exception($"Timeout al crear profesor-curso: {ex.Message}", ex);
             }
         }
 
@@ -103,16 +107,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar ProfesorCurso con Id {profesorCurso.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al actualizar profesor-curso con Id {profesorCurso.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar ProfesorCurso con Id {profesorCurso.Id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al actualizar profesor-curso con Id {profesorCurso.Id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar ProfesorCurso con Id {profesorCurso.Id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al actualizar profesor-curso con Id {profesorCurso.Id}: {ex.Message}", ex);
             }
         }
 
@@ -125,16 +129,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al eliminar ProfesorCurso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al eliminar profesor-curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al eliminar ProfesorCurso con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al eliminar profesor-curso con Id {id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al eliminar ProfesorCurso con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al eliminar profesor-curso con Id {id}: {ex.Message}", ex);
             }
         }
     }

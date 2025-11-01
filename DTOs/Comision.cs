@@ -9,7 +9,7 @@ namespace DTOs
     public class ComisionDTO
     {
         public int Id { get; set; }
-        public string Nombre { get; set; }
+        public string Nombre { get; set; } = string.Empty;
         public int AnioEspecialidad { get; set; }
         public int PlanId{ get; set; }
 

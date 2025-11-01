@@ -16,14 +16,12 @@ namespace Data
         {
             return new TPIContext();
         }
-
         public void Add(ProfesorCurso profesorCurso)
         {
             using var context = CreateContext();
             context.ProfesoresCursos.Add(profesorCurso);
             context.SaveChanges();
         }
-
         public bool Delete(int id)
         {
             using var context = CreateContext();
@@ -36,25 +34,22 @@ namespace Data
             }
             return false;
         }
-
         public ProfesorCurso? Get(int id)
         {
             using var context = CreateContext();
             return context.ProfesoresCursos
-                .Include(pc => pc.Profesor)
+                .Include(pc => pc.Usuario)
                 .Include(pc => pc.Curso)
                 .FirstOrDefault(pc => pc.Id == id);
         }
-
         public IEnumerable<ProfesorCurso> GetAll()
         {
             using var context = CreateContext();
             return context.ProfesoresCursos
-                .Include(pc => pc.Profesor)
+                .Include(pc => pc.Usuario)
                 .Include(pc => pc.Curso)
                 .ToList();
         }
-
         public bool Update(ProfesorCurso profesorCurso)
         {
             using var context = CreateContext();
@@ -63,19 +58,26 @@ namespace Data
             {
                 existingProfesorCurso.Cargo = profesorCurso.Cargo;
                 existingProfesorCurso.CursoId = profesorCurso.CursoId;
-                existingProfesorCurso.ProfesorId = profesorCurso.ProfesorId;
+                existingProfesorCurso.UsuarioId = profesorCurso.UsuarioId;
                 context.SaveChanges();
                 return true;
             }
             return false;
         }
-
-        public bool Exists(int profesorId, int cursoId)
+        public bool Exists(int usuarioId, int cursoId)
         {
             using var context = CreateContext();
             return context.ProfesoresCursos
-                .Any(pc => pc.ProfesorId == profesorId && pc.CursoId == cursoId);
+                .Any(pc => pc.UsuarioId == usuarioId && pc.CursoId == cursoId);
         }
-
+        public IEnumerable<ProfesorCurso> GetByUsuarioId(int usuarioId)
+        {
+            using var context = CreateContext();
+            return context.ProfesoresCursos
+                .Include(pc => pc.Usuario)
+                .Include(pc => pc.Curso)
+                .Where(pc => pc.UsuarioId == usuarioId)
+                .ToList();
+        }
     }
 }

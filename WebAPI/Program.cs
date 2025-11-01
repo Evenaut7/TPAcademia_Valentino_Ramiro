@@ -44,8 +44,7 @@ namespace WebAPI
             app.MapEspecialidadEndpoints();
             app.MapComisionEndpoints();
             app.MapCursoEndpoints();
-            app.MapAlumnoEndpints();
-            app.MapProfesorEndpoints();
+            app.MapPersonaEndpoints();
             app.MapAlumnoInscripcionEndpoints();
             app.MapProfesorCursoEndpoints();
             app.MapAuthEndpoints();

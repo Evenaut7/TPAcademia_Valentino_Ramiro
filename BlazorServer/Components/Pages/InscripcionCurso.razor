@@ -1,6 +1,7 @@
 ﻿@page "/inscripcion-curso"
 @rendermode InteractiveServer
 @inject IAuthService AuthService
+@inject UsuarioApiClient UsuarioApiClient
 @inject CursoApiClient CursoApiClient
 @inject MateriaApiClient MateriaApiClient
 @inject ComisionApiClient ComisionApiClient
@@ -89,7 +90,7 @@ else
             int userId = await AuthService.GetUserIdAsync();
             var inscripciones = await AlumnoInscripcionApiClient.GetAllAsync();
             var cursosInscriptoIds = inscripciones
-                .Where(i => i.AlumnoId == userId)
+                .Where(i => i.UsuarioId == userId)
                 .Select(i => i.CursoId)
                 .ToHashSet();
 
@@ -98,13 +99,13 @@ else
             cursos = listaCursos
                 .Where(c => c.AnioCalendario == anioActual && c.Cupo > 0 && !cursosInscriptoIds.Contains(c.Id))
                 .Select(c => new CursoViewModel
-                {
-                    Id = c.Id,
-                    AnioCalendario = c.AnioCalendario,
-                    Cupo = c.Cupo,
-                    Materia = listaMaterias.FirstOrDefault(m => m.Id == c.MateriaId)?.Descripcion ?? "Materia no encontrada",
-                    Comision = listaComisiones.FirstOrDefault(co => co.Id == c.ComisionId)?.Nombre ?? "Comisión no encontrada"
-                })
+                    {
+                        Id = c.Id,
+                        AnioCalendario = c.AnioCalendario,
+                        Cupo = c.Cupo,
+                        Materia = listaMaterias.FirstOrDefault(m => m.Id == c.MateriaId)?.Descripcion ?? "Materia no encontrada",
+                        Comision = listaComisiones.FirstOrDefault(co => co.Id == c.ComisionId)?.Nombre ?? "Comisión no encontrada"
+                    })
                 .ToList();
         }
         catch (Exception ex)
@@ -132,28 +133,27 @@ else
 
             Console.WriteLine($"[DEBUG] userId={userId}, role={role}");
 
-            if (role != "Usuario")
+            if (role != "Alumno")
             {
                 errorMessage = "Solo los alumnos pueden inscribirse en cursos.";
                 return;
             }
 
-            // Obtener el usuario actual y su PersonaId (que es el AlumnoId)
+            // Obtener el usuario actual
             var usuario = await UsuarioApiClient.GetByIdAsync(userId);
             if (usuario == null)
             {
                 errorMessage = "No se pudo obtener el usuario actual.";
                 return;
             }
-            var alumnoId = usuario.PersonaId;
 
             var inscripcionDto = new AlumnoInscripcionDTO
-            {
-                AlumnoId = alumnoId,
-                CursoId = cursoId,
-                Condicion = "Inscripto",
-                Nota = null
-            };
+                {
+                    UsuarioId = userId,
+                    CursoId = cursoId,
+                    Condicion = "Inscripto",
+                    Nota = null
+                };
 
             Console.WriteLine("[DEBUG] Enviando inscripcion...");
             await AlumnoInscripcionApiClient.AddAsync(inscripcionDto);

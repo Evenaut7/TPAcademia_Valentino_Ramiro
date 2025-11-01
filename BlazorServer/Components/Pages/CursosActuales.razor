@@ -68,11 +68,11 @@ else
     private bool isProcessing = false;
     private string? errorMessage;
     private string? successMessage;
-    private int alumnoId;
+    private int usuarioId;
 
     protected override async Task OnInitializedAsync()
     {
-        alumnoId = await AuthService.GetUserIdAsync();
+        usuarioId = await AuthService.GetUserIdAsync();
         await CargarMisCursosAsync();
     }
 
@@ -91,7 +91,7 @@ else
             var listaComisiones = await ComisionApiClient.GetAllAsync();
 
             misCursos = listaInscripciones
-                .Where(insc => insc.AlumnoId == alumnoId)
+                .Where(insc => insc.UsuarioId == usuarioId)
                 .Select(insc =>
                 {
                     var curso = listaCursos.FirstOrDefault(c => c.Id == insc.CursoId);
@@ -99,14 +99,14 @@ else
                     var comision = listaComisiones.FirstOrDefault(co => co.Id == curso?.ComisionId);
 
                     return new CursoActualViewModel
-                    {
-                        InscripcionId = insc.Id,
-                        Materia = materia?.Descripcion ?? "Materia no encontrada",
-                        Comision = comision?.Nombre ?? "Comisión no encontrada",
-                        AnioCalendario = curso?.AnioCalendario ?? 0,
-                        Condicion = insc.Condicion,
-                        Nota = insc.Nota.HasValue ? insc.Nota.Value.ToString("F2") : "-"
-                    };
+                        {
+                            InscripcionId = insc.Id,
+                            Materia = materia?.Descripcion ?? "Materia no encontrada",
+                            Comision = comision?.Nombre ?? "Comisión no encontrada",
+                            AnioCalendario = curso?.AnioCalendario ?? 0,
+                            Condicion = insc.Condicion,
+                            Nota = insc.Nota.HasValue ? insc.Nota.Value.ToString("F2") : "-"
+                        };
                 })
                 .ToList();
         }

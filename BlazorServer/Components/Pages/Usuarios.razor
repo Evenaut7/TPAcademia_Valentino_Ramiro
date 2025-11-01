@@ -29,7 +29,7 @@ else
                 <th>ID</th>
                 <th>Nombre Usuario</th>
                 <th>Email</th>
-                <th>Privilegio</th>
+                <th>Tipo</th>
                 <th>Persona</th>
                 <th>Plan</th>
                 <th>Habilitado</th>
@@ -44,9 +44,10 @@ else
                     <td>@usuario.NombreUsuario</td>
                     <td>@usuario.Email</td>
                     <td>
-                        <span class="badge bg-info">@usuario.Privilegio</span>
+                        <span class="badge bg-info">@usuario.Tipo</span>
                     </td>
                     <td>@GetPersonaNombre(usuario.PersonaId)</td>
+                    <td>@GetPlanDescripcion(usuario.PlanId)</td>
                     <td>
                         @if (usuario.Habilitado)
                         {
@@ -65,16 +66,6 @@ else
                             <i class="bi bi-trash"></i> Eliminar
                         </button>
                     </td>
-                    <td>
-                        @if (usuario.Plan != null)
-                        {
-                            <span>@usuario.Plan.Descripcion (@GetEspecialidadDescripcion(usuario.Plan.EspecialidadId))</span>
-                        }
-                        else
-                        {
-                            <span class="text-muted">Sin plan</span>
-                        }
-                    </td>
                 </tr>
             }
         </tbody>
@@ -85,7 +76,7 @@ else
 {
     <div class="modal-backdrop fade show" style="z-index: 1040;"></div>
     <div class="modal fade show d-block" tabindex="-1" style="z-index: 1050;">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">@(esEdicion ? "Editar Usuario" : "Nuevo Usuario")</h5>
@@ -119,25 +110,29 @@ else
                         </div>
 
                         <div class="mb-3">
-                            <label>Privilegio:</label>
-                            <InputSelect class="form-control" @bind-Value="nuevoUsuario.Privilegio">
-                                <option value="Usuario">Usuario</option>
+                            <label>Tipo:</label>
+                            <InputSelect class="form-control" @bind-Value="nuevoUsuario.Tipo" @onchange="ActualizarCamposCargo">
+                                <option value="">-- Seleccione un tipo --</option>
                                 <option value="Administrador">Administrador</option>
-                                <option value="Docente">Docente</option>
+                                <option value="Profesor">Profesor</option>
                                 <option value="Alumno">Alumno</option>
-                                <option value="Plan">Plan</option>
                             </InputSelect>
                         </div>
 
                         <div class="mb-3">
-                            <label>Alumno:</label>
+                            <label>Legajo:</label>
+                            <InputText class="form-control" @bind-Value="nuevoUsuario.Legajo" placeholder="Opcional" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Persona:</label>
                             @if (listaPersonas != null && listaPersonas.Any())
                             {
                                 <InputSelect class="form-control" @bind-Value="nuevoUsuario.PersonaId">
-                                    <option value="0">-- Seleccione un Alumno --</option>
+                                    <option value="0">-- Seleccione una Persona --</option>
                                     @foreach (var persona in listaPersonas)
                                     {
-                                        <option value="@persona.Id">@persona.Nombre</option>
+                                        <option value="@persona.Id">@persona.Nombre @persona.Apellido (DNI: @persona.Dni)</option>
                                     }
                                 </InputSelect>
                             }
@@ -156,7 +151,7 @@ else
                             else if (listaPlanes != null && listaPlanes.Any())
                             {
                                 <InputSelect class="form-control" @bind-Value="nuevoUsuario.PlanId">
-                                    <option value="">-- Seleccione un Plan --</option>
+                                    <option value="">-- Seleccione un Plan (Opcional) --</option>
                                     @foreach (var plan in listaPlanes)
                                     {
                                         <option value="@plan.Id">@plan.Descripcion (@GetEspecialidadDescripcion(plan.EspecialidadId))</option>
@@ -200,6 +195,8 @@ else
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
+        public string Apellido { get; set; } = string.Empty;
+        public long Dni { get; set; }
     }
 
     protected override async Task OnInitializedAsync()
@@ -242,7 +239,7 @@ else
 
     private string GetPlanDescripcion(int? planId)
     {
-        if (planId == null) return "Sin plan";
+        if (planId == null || planId == 0) return "Sin plan";
         var plan = listaPlanes.FirstOrDefault(p => p.Id == planId.Value);
         if (plan == null) return "Sin plan";
         return $"{plan.Descripcion} ({GetEspecialidadDescripcion(plan.EspecialidadId)})";
@@ -266,10 +263,16 @@ else
     {
         try
         {
-            var listaAlumnos = await AlumnoApiClient.GetAllAsync();
+            var listaPersonasApi = await PersonaApiClient.GetAllAsync();
 
-            listaPersonas = listaAlumnos
-                .Select(a => new PersonaItem { Id = a.Id, Nombre = $"{a.Nombre} {a.Apellido}" })
+            listaPersonas = listaPersonasApi
+                .Select(p => new PersonaItem
+                    {
+                        Id = p.Id,
+                        Nombre = p.Nombre,
+                        Apellido = p.Apellido,
+                        Dni = p.Dni
+                    })
                 .ToList();
         }
         catch (Exception ex)
@@ -284,7 +287,7 @@ else
         nuevoUsuario = new UsuarioDTO
             {
                 Habilitado = true,
-                Privilegio = "Usuario"
+                Tipo = "Alumno"
             };
         mostrarModal = true;
     }
@@ -297,12 +300,13 @@ else
                 Id = usuario.Id,
                 NombreUsuario = usuario.NombreUsuario,
                 Email = usuario.Email,
-                Privilegio = usuario.Privilegio,
+                Tipo = usuario.Tipo,
+                Legajo = usuario.Legajo,
                 PersonaId = usuario.PersonaId,
                 PlanId = usuario.PlanId,
                 Habilitado = usuario.Habilitado,
-                Clave = "", 
-                Salt = usuario.Salt 
+                Clave = "",
+                Salt = usuario.Salt
             };
         mostrarModal = true;
     }
@@ -311,6 +315,11 @@ else
     {
         mostrarModal = false;
         esEdicion = false;
+    }
+
+    private void ActualizarCamposCargo(ChangeEventArgs e)
+    {
+        StateHasChanged();
     }
 
     private async Task GuardarUsuario()
@@ -335,23 +344,19 @@ else
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(nuevoUsuario.Tipo))
+            {
+                await js.InvokeVoidAsync("alert", "Debe seleccionar un tipo de usuario");
+                return;
+            }
+
             if (nuevoUsuario.PersonaId == 0)
             {
                 await js.InvokeVoidAsync("alert", "Debe seleccionar una persona");
                 return;
             }
 
-            // VALIDACIÓN DE PLAN SEGÚN PRIVILEGIO
-            if (nuevoUsuario.Privilegio == "Usuario" && (!nuevoUsuario.PlanId.HasValue || nuevoUsuario.PlanId == 0))
-            {
-                await js.InvokeVoidAsync("alert", "Debe seleccionar un plan para usuarios de tipo 'Usuario'");
-                return;
-            }
-            if (nuevoUsuario.Privilegio == "Administrador" && (nuevoUsuario.PlanId.HasValue && nuevoUsuario.PlanId != 0))
-            {
-                await js.InvokeVoidAsync("alert", "No debe seleccionar un plan para usuarios de tipo 'Administrador'");
-                return;
-            }
+
 
             if (esEdicion)
             {
@@ -396,6 +401,6 @@ else
     {
         if (listaPersonas == null) return "No asignado";
         var persona = listaPersonas.FirstOrDefault(p => p.Id == personaId);
-        return persona?.Nombre ?? "No asignado";
+        return persona != null ? $"{persona.Nombre} {persona.Apellido}" : "No asignado";
     }
 }

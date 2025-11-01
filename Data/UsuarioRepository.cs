@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace Data
 {
     public class UsuarioRepository
@@ -11,14 +10,12 @@ namespace Data
         {
             return new TPIContext();
         }
-
         public void Add(Usuario usuario)
         {
             using var context = CreateContext();
             context.Usuarios.Add(usuario);
             context.SaveChanges();
         }
-
         public bool Delete(int id)
         {
             using var context = CreateContext();
@@ -31,54 +28,51 @@ namespace Data
             }
             return false;
         }
-
         public Usuario? Get(int id)
         {
             using var context = CreateContext();
             return context.Usuarios
+                .Include(u => u.Persona)
+                .Include(u => u.Plan)
                 .FirstOrDefault(u => u.Id == id);
         }
-
         public IEnumerable<Usuario> GetAll()
         {
             using var context = CreateContext();
-            return context.Usuarios.ToList();
+            return context.Usuarios
+                .Include(u => u.Persona)
+                .Include(u => u.Plan)
+                .ToList();
         }
-
         public bool UsernameExists(string username, int? excludeId = null)
         {
             using var context = CreateContext();
             var query = context.Usuarios
                 .Where(u => u.NombreUsuario.ToLower() == username.ToLower());
-
             if (excludeId.HasValue)
             {
                 query = query.Where(u => u.Id != excludeId.Value);
             }
-
             return query.Any();
         }
-
         public bool EmailExists(string email, int? excludeId = null)
         {
             using var context = CreateContext();
             var query = context.Usuarios
                 .Where(u => u.Email.ToLower() == email.ToLower());
-
             if (excludeId.HasValue)
             {
                 query = query.Where(u => u.Id != excludeId.Value);
             }
-
             return query.Any();
         }
-
         public Usuario? GetByNombreUsuario(string nombreUsuario)
         {
             using var context = CreateContext();
-            return context.Usuarios.FirstOrDefault(u => u.NombreUsuario == nombreUsuario && u.Habilitado);
+            return context.Usuarios
+                .Include(u => u.Persona)
+                .FirstOrDefault(u => u.NombreUsuario == nombreUsuario && u.Habilitado);
         }
-
         public bool Update(Usuario usuario)
         {
             using var context = CreateContext();
@@ -89,38 +83,31 @@ namespace Data
                 existingUsuario.Email = usuario.Email;
                 existingUsuario.Clave = usuario.Clave;
                 existingUsuario.Salt = usuario.Salt;
-                existingUsuario.Privilegio = usuario.Privilegio;
+                existingUsuario.Tipo = usuario.Tipo;
+                existingUsuario.Legajo = usuario.Legajo;
                 existingUsuario.Habilitado = usuario.Habilitado;
                 existingUsuario.PersonaId = usuario.PersonaId;
                 existingUsuario.PlanId = usuario.PlanId;
-
-
                 context.SaveChanges();
                 return true;
             }
             return false;
         }
-
         public Usuario? GetUserRole(int userId)
         {
             using var context = CreateContext();
-
-            // Include the Persona navigation property
             return context.Usuarios
                 .Include(u => u.Persona)
                 .FirstOrDefault(u => u.Id == userId);
         }
-
-        public Usuario? GetByAlumnoId(int alumnoId)
+        public Usuario? GetByPersonaId(int personaId)
         {
             using var context = CreateContext();
-            // PersonaId in Usuario is the foreign key to Alumno/Persona
             var usuario = context.Usuarios
-                .FirstOrDefault(u => u.PersonaId == alumnoId);
-
+                .Include(u => u.Persona)
+                .FirstOrDefault(u => u.PersonaId == personaId);
             if (usuario == null)
-                throw new ArgumentException($"No se encontró un usuario con AlumnoId '{alumnoId}'.");
-
+                throw new ArgumentException($"No se encontró un usuario con PersonaId '{personaId}'.");
             return usuario;
         }
     }
