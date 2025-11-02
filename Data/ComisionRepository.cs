@@ -50,11 +50,12 @@ namespace Data
                 .Include(c => c.Plan)
                 .ToList();
         }
-
-        public bool NombreExists(string nombre, int? excludeId = null)
+        public bool NombreExists(string nombre, int planId, int? excludeId = null)
         {
             using var context = CreateContext();
-            var query = context.Comisiones.Where(c => c.Nombre.ToLower() == nombre.ToLower());
+            var query = context.Comisiones.Where(c =>
+                c.Nombre.ToLower() == nombre.ToLower() &&
+                c.PlanId == planId);
             if (excludeId.HasValue)
             {
                 query = query.Where(c => c.Id != excludeId.Value);

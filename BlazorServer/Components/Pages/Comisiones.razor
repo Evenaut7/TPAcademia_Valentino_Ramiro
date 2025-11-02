@@ -75,7 +75,15 @@ else
                         </div>
                         <div class="mb-3">
                             <label>Año Especialidad:</label>
-                            <InputNumber class="form-control" @bind-Value="nuevaComision.AnioEspecialidad" min="1" />
+                            <InputSelect class="form-control" @bind-Value="nuevaComision.AnioEspecialidad">
+                                <option value="">-- Seleccione un año --</option>
+                                <option value="Primero">Primero</option>
+                                <option value="Segundo">Segundo</option>
+                                <option value="Tercero">Tercero</option>
+                                <option value="Cuarto">Cuarto</option>
+                                <option value="Quinto">Quinto</option>
+                                <option value="Sexto">Sexto</option>
+                            </InputSelect>
                         </div>
                         <div class="mb-3">
                             <label>Plan:</label>
@@ -124,6 +132,12 @@ else
         {
             var result = await ComisionApiClient.GetAllAsync();
             comisiones = result?.ToList();
+
+            // Log temporal para depuración
+            foreach (var c in comisiones ?? Enumerable.Empty<ComisionDTO>())
+            {
+                Console.WriteLine($"Id: {c.Id}, Nombre: {c.Nombre}, Año: {c.AnioEspecialidad}, PlanId: {c.PlanId}");
+            }
         }
         catch (Exception ex)
         {
@@ -179,11 +193,19 @@ else
                 await js.InvokeVoidAsync("alert", "El nombre es obligatorio");
                 return;
             }
-            if (nuevaComision.AnioEspecialidad <= 0)
+            if (string.IsNullOrWhiteSpace(nuevaComision.AnioEspecialidad))
             {
-                await js.InvokeVoidAsync("alert", "El año de especialidad debe ser mayor a 0");
+                await js.InvokeVoidAsync("alert", "El año de especialidad es obligatorio");
                 return;
             }
+
+            var aniosValidos = new[] { "Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto" };
+            if (!aniosValidos.Contains(nuevaComision.AnioEspecialidad, StringComparer.OrdinalIgnoreCase))
+            {
+                await js.InvokeVoidAsync("alert", "El año de especialidad debe ser: Primero, Segundo, Tercero, Cuarto, Quinto o Sexto");
+                return;
+            }
+
             if (nuevaComision.PlanId == 0)
             {
                 await js.InvokeVoidAsync("alert", "Debe seleccionar un plan");

@@ -46,9 +46,9 @@ namespace Application.Services
         {
             var comisionRepository = new ComisionRepository();
             // Validar que no exista otra comisión con el mismo nombre
-            if (comisionRepository.NombreExists(dto.Nombre))
+            if (comisionRepository.NombreExists(dto.Nombre, dto.PlanId))
             {
-                throw new ArgumentException($"Ya existe una comisión con el nombre '{dto.Nombre}'.");
+                throw new ArgumentException($"Ya existe una comisión con el nombre '{dto.Nombre}', para el plan '{dto.PlanId}'.");
             }
             Comision comision = new Comision(0, dto.Nombre, dto.AnioEspecialidad, dto.PlanId);
             comisionRepository.Add(comision);
@@ -60,9 +60,9 @@ namespace Application.Services
         {
             var comisionRepository = new ComisionRepository();
             // Validar que no exista otra comisión con el mismo nombre (excluyendo la comisión actual)
-            if (comisionRepository.NombreExists(dto.Nombre, dto.Id))
+            if (comisionRepository.NombreExists(dto.Nombre, dto.PlanId))
             {
-                throw new ArgumentException($"Ya existe una comisión con el nombre '{dto.Nombre}'.");
+                throw new ArgumentException($"Ya existe una comisión con el nombre '{dto.Nombre}', para el plan '{dto.PlanId}'.");
             }
             Comision comision = new Comision(dto.Id, dto.Nombre, dto.AnioEspecialidad, dto.PlanId);
             if (!comisionRepository.Update(comision))
