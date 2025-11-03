@@ -45,8 +45,24 @@ namespace Application.Services
         public CursoDTO Add(CursoDTO dto)
         {
             var cursoRepository = new Data.CursoRepository();
+            using var context = new Data.TPIContext();
+
+            // Obtener la materia y la comisión desde la base de datos
+            var materia = context.Materias.Find(dto.MateriaId);
+            var comision = context.Comisiones.Find(dto.ComisionId);
+
+            if (materia == null)
+                throw new ArgumentException("La materia especificada no existe.");
+            if (comision == null)
+                throw new ArgumentException("La comisión especificada no existe.");
+
+            // Validar que ambos pertenezcan al mismo plan
+            if (materia.PlanId != comision.PlanId)
+                throw new ArgumentException("La materia y la comisión deben pertenecer al mismo plan.");
+
             if (cursoRepository.Exists(dto.AnioCalendario, dto.MateriaId, dto.ComisionId))
                 throw new ArgumentException("Ya existe un curso con la misma materia, comisión y año calendario.");
+
             var curso = new Curso(0, dto.AnioCalendario, dto.Cupo, dto.MateriaId, dto.ComisionId);
             cursoRepository.Add(curso);
             dto.Id = curso.Id;
