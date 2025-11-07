@@ -39,16 +39,14 @@ namespace Data
             if (usuario.PlanId != comision.PlanId)
                 throw new Exception("No puedes inscribirte en cursos fuera de tu plan.");
 
-            // Validar cupo
-            if (curso.Cupo <= 0)
+            // Validar cupo: contar inscriptos actuales
+            int inscriptosActuales = context.AlumnosInscripciones.Count(ai => ai.CursoId == alumnoInscripcion.CursoId);
+            if (inscriptosActuales >= curso.Cupo)
                 throw new Exception("No hay cupo disponible para este curso.");
 
             // Validar que no exista otra inscripción
             if (context.AlumnosInscripciones.Any(ai => ai.UsuarioId == alumnoInscripcion.UsuarioId && ai.CursoId == alumnoInscripcion.CursoId))
                 throw new Exception($"El usuario con ID '{alumnoInscripcion.UsuarioId}' ya está inscrito en el curso con ID '{alumnoInscripcion.CursoId}'.");
-
-            // Restar el cupo
-            curso.Cupo--;
 
             // Agregar la inscripción
             context.AlumnosInscripciones.Add(alumnoInscripcion);

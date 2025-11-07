@@ -107,16 +107,8 @@ else
             var listaMaterias = await MateriaApiClient.GetAllAsync();
             var listaComisiones = await ComisionApiClient.GetAllAsync();
 
-            // Obtener inscripciones y usuario actual
+            // Obtener inscripciones del usuario actual
             int userId = await AuthService.GetUserIdAsync();
-            var usuario = await UsuarioApiClient.GetByIdAsync(userId);
-            if (usuario == null)
-            {
-                errorMessage = "No se pudo obtener el usuario actual.";
-                return;
-            }
-            int? planUsuario = usuario.PlanId;
-
             var inscripciones = await AlumnoInscripcionApiClient.GetAllAsync();
             var cursosInscriptoIds = inscripciones
                 .Where(i => i.UsuarioId == userId)
@@ -126,15 +118,7 @@ else
             int anioActual = DateTime.Now.Year;
 
             cursos = listaCursos
-                .Where(c =>
-                {
-                    var materia = listaMaterias.FirstOrDefault(m => m.Id == c.MateriaId);
-                    return c.AnioCalendario == anioActual
-                        && c.Cupo > 0
-                        && !cursosInscriptoIds.Contains(c.Id)
-                        && materia != null
-                        && materia.PlanId == planUsuario;
-                })
+                .Where(c => c.AnioCalendario == anioActual && c.Cupo > 0 && !cursosInscriptoIds.Contains(c.Id))
                 .Select(c => new CursoViewModel
                     {
                         Id = c.Id,
@@ -185,12 +169,12 @@ else
             }
 
             var inscripcionDto = new AlumnoInscripcionDTO
-                {
-                    UsuarioId = userId,
-                    CursoId = cursoId,
-                    Condicion = "Inscripto",
-                    Nota = null
-                };
+            {
+                UsuarioId = userId,
+                CursoId = cursoId,
+                Condicion = "Inscripto",
+                Nota = null
+            };
 
             Console.WriteLine("[DEBUG] Enviando inscripcion...");
             await AlumnoInscripcionApiClient.AddAsync(inscripcionDto);
@@ -200,7 +184,10 @@ else
         }
         catch (Exception ex)
         {
-            errorMessage = ex.Message;
+            successMessage = null; // Limpiar mensaje de éxito si ocurre un error
+            errorMessage = !string.IsNullOrWhiteSpace(ex.Message)
+                ? ex.Message
+                : "Ocurrió un error inesperado al intentar inscribirse.";
             Console.WriteLine($"[ERROR] {ex}");
         }
         finally

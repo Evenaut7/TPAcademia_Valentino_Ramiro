@@ -40,7 +40,7 @@ namespace WebAPI
                     AlumnoInscripcionDTO alumnoInscripcionDTO = alumnoInscripcionService.Add(dto);
                     return Results.Created($"/alumnosInscripciones/{alumnoInscripcionDTO.Id}", alumnoInscripcionDTO);
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex)
                 {
                     return Results.BadRequest(new { error = ex.Message });
                 }

@@ -80,6 +80,12 @@ namespace API.Clients
 
                 if (!response.IsSuccessStatusCode)
                 {
+                    // Intenta leer el error como JSON
+                    var errorObj = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                    if (errorObj != null && !string.IsNullOrWhiteSpace(errorObj.error))
+                        throw new Exception(errorObj.error);
+
+                    // Si no se puede leer como JSON, muestra el contenido crudo
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al crear inscripción. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
@@ -92,6 +98,11 @@ namespace API.Clients
             {
                 throw new Exception($"Timeout al crear inscripción: {ex.Message}", ex);
             }
+        }
+
+        private class ErrorResponse
+        {
+            public string error { get; set; }
         }
 
         public static async Task UpdateAsync(AlumnoInscripcionDTO inscripcion)
