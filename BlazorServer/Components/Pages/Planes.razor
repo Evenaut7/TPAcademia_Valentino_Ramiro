@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @using API.Clients
 @inject IJSRuntime js
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
 
 <PageTitle>Planes</PageTitle>
 
@@ -108,10 +110,22 @@ else
     private bool esEdicion = false;
     private PlanDTO nuevoPlan = new PlanDTO();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await CargarPlanes();
-        await CargarEspecialidades();
+        if (firstRender)
+        {
+            var role = await AuthService.GetUserRoleAsync();
+            if (role == null || role != "Administrador")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            await CargarPlanes();
+            await CargarEspecialidades();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task CargarPlanes()

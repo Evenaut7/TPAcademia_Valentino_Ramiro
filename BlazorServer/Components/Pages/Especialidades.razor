@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @inject EspecialidadApiClient EspecialidadApiClient
 @inject IJSRuntime js
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
 
 <PageTitle>Especialidades</PageTitle>
 
@@ -85,9 +87,21 @@ else
     private bool esEdicion = false;
     private EspecialidadDTO nuevaEspecialidad = new EspecialidadDTO();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await CargarEspecialidades();
+        if (firstRender)
+        {
+            var role = await AuthService.GetUserRoleAsync();
+            if (role == null || role != "Administrador")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            await CargarEspecialidades();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task CargarEspecialidades()

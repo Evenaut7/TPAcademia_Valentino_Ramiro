@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @inject PersonaApiClient PersonaApiClient
 @inject IJSRuntime js
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
 
 <PageTitle>Personas</PageTitle>
 
@@ -114,9 +116,21 @@ else
     private bool esEdicion = false;
     private PersonaDTO nuevaPersona = new PersonaDTO();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await CargarPersonas();
+        if (firstRender)
+        {
+            var role = await AuthService.GetUserRoleAsync();
+            if (role == null || role != "Administrador")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            await CargarPersonas();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task CargarPersonas()

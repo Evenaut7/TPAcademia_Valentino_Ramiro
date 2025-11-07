@@ -3,6 +3,8 @@
 @using API.Clients
 @using DTOs
 @inject IJSRuntime js
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
 
 <PageTitle>Usuarios</PageTitle>
 
@@ -191,20 +193,32 @@ else
     private List<EspecialidadDTO> especialidades = new();
     private List<PlanDTO> listaPlanes = new();
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var role = await AuthService.GetUserRoleAsync();
+            if (role == null || role != "Administrador")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            await CargarUsuarios();
+            await CargarPersonas();
+            await CargarEspecialidades();
+            await CargarPlanes();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private class PersonaItem
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Apellido { get; set; } = string.Empty;
         public long Dni { get; set; }
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await CargarUsuarios();
-        await CargarPersonas();
-        await CargarEspecialidades();
-        await CargarPlanes();
     }
 
     private async Task CargarPlanes()

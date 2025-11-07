@@ -6,6 +6,8 @@
 @inject UsuarioApiClient UsuarioApiClient
 @inject ProfesorCursoApiClient ProfesorCursoApiClient
 @inject IJSRuntime js
+@inject IAuthService AuthService
+@inject NavigationManager Navigation
 
 <PageTitle>Cursos</PageTitle>
 
@@ -237,13 +239,25 @@ else
     private int profesorSeleccionadoId = 0;
     private string cargoProfesor = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await CargarCursos();
-        await CargarMaterias();
-        await CargarComisiones();
-        await CargarProfesores();
-        await CargarProfesoresCurso();
+        if (firstRender)
+        {
+            var role = await AuthService.GetUserRoleAsync();
+            if (role == null || role != "Administrador")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            await CargarCursos();
+            await CargarMaterias();
+            await CargarComisiones();
+            await CargarProfesores();
+            await CargarProfesoresCurso();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task CargarCursos()

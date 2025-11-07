@@ -5,6 +5,7 @@
 @inject CursoApiClient CursoApiClient
 @inject MateriaApiClient MateriaApiClient
 @inject ComisionApiClient ComisionApiClient
+@inject NavigationManager Navigation
 
 <h3 class="mb-4">Cursos Actuales</h3>
 
@@ -73,7 +74,24 @@ else
     protected override async Task OnInitializedAsync()
     {
         usuarioId = await AuthService.GetUserIdAsync();
-        await CargarMisCursosAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var role = await AuthService.GetUserRoleAsync();
+            if (role == null || role != "Alumno")
+            {
+                Navigation.NavigateTo("/login");
+                return;
+            }
+
+            // Only load data if authorized
+            await CargarMisCursosAsync();
+            StateHasChanged();
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task CargarMisCursosAsync()
