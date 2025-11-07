@@ -107,8 +107,16 @@ else
             var listaMaterias = await MateriaApiClient.GetAllAsync();
             var listaComisiones = await ComisionApiClient.GetAllAsync();
 
-            // Obtener inscripciones del usuario actual
+            // Obtener inscripciones y usuario actual
             int userId = await AuthService.GetUserIdAsync();
+            var usuario = await UsuarioApiClient.GetByIdAsync(userId);
+            if (usuario == null)
+            {
+                errorMessage = "No se pudo obtener el usuario actual.";
+                return;
+            }
+            int? planUsuario = usuario.PlanId;
+
             var inscripciones = await AlumnoInscripcionApiClient.GetAllAsync();
             var cursosInscriptoIds = inscripciones
                 .Where(i => i.UsuarioId == userId)
@@ -118,7 +126,15 @@ else
             int anioActual = DateTime.Now.Year;
 
             cursos = listaCursos
-                .Where(c => c.AnioCalendario == anioActual && c.Cupo > 0 && !cursosInscriptoIds.Contains(c.Id))
+                .Where(c =>
+                {
+                    var materia = listaMaterias.FirstOrDefault(m => m.Id == c.MateriaId);
+                    return c.AnioCalendario == anioActual
+                        && c.Cupo > 0
+                        && !cursosInscriptoIds.Contains(c.Id)
+                        && materia != null
+                        && materia.PlanId == planUsuario;
+                })
                 .Select(c => new CursoViewModel
                     {
                         Id = c.Id,
