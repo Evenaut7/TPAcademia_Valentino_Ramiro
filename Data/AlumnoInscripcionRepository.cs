@@ -19,7 +19,41 @@ namespace Data
         public void Add(AlumnoInscripcion alumnoInscripcion)
         {
             using var context = CreateContext();
+
+            // Validar que el usuario existe y es alumno
+            var usuario = context.Usuarios.Find(alumnoInscripcion.UsuarioId);
+            if (usuario == null)
+                throw new Exception($"No existe un usuario con ID '{alumnoInscripcion.UsuarioId}'.");
+            if (usuario.Tipo != "Alumno")
+                throw new Exception($"Solo los alumnos pueden inscribirse a materias. El usuario es de tipo '{usuario.Tipo}'.");
+
+            // Validar que el curso existe
+            var curso = context.Cursos.Find(alumnoInscripcion.CursoId);
+            if (curso == null)
+                throw new Exception($"No existe un curso con ID '{alumnoInscripcion.CursoId}'.");
+
+            // Validar comisión y plan
+            var comision = context.Comisiones.Find(curso.ComisionId);
+            if (comision == null)
+                throw new Exception("La comisión del curso no existe.");
+            if (usuario.PlanId != comision.PlanId)
+                throw new Exception("No puedes inscribirte en cursos fuera de tu plan.");
+
+            // Validar cupo
+            if (curso.Cupo <= 0)
+                throw new Exception("No hay cupo disponible para este curso.");
+
+            // Validar que no exista otra inscripción
+            if (context.AlumnosInscripciones.Any(ai => ai.UsuarioId == alumnoInscripcion.UsuarioId && ai.CursoId == alumnoInscripcion.CursoId))
+                throw new Exception($"El usuario con ID '{alumnoInscripcion.UsuarioId}' ya está inscrito en el curso con ID '{alumnoInscripcion.CursoId}'.");
+
+            // Restar el cupo
+            curso.Cupo--;
+
+            // Agregar la inscripción
             context.AlumnosInscripciones.Add(alumnoInscripcion);
+
+            // Guardar cambios en una sola transacción
             context.SaveChanges();
         }
         public bool Delete(int id)

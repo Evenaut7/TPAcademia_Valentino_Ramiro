@@ -43,40 +43,7 @@ namespace Application.Services
 
         public AlumnoInscripcionDTO Add(AlumnoInscripcionDTO dto)
         {
-            var usuarioRepository = new UsuarioRepository();
-            var comisionRepository = new ComisionRepository();
-            var cursoRepository = new CursoRepository();
             var alumnoInscripcionRepository = new AlumnoInscripcionRepository();
-
-            // Validar que el usuario existe
-            var usuario = usuarioRepository.Get(dto.UsuarioId);
-            if (usuario == null)
-                throw new ArgumentException($"No existe un usuario con ID '{dto.UsuarioId}'.");
-
-            // Validar que sea alumno
-            if (usuario.Tipo != "Alumno")
-                throw new ArgumentException($"Solo los alumnos pueden inscribirse a materias. El usuario es de tipo '{usuario.Tipo}'.");
-
-            // Validar que el curso existe
-            var curso = cursoRepository.Get(dto.CursoId);
-            if (curso == null)
-                throw new ArgumentException($"No existe un curso con ID '{dto.CursoId}'.");
-
-            // Validar comisión y plan
-            var comision = comisionRepository.Get(curso.ComisionId);
-            if (comision == null)
-                throw new ArgumentException("La comisión del curso no existe.");
-
-            if (usuario.PlanId != comision.PlanId)
-                throw new ArgumentException("No puedes inscribirte en cursos fuera de tu plan.");
-
-            // Validar cupo
-            if (curso.Cupo <= 0)
-                throw new ArgumentException("No hay cupo disponible para este curso.");
-
-            // Validar que no exista otra inscripción
-            if (alumnoInscripcionRepository.Exists(dto.UsuarioId, dto.CursoId))
-                throw new ArgumentException($"El usuario con ID '{dto.UsuarioId}' ya está inscrito en el curso con ID '{dto.CursoId}'.");
 
             AlumnoInscripcion alumnoInscripcion = new AlumnoInscripcion
             {
@@ -87,10 +54,6 @@ namespace Application.Services
             };
 
             alumnoInscripcionRepository.Add(alumnoInscripcion);
-
-            // Reduce cupo
-            curso.Cupo -= 1;
-            cursoRepository.Update(curso);
 
             dto.Id = alumnoInscripcion.Id;
             return dto;
