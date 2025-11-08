@@ -71,7 +71,6 @@
             <h5 class="mb-0">@nombreCursoReporte</h5>
         </div>
         <div class="card-body">
-            <!-- Información del Curso -->
             <div class="row mb-4">
                 <div class="col-md-6">
                     <p><strong>Materia:</strong> @materiaCursoReporte</p>
@@ -83,7 +82,6 @@
                 </div>
             </div>
 
-            <!-- Tabla de Alumnos -->
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead class="table-dark">
@@ -121,7 +119,6 @@
                 </table>
             </div>
 
-            <!-- Estadísticas -->
             <div class="row mt-4 pt-3 border-top">
                 <div class="col-md-3">
                     <div class="card bg-light">
@@ -178,7 +175,6 @@
     private bool esError = false;
     private bool cargando = false;
 
-    // Datos del reporte
     private List<AlumnoReporte>? alumnosReporte;
     private string nombreCursoReporte = string.Empty;
     private string materiaCursoReporte = string.Empty;
@@ -268,7 +264,6 @@
             cargando = true;
             mensaje = string.Empty;
 
-            // Obtener datos del curso
             var curso = await CursoApiClient.GetAsync(cursoSeleccionadoId);
             if (curso == null)
             {
@@ -278,7 +273,6 @@
                 return;
             }
 
-            // Obtener todas las inscripciones
             var inscripciones = await AlumnoInscripcionApiClient.GetAllAsync();
             var alumnosDelCurso = inscripciones.Where(i => i.CursoId == cursoSeleccionadoId).ToList();
 
@@ -290,7 +284,6 @@
                 return;
             }
 
-            // Construir lista de alumnos
             var alumnos = new List<AlumnoReporte>();
             foreach (var inscripcion in alumnosDelCurso)
             {
@@ -308,7 +301,6 @@
                     });
             }
 
-            // Obtener datos complementarios
             var comision = await ComisionApiClient.GetAsync(curso.ComisionId);
             var materia = await MateriaApiClient.GetAsync(curso.MateriaId);
 
@@ -346,7 +338,6 @@
 
             cargando = true;
 
-            // Generar PDF con QuestPDF
             var pdf = GenerarPDFLocalamente();
             var fileName = $"Reporte_Alumnos_Curso_{cursoSeleccionadoId}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
 
@@ -506,7 +497,6 @@
 
             column.Spacing(30);
 
-            // Estadísticas
             var aprobados = alumnosReporte.Count(a => a.Condicion.ToLower() == "aprobado");
             var desaprobados = alumnosReporte.Count(a => a.Condicion.ToLower() == "desaprobado");
             var sinNota = alumnosReporte.Count(a => a.Condicion.ToLower() == "no cargada");
