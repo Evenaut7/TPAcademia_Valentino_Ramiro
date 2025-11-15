@@ -10,7 +10,7 @@ namespace VistaEscritorio
 {
     public partial class MisCursos : Form
     {
-        private int alumnoId;
+        private int usuarioId;
         private IEnumerable<AlumnoInscripcionDTO>? listaInscripciones;
         private IEnumerable<CursoDTO>? listaCursos;
         private IEnumerable<MateriaDTO>? listaMaterias;
@@ -29,7 +29,7 @@ namespace VistaEscritorio
             try
             {
                 // Obtener ID del alumno actual
-                alumnoId = await AuthServiceProvider.Instance.GetUserIdAsync();
+                usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
 
                 // Cargar datos
                 await CargarMisCursosAsync();
@@ -76,7 +76,7 @@ namespace VistaEscritorio
             {
                 // Filtrar solo las inscripciones del alumno actual
                 var misCursos = listaInscripciones?
-                    .Where(inscripcion => inscripcion.AlumnoId == alumnoId)
+                    .Where(inscripcion => inscripcion.UsuarioId == usuarioId)
                     .Select(inscripcion =>
                     {
                         var curso = listaCursos?.FirstOrDefault(c => c.Id == inscripcion.CursoId);

@@ -39,7 +39,6 @@
             cursosToolStripMenuItem = new ToolStripMenuItem();
             usuariosToolStripMenuItem = new ToolStripMenuItem();
             alumnosToolStripMenuItem = new ToolStripMenuItem();
-            profesoresToolStripMenuItem = new ToolStripMenuItem();
             cursosActualesToolStripMenu = new ToolStripMenuItem();
             inscripcionCursoToolStripMenu = new ToolStripMenuItem();
             ABMPanel = new Panel();
@@ -68,7 +67,7 @@
             menuStrip1.Font = new Font("Segoe UI", 11F);
             menuStrip1.GripMargin = new Padding(2);
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, profesoresToolStripMenuItem, cursosActualesToolStripMenu, inscripcionCursoToolStripMenu });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, cursosActualesToolStripMenu, inscripcionCursoToolStripMenu });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(191, 511);
@@ -170,23 +169,9 @@
             alumnosToolStripMenuItem.Margin = new Padding(2);
             alumnosToolStripMenuItem.Name = "alumnosToolStripMenuItem";
             alumnosToolStripMenuItem.Size = new Size(174, 29);
-            alumnosToolStripMenuItem.Text = "Alumnos";
+            alumnosToolStripMenuItem.Text = "Personas";
             alumnosToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
             alumnosToolStripMenuItem.Click += alumnosToolStripMenuItem_Click_1;
-            // 
-            // profesoresToolStripMenuItem
-            // 
-            profesoresToolStripMenuItem.BackColor = SystemColors.ScrollBar;
-            profesoresToolStripMenuItem.Checked = true;
-            profesoresToolStripMenuItem.CheckOnClick = true;
-            profesoresToolStripMenuItem.CheckState = CheckState.Checked;
-            profesoresToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
-            profesoresToolStripMenuItem.Margin = new Padding(2);
-            profesoresToolStripMenuItem.Name = "profesoresToolStripMenuItem";
-            profesoresToolStripMenuItem.Size = new Size(174, 29);
-            profesoresToolStripMenuItem.Text = "Profesores";
-            profesoresToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
-            profesoresToolStripMenuItem.Click += profesoresToolStripMenuItem_Click;
             // 
             // cursosActualesToolStripMenu
             // 
@@ -272,7 +257,6 @@
         private ToolStripMenuItem cursosToolStripMenuItem;
         private ToolStripMenuItem usuariosToolStripMenuItem;
         private ToolStripMenuItem alumnosToolStripMenuItem;
-        private ToolStripMenuItem profesoresToolStripMenuItem;
         private ToolStripMenuItem Comisiones;
         private Panel ABMPanel;
         private Label label1;

@@ -50,10 +50,10 @@ namespace VistaEscritorio
                 listaComisiones = await ComisionApiClient.GetAllAsync();
 
                 // Obtener inscripciones del usuario actual
-                int alumnoId = await AuthServiceProvider.Instance.GetUserIdAsync();
+                int usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
                 var inscripciones = await API.Clients.AlumnoInscripcionApiClient.GetAllAsync();
                 var cursosInscriptoIds = inscripciones
-                    .Where(i => i.AlumnoId == alumnoId)
+                    .Where(i => i.UsuarioId == usuarioId)
                     .Select(i => i.CursoId)
                     .ToHashSet();
 
@@ -144,8 +144,8 @@ namespace VistaEscritorio
                 btnInscribirse.Text = "Procesando...";
 
                 // Obtener ID del alumno y validar rol
-                int alumnoId = await AuthServiceProvider.Instance.GetUserIdAsync();
-                string rol = await UsuarioApiClient.getUserRole(alumnoId);
+                int usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
+                string rol = await UsuarioApiClient.getUserRole(usuarioId);
 
                 if (rol != "Usuario")
                 {
@@ -158,7 +158,7 @@ namespace VistaEscritorio
                 // Crear DTO y enviar al API
                 var inscripcionDto = new AlumnoInscripcionDTO
                 {
-                    AlumnoId = alumnoId,
+                    UsuarioId = usuarioId,
                     CursoId = cursoId,
                     Condicion = "Inscripto",
                     Nota = null

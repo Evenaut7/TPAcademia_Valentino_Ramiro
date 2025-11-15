@@ -1,6 +1,7 @@
 ﻿using API.Clients;
 using DTOs;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,6 +10,8 @@ namespace VistaEscritorio
 {
     public partial class CargarUsuario : Form
     {
+        private List<PersonaDTO>? listaPersonas;
+
         public CargarUsuario()
         {
             InitializeComponent();
@@ -16,10 +19,11 @@ namespace VistaEscritorio
 
         private async Task CargarPersonasAsync()
         {
-            var alumnos = await AlumnoApiClient.GetAllAsync();
+            var personas = await PersonaApiClient.GetAllAsync();
+            listaPersonas = personas?.ToList();
 
-            var lista = alumnos
-                .Select(a => new { a.Id, a.Nombre })
+            var lista = listaPersonas
+                .Select(p => new { p.Id, p.Nombre, p.Apellido })
                 .ToList();
 
             personaComboBox.DataSource = lista;
@@ -29,31 +33,37 @@ namespace VistaEscritorio
 
         private async void CargarUsuario_Load(object sender, EventArgs e)
         {
-            await CargarPersonasAsync();
+            try
+            {
+                await CargarPersonasAsync();
+                tipoBox.Text = "Alumno";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar el formulario: {ex.Message}");
+            }
         }
 
         private async void agregarButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(nombreUsuarioBox.Text) ||
-                string.IsNullOrWhiteSpace(claveBox.Text) ||
-                string.IsNullOrWhiteSpace(emailBox.Text))
-            {
-                MessageBox.Show("Debe ingresar todos los datos.");
-                return;
-            }
-
-            var nuevoUsuario = new UsuarioDTO
-            {
-                NombreUsuario = nombreUsuarioBox.Text,
-                Clave = claveBox.Text,
-                Email = emailBox.Text,
-                Privilegio = privilegioBox.Text,
-                Habilitado = habilitadoCheck.Checked,
-                PersonaId = (int)personaComboBox.SelectedValue
-            };
-
             try
             {
+                if (!ValidarFormulario())
+                {
+                    return;
+                }
+
+                var nuevoUsuario = new UsuarioDTO
+                {
+                    NombreUsuario = nombreUsuarioBox.Text,
+                    Clave = claveBox.Text,
+                    Email = emailBox.Text,
+                    Tipo = tipoBox.Text,
+                    Legajo = string.IsNullOrWhiteSpace(legajoBox.Text) ? null : legajoBox.Text,
+                    Habilitado = habilitadoCheck.Checked,
+                    PersonaId = (int)personaComboBox.SelectedValue
+                };
+
                 await UsuarioApiClient.AddAsync(nuevoUsuario);
                 MessageBox.Show("Usuario agregado correctamente.");
                 Close();
@@ -64,14 +74,44 @@ namespace VistaEscritorio
             }
         }
 
+        private bool ValidarFormulario()
+        {
+            if (string.IsNullOrWhiteSpace(nombreUsuarioBox.Text))
+            {
+                MessageBox.Show("El nombre de usuario es obligatorio.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(claveBox.Text))
+            {
+                MessageBox.Show("La clave es obligatoria.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(emailBox.Text))
+            {
+                MessageBox.Show("El email es obligatorio.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(tipoBox.Text))
+            {
+                MessageBox.Show("Debe seleccionar un tipo de usuario.");
+                return false;
+            }
+
+            if (personaComboBox.SelectedValue == null || (int)personaComboBox.SelectedValue == 0)
+            {
+                MessageBox.Show("Debe seleccionar una persona.");
+                return false;
+            }
+
+            return true;
+        }
+
         private void cancelarButton_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

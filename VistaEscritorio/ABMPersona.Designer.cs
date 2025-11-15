@@ -1,20 +1,13 @@
 ﻿namespace VistaEscritorio
 {
-    partial class ABMAlumno
+    partial class ABMPersona
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
         public System.Windows.Forms.Button listarButton;
         public System.Windows.Forms.Button agregarButton;
         public System.Windows.Forms.Button modificarButton;
         public System.Windows.Forms.Button eliminarButton;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -24,12 +17,6 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             listarButton = new Button();
@@ -37,9 +24,9 @@
             modificarButton = new Button();
             eliminarButton = new Button();
             panel1 = new Panel();
-            dgvAlumnos = new DataGridView();
+            dgvPersonas = new DataGridView();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvAlumnos).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPersonas).BeginInit();
             SuspendLayout();
             // 
             // listarButton
@@ -99,34 +86,33 @@
             panel1.Size = new Size(784, 40);
             panel1.TabIndex = 5;
             // 
-            // dgvAlumnos
+            // dgvPersonas
             // 
-            dgvAlumnos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAlumnos.Dock = DockStyle.Fill;
-            dgvAlumnos.Location = new Point(0, 0);
-            dgvAlumnos.Name = "dgvAlumnos";
-            dgvAlumnos.Size = new Size(784, 421);
-            dgvAlumnos.TabIndex = 6;
-            dgvAlumnos.CellContentClick += dgvAlumnos_CellContentClick;
+            dgvPersonas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPersonas.Dock = DockStyle.Fill;
+            dgvPersonas.Location = new Point(0, 0);
+            dgvPersonas.Name = "dgvPersonas";
+            dgvPersonas.Size = new Size(784, 421);
+            dgvPersonas.TabIndex = 6;
+            dgvPersonas.CellContentClick += dgvPersonas_CellContentClick;
             // 
-            // ABMAlumno
+            // ABMPersona
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 461);
-            Controls.Add(dgvAlumnos);
+            Controls.Add(dgvPersonas);
             Controls.Add(panel1);
-            Name = "ABMAlumno";
+            Name = "ABMPersona";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ABMAlumno";
-            Load += ABMAlumno_Load_1;
+            Text = "ABM Persona";
+            Load += ABMPersona_Load;
             panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvAlumnos).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPersonas).EndInit();
             ResumeLayout(false);
         }
 
-        #endregion
         private Panel panel1;
-        private DataGridView dgvAlumnos;
+        private DataGridView dgvPersonas;
     }
 }

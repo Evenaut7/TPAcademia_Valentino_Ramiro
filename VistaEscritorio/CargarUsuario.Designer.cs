@@ -15,7 +15,8 @@
             nombreUsuarioBox = new TextBox();
             claveBox = new TextBox();
             emailBox = new TextBox();
-            privilegioBox = new ComboBox();
+            tipoBox = new ComboBox();
+            legajoBox = new TextBox();
             habilitadoCheck = new CheckBox();
             personaComboBox = new ComboBox();
             agregarButton = new Button();
@@ -26,67 +27,76 @@
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
+            label7 = new Label();
             SuspendLayout();
             // 
             // nombreUsuarioBox
             // 
-            nombreUsuarioBox.Location = new Point(120, 20);
+            nombreUsuarioBox.Location = new Point(140, 20);
             nombreUsuarioBox.Name = "nombreUsuarioBox";
-            nombreUsuarioBox.Size = new Size(100, 23);
+            nombreUsuarioBox.Size = new Size(150, 23);
             nombreUsuarioBox.TabIndex = 0;
             // 
             // claveBox
             // 
-            claveBox.Location = new Point(120, 50);
+            claveBox.Location = new Point(140, 50);
             claveBox.Name = "claveBox";
-            claveBox.Size = new Size(100, 23);
+            claveBox.Size = new Size(150, 23);
             claveBox.TabIndex = 1;
-            this.claveBox.PasswordChar = '*';
+            claveBox.PasswordChar = '*';
             // 
             // emailBox
             // 
-            emailBox.Location = new Point(120, 80);
+            emailBox.Location = new Point(140, 80);
             emailBox.Name = "emailBox";
-            emailBox.Size = new Size(100, 23);
+            emailBox.Size = new Size(150, 23);
             emailBox.TabIndex = 2;
             // 
-            // privilegioBox
+            // tipoBox
             // 
-            privilegioBox.Items.AddRange(new object[] { "Usuario", "Administrador" });
-            privilegioBox.Location = new Point(120, 110);
-            privilegioBox.Name = "privilegioBox";
-            privilegioBox.Size = new Size(121, 23);
-            privilegioBox.TabIndex = 3;
+            tipoBox.Items.AddRange(new object[] { "Administrador", "Profesor", "Alumno" });
+            tipoBox.Location = new Point(140, 110);
+            tipoBox.Name = "tipoBox";
+            tipoBox.Size = new Size(150, 23);
+            tipoBox.TabIndex = 3;
+            // 
+            // legajoBox
+            // 
+            legajoBox.Location = new Point(140, 140);
+            legajoBox.Name = "legajoBox";
+            legajoBox.Size = new Size(150, 23);
+            legajoBox.TabIndex = 4;
             // 
             // habilitadoCheck
             // 
-            habilitadoCheck.Location = new Point(120, 140);
+            habilitadoCheck.Location = new Point(140, 170);
             habilitadoCheck.Name = "habilitadoCheck";
             habilitadoCheck.Size = new Size(104, 24);
-            habilitadoCheck.TabIndex = 4;
+            habilitadoCheck.TabIndex = 5;
+            habilitadoCheck.Checked = true;
             // 
             // personaComboBox
             // 
-            personaComboBox.Location = new Point(120, 170);
+            personaComboBox.Location = new Point(140, 200);
             personaComboBox.Name = "personaComboBox";
-            personaComboBox.Size = new Size(121, 23);
-            personaComboBox.TabIndex = 5;
+            personaComboBox.Size = new Size(150, 23);
+            personaComboBox.TabIndex = 6;
             // 
             // agregarButton
             // 
-            agregarButton.Location = new Point(120, 210);
+            agregarButton.Location = new Point(140, 240);
             agregarButton.Name = "agregarButton";
             agregarButton.Size = new Size(75, 23);
-            agregarButton.TabIndex = 6;
+            agregarButton.TabIndex = 7;
             agregarButton.Text = "Agregar";
             agregarButton.Click += agregarButton_Click;
             // 
             // cancelarButton
             // 
-            cancelarButton.Location = new Point(200, 210);
+            cancelarButton.Location = new Point(215, 240);
             cancelarButton.Name = "cancelarButton";
             cancelarButton.Size = new Size(75, 23);
-            cancelarButton.TabIndex = 7;
+            cancelarButton.TabIndex = 8;
             cancelarButton.Text = "Cancelar";
             cancelarButton.Click += cancelarButton_Click;
             // 
@@ -94,58 +104,66 @@
             // 
             label1.Location = new Point(10, 20);
             label1.Name = "label1";
-            label1.Size = new Size(100, 23);
-            label1.TabIndex = 8;
-            label1.Text = "Nombre Usuario";
+            label1.Size = new Size(125, 23);
+            label1.TabIndex = 9;
+            label1.Text = "Nombre Usuario:";
             // 
             // label2
             // 
             label2.Location = new Point(10, 50);
             label2.Name = "label2";
-            label2.Size = new Size(100, 23);
-            label2.TabIndex = 9;
-            label2.Text = "Clave";
+            label2.Size = new Size(125, 23);
+            label2.TabIndex = 10;
+            label2.Text = "Clave:";
             // 
             // label3
             // 
             label3.Location = new Point(10, 80);
             label3.Name = "label3";
-            label3.Size = new Size(100, 23);
-            label3.TabIndex = 10;
-            label3.Text = "Email";
+            label3.Size = new Size(125, 23);
+            label3.TabIndex = 11;
+            label3.Text = "Email:";
             // 
             // label4
             // 
             label4.Location = new Point(10, 110);
             label4.Name = "label4";
-            label4.Size = new Size(100, 23);
-            label4.TabIndex = 11;
-            label4.Text = "Privilegio";
+            label4.Size = new Size(125, 23);
+            label4.TabIndex = 12;
+            label4.Text = "Tipo:";
             // 
             // label5
             // 
             label5.Location = new Point(10, 140);
             label5.Name = "label5";
-            label5.Size = new Size(100, 23);
-            label5.TabIndex = 12;
-            label5.Text = "Habilitado";
+            label5.Size = new Size(125, 23);
+            label5.TabIndex = 13;
+            label5.Text = "Legajo:";
             // 
             // label6
             // 
             label6.Location = new Point(10, 170);
             label6.Name = "label6";
-            label6.Size = new Size(100, 23);
-            label6.TabIndex = 13;
-            label6.Text = "Alumno";
-            label6.Click += label6_Click;
+            label6.Size = new Size(125, 23);
+            label6.TabIndex = 14;
+            label6.Text = "Habilitado:";
+            // 
+            // label7
+            // 
+            label7.Location = new Point(10, 200);
+            label7.Name = "label7";
+            label7.Size = new Size(125, 23);
+            label7.TabIndex = 15;
+            label7.Text = "Persona:";
             // 
             // CargarUsuario
             // 
-            ClientSize = new Size(300, 260);
+            ClientSize = new Size(320, 290);
             Controls.Add(nombreUsuarioBox);
             Controls.Add(claveBox);
             Controls.Add(emailBox);
-            Controls.Add(privilegioBox);
+            Controls.Add(tipoBox);
+            Controls.Add(legajoBox);
             Controls.Add(habilitadoCheck);
             Controls.Add(personaComboBox);
             Controls.Add(agregarButton);
@@ -156,6 +174,7 @@
             Controls.Add(label4);
             Controls.Add(label5);
             Controls.Add(label6);
+            Controls.Add(label7);
             Name = "CargarUsuario";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Cargar Usuario";
@@ -164,10 +183,10 @@
             PerformLayout();
         }
 
-        private TextBox nombreUsuarioBox, claveBox, emailBox;
-        private ComboBox privilegioBox, personaComboBox;
+        private TextBox nombreUsuarioBox, claveBox, emailBox, legajoBox;
+        private ComboBox tipoBox, personaComboBox;
         private CheckBox habilitadoCheck;
         private Button agregarButton, cancelarButton;
-        private Label label1, label2, label3, label4, label5, label6;
+        private Label label1, label2, label3, label4, label5, label6, label7;
     }
 }

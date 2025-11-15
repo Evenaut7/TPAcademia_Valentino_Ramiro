@@ -55,8 +55,12 @@ namespace VistaEscritorio
                     case "Administrador":
                         ConfigurarMenuAdministrador();
                         break;
-                    case "Usuario":
+                    case "Alumno":
                         ConfigurarMenuAlumno();
+                        break;
+                    case "Profesor":
+                        MessageBox.Show("Rol en progreso");
+                        Close();
                         break;
                     default:
                         MessageBox.Show("Rol no reconocido");
@@ -111,11 +115,6 @@ namespace VistaEscritorio
             AbrirFormularioEnPanel(new ABMUsuario());
         }
 
-        private void profesoresToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            AbrirFormularioEnPanel(new ABMProfesor());
-        }
-
         private void Comisiones_Click(object sender, EventArgs e)
         {
             AbrirFormularioEnPanel(new ABMComision());
@@ -139,7 +138,6 @@ namespace VistaEscritorio
             cursosToolStripMenuItem.Visible = false;
             usuariosToolStripMenuItem.Visible = false;
             alumnosToolStripMenuItem.Visible = false;
-            profesoresToolStripMenuItem.Visible = false;
         }
 
         private void ConfigurarMenuProfesor()
@@ -154,7 +152,7 @@ namespace VistaEscritorio
 
         private void alumnosToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            AbrirFormularioEnPanel(new ABMAlumno());
+            AbrirFormularioEnPanel(new ABMPersona());
         }
 
         private void label1_Click(object sender, EventArgs e)

@@ -1,8 +1,9 @@
 ﻿namespace VistaEscritorio
 {
-    partial class ModificarAlumno
+    partial class PersonaRegistrar
     {
         private System.ComponentModel.IContainer components = null;
+
         private System.Windows.Forms.Label nombreLabel;
         private System.Windows.Forms.TextBox nombreTextBox;
         private System.Windows.Forms.Label apellidoLabel;
@@ -11,9 +12,7 @@
         private System.Windows.Forms.TextBox dniTextBox;
         private System.Windows.Forms.Label fechaNacimientoLabel;
         private System.Windows.Forms.DateTimePicker fechaNacimientoPicker;
-        private System.Windows.Forms.Label legajoLabel;
-        private System.Windows.Forms.TextBox legajoTextBox;
-        private System.Windows.Forms.Button guardarButton;
+        private System.Windows.Forms.Button registrarButton;
 
         protected override void Dispose(bool disposing)
         {
@@ -34,9 +33,7 @@
             dniTextBox = new TextBox();
             fechaNacimientoLabel = new Label();
             fechaNacimientoPicker = new DateTimePicker();
-            legajoLabel = new Label();
-            legajoTextBox = new TextBox();
-            guardarButton = new Button();
+            registrarButton = new Button();
             SuspendLayout();
             // 
             // nombreLabel
@@ -46,6 +43,7 @@
             nombreLabel.Size = new Size(57, 23);
             nombreLabel.TabIndex = 0;
             nombreLabel.Text = "Nombre:";
+            nombreLabel.Click += nombreLabel_Click;
             // 
             // nombreTextBox
             // 
@@ -61,6 +59,7 @@
             apellidoLabel.Size = new Size(54, 23);
             apellidoLabel.TabIndex = 2;
             apellidoLabel.Text = "Apellido:";
+            apellidoLabel.Click += apellidoLabel_Click;
             // 
             // apellidoTextBox
             // 
@@ -100,33 +99,18 @@
             fechaNacimientoPicker.Size = new Size(190, 23);
             fechaNacimientoPicker.TabIndex = 7;
             // 
-            // legajoLabel
+            // registrarButton
             // 
-            legajoLabel.Location = new Point(87, 229);
-            legajoLabel.Name = "legajoLabel";
-            legajoLabel.Size = new Size(50, 21);
-            legajoLabel.TabIndex = 8;
-            legajoLabel.Text = "Legajo:";
+            registrarButton.Location = new Point(123, 240);
+            registrarButton.Name = "registrarButton";
+            registrarButton.Size = new Size(133, 23);
+            registrarButton.TabIndex = 8;
+            registrarButton.Text = "Registrar";
+            registrarButton.Click += registrarButton_Click;
             // 
-            // legajoTextBox
+            // PersonaRegistrar
             // 
-            legajoTextBox.Location = new Point(143, 226);
-            legajoTextBox.Name = "legajoTextBox";
-            legajoTextBox.Size = new Size(193, 23);
-            legajoTextBox.TabIndex = 9;
-            // 
-            // guardarButton
-            // 
-            guardarButton.Location = new Point(123, 279);
-            guardarButton.Name = "guardarButton";
-            guardarButton.Size = new Size(133, 23);
-            guardarButton.TabIndex = 18;
-            guardarButton.Text = "Guardar";
-            guardarButton.Click += guardarButton_Click;
-            // 
-            // ModificarAlumno
-            // 
-            ClientSize = new Size(400, 430);
+            ClientSize = new Size(400, 320);
             Controls.Add(nombreLabel);
             Controls.Add(nombreTextBox);
             Controls.Add(apellidoLabel);
@@ -135,14 +119,13 @@
             Controls.Add(dniTextBox);
             Controls.Add(fechaNacimientoLabel);
             Controls.Add(fechaNacimientoPicker);
-            Controls.Add(legajoLabel);
-            Controls.Add(legajoTextBox);
-            Controls.Add(guardarButton);
-            Name = "ModificarAlumno";
-            Text = "Modificar Alumno";
-            Load += ModificarAlumno_Load;
+            Controls.Add(registrarButton);
+            Name = "PersonaRegistrar";
+            Text = "Registrar Persona";
+            Load += PersonaRegistrar_Load;
             ResumeLayout(false);
             PerformLayout();
         }
+
     }
 }

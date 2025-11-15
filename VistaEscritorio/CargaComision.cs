@@ -40,16 +40,10 @@ namespace VistaEscritorio
                 MessageBox.Show("Debe ingresar todos los datos.");
                 return;
             }
-            if (!int.TryParse(anioEspecialidadBox.Text, out int anioEspecialidad))
-            {
-                MessageBox.Show("El Año de Especialidad debe ser un número entero.");
-                return;
-            }
-
             var nuevaComision = new DTOs.ComisionDTO
             {
                 Nombre = nombreBox.Text,
-                AnioEspecialidad = anioEspecialidad,
+                AnioEspecialidad = anioEspecialidadBox.Text,
                 PlanId = (int)planComboBox.SelectedValue
             };
 

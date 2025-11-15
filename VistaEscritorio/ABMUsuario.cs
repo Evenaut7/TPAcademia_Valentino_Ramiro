@@ -11,7 +11,7 @@ namespace VistaEscritorio
     public partial class ABMUsuario : Form
     {
         private IEnumerable<UsuarioDTO>? listaUsuarios;
-        private List<dynamic>? listaAlumnos;
+        private List<PersonaDTO>? listaPersonas;
 
         public ABMUsuario()
         {
@@ -20,28 +20,30 @@ namespace VistaEscritorio
 
         private async Task CargarTablaAsync()
         {
-            listaUsuarios = await UsuarioApiClient.GetAllAsync();
-            var alumnos = await AlumnoApiClient.GetAllAsync();
+            try
+            {
+                listaUsuarios = await UsuarioApiClient.GetAllAsync();
+                var personas = await PersonaApiClient.GetAllAsync();
+                listaPersonas = personas?.ToList();
 
-            listaAlumnos = alumnos
-                .Select(a => new { a.Id, a.Nombre})
-                .Cast<dynamic>()
-                .ToList();
+                var listaConNombre = listaUsuarios
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.NombreUsuario,
+                        u.Email,
+                        u.Tipo,
+                        Persona = listaPersonas?.FirstOrDefault(p => p.Id == u.PersonaId)?.Nombre ?? "No asignado",
+                        u.Habilitado
+                    })
+                    .ToList();
 
-            var idsAlumnos = listaAlumnos.Select(a => a.Id).ToHashSet();
-            var listaConNombre = listaUsuarios
-                .Select(u => new
-                {
-                    u.Id,
-                    u.NombreUsuario,
-                    u.Email,
-                    u.Privilegio,
-                    u.Habilitado,
-                    Alumno = listaAlumnos.FirstOrDefault(a => a.Id == u.PersonaId)?.Nombre ?? "No asignado"
-                })
-                .ToList();
-
-            dgvUsuario.DataSource = listaConNombre;
+                dgvUsuario.DataSource = listaConNombre;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar la tabla: {ex.Message}");
+            }
         }
 
         private async void listarButton_Click(object sender, EventArgs e)
@@ -60,15 +62,19 @@ namespace VistaEscritorio
             int filaSeleccionada = dgvUsuario.SelectedRows[0].Index;
             var usuarioAEliminar = listaUsuarios!.ToList()[filaSeleccionada];
 
-            try
+            if (MessageBox.Show("¿Estás seguro de que deseas eliminar este usuario?",
+                "Confirmar eliminación", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                await UsuarioApiClient.DeleteAsync(usuarioAEliminar.Id);
-                MessageBox.Show("Usuario eliminado correctamente.");
-                await CargarTablaAsync();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("No se pudo eliminar el usuario.");
+                try
+                {
+                    await UsuarioApiClient.DeleteAsync(usuarioAEliminar.Id);
+                    MessageBox.Show("Usuario eliminado correctamente.");
+                    await CargarTablaAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"No se pudo eliminar el usuario: {ex.Message}");
+                }
             }
         }
 
@@ -98,6 +104,10 @@ namespace VistaEscritorio
             var form = new ModificarUsuario(usuarioAModificar);
             form.ShowDialog();
             listarButton_Click(sender, e);
+        }
+
+        private void dgvUsuario_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
         }
     }
 }
