@@ -15,6 +15,7 @@ namespace VistaEscritorio
         private IEnumerable<CursoDTO>? listaCursos;
         private IEnumerable<MateriaDTO>? listaMaterias;
         private IEnumerable<ComisionDTO>? listaComisiones;
+        private bool isProcessing = false;
 
         public MisCursos()
         {
@@ -23,32 +24,43 @@ namespace VistaEscritorio
 
         private async void MisCursos_Load(object sender, EventArgs e)
         {
-            btnDesuscribirse.Enabled = false;
-            btnDesuscribirse.Text = "Cargando...";
-
             try
             {
-                // Obtener ID del alumno actual
+                // Verificar rol del usuario
                 usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
+                string rol = await UsuarioApiClient.getUserRole(usuarioId);
 
-                // Cargar datos
+                if (rol != "Alumno")
+                {
+                    MessageBox.Show("Solo los alumnos pueden acceder a esta sección.",
+                        "Acceso denegado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+
                 await CargarMisCursosAsync();
-
-                btnDesuscribirse.Enabled = true;
-                btnDesuscribirse.Text = "Desuscribirse";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar tus cursos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar tus cursos: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 btnDesuscribirse.Enabled = false;
             }
         }
 
         private async Task CargarMisCursosAsync()
         {
+            btnDesuscribirse.Enabled = false;
+            lblEstado.Text = "Cargando cursos...";
+            lblEstado.ForeColor = System.Drawing.Color.Blue;
+
             try
             {
-                // Cargar TODAS las inscripciones
+                // Cargar todas las inscripciones
                 listaInscripciones = await AlumnoInscripcionApiClient.GetAllAsync();
 
                 // Cargar datos relacionados
@@ -56,17 +68,26 @@ namespace VistaEscritorio
                 listaMaterias = await MateriaApiClient.GetAllAsync();
                 listaComisiones = await ComisionApiClient.GetAllAsync();
 
-                if (listaInscripciones == null || listaCursos == null || listaMaterias == null || listaComisiones == null)
+                if (listaInscripciones == null || listaCursos == null ||
+                    listaMaterias == null || listaComisiones == null)
                 {
-                    MessageBox.Show("No se pudieron cargar los datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lblEstado.Text = "No se pudieron cargar los datos.";
+                    lblEstado.ForeColor = System.Drawing.Color.Red;
+                    MessageBox.Show("No se pudieron cargar los datos.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
 
                 ActualizarGridCursos();
+                lblEstado.Text = "";
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al cargar inscripciones: {ex.Message}", ex);
+                lblEstado.Text = $"Error al cargar inscripciones: {ex.Message}";
+                lblEstado.ForeColor = System.Drawing.Color.Red;
+                throw;
             }
         }
 
@@ -98,25 +119,35 @@ namespace VistaEscritorio
 
                 if (misCursos == null || !misCursos.Any())
                 {
-                    MessageBox.Show("No estás inscripto en ningún curso.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    lblEstado.Text = "No estás inscripto en ningún curso.";
+                    lblEstado.ForeColor = System.Drawing.Color.DarkOrange;
                     dgvMisCursos.DataSource = null;
+                    btnDesuscribirse.Enabled = false;
                     return;
                 }
 
                 dgvMisCursos.DataSource = misCursos;
                 dgvMisCursos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvMisCursos.ReadOnly = true;
+                dgvMisCursos.MultiSelect = false;
+
+                // Ocultar columnas innecesarias
+                if (dgvMisCursos.Columns["InscripcionId"] != null)
+                    dgvMisCursos.Columns["InscripcionId"].Visible = false;
+                if (dgvMisCursos.Columns["CursoId"] != null)
+                    dgvMisCursos.Columns["CursoId"].Visible = false;
 
                 // Ajustar columnas
                 dgvMisCursos.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
 
-                // Ocultar columnas innecesarias
-                dgvMisCursos.Columns["InscripcionId"].Visible = false;
-                dgvMisCursos.Columns["CursoId"].Visible = false;
+                btnDesuscribirse.Enabled = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al actualizar el grid: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al actualizar el grid: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -124,12 +155,21 @@ namespace VistaEscritorio
         {
             if (dgvMisCursos.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Seleccione un curso para desuscribirse.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, seleccione un curso para desuscribirse.",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
+            if (isProcessing)
+                return;
+
             try
             {
+                isProcessing = true;
+                btnDesuscribirse.Enabled = false;
+
                 string materia = dgvMisCursos.SelectedRows[0].Cells["Materia"].Value?.ToString() ?? "desconocida";
                 string comision = dgvMisCursos.SelectedRows[0].Cells["Comision"].Value?.ToString() ?? "desconocida";
 
@@ -140,34 +180,49 @@ namespace VistaEscritorio
                     MessageBoxIcon.Question);
 
                 if (resultado != DialogResult.Yes)
+                {
                     return;
+                }
+
+                lblEstado.Text = "Procesando desuscripción...";
+                lblEstado.ForeColor = System.Drawing.Color.Blue;
 
                 int inscripcionId = (int)dgvMisCursos.SelectedRows[0].Cells["InscripcionId"].Value;
-
-                btnDesuscribirse.Enabled = false;
-                btnDesuscribirse.Text = "Procesando...";
 
                 // Eliminar la inscripción
                 await AlumnoInscripcionApiClient.DeleteAsync(inscripcionId);
 
-                MessageBox.Show("Te has desuscripto exitosamente del curso.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lblEstado.Text = "Te has desuscripto exitosamente del curso.";
+                lblEstado.ForeColor = System.Drawing.Color.Green;
+
+                MessageBox.Show("Te has desuscripto exitosamente del curso.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 // Recargar la lista
                 await CargarMisCursosAsync();
-                btnDesuscribirse.Text = "Desuscribirse";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al desuscribirse: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnDesuscribirse.Enabled = true;
-                btnDesuscribirse.Text = "Desuscribirse";
+                lblEstado.Text = $"Error: {ex.Message}";
+                lblEstado.ForeColor = System.Drawing.Color.Red;
+
+                MessageBox.Show($"Error al desuscribirse: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
-                btnDesuscribirse.Enabled = true;
-                if (btnDesuscribirse.Text == "Procesando...")
-                    btnDesuscribirse.Text = "Desuscribirse";
+                isProcessing = false;
+                btnDesuscribirse.Enabled = dgvMisCursos.Rows.Count > 0;
             }
+        }
+
+        private void dgvMisCursos_SelectionChanged(object sender, EventArgs e)
+        {
+            btnDesuscribirse.Enabled = dgvMisCursos.SelectedRows.Count > 0 && !isProcessing;
         }
     }
 }

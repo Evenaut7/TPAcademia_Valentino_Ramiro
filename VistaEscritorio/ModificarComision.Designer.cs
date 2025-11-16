@@ -2,15 +2,8 @@
 {
     partial class ModificarComision
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,110 +13,153 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Windows Form Designer Generated Code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             nombreBox = new TextBox();
-            anioEspecialidadBox = new TextBox();
+            anioEspecialidadBox = new ComboBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             planComboBox = new ComboBox();
-            modificarComision = new Button(); // Cambio de nombre del botón
+            modificarComision = new Button();
             cancelarButton = new Button();
+            lblEstado = new Label();
+            panel1 = new Panel();
+            panel2 = new Panel();
+            lblTitulo = new Label();
+            panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // nombreBox
             // 
-            nombreBox.Location = new Point(130, 20);
+            nombreBox.Location = new Point(176, 71);
             nombreBox.Name = "nombreBox";
-            nombreBox.Size = new Size(150, 23);
+            nombreBox.Size = new Size(228, 27);
             nombreBox.TabIndex = 0;
             // 
             // anioEspecialidadBox
             // 
-            anioEspecialidadBox.Location = new Point(130, 49);
+            anioEspecialidadBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            anioEspecialidadBox.Location = new Point(176, 111);
             anioEspecialidadBox.Name = "anioEspecialidadBox";
-            anioEspecialidadBox.Size = new Size(86, 23);
+            anioEspecialidadBox.Size = new Size(228, 28);
             anioEspecialidadBox.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(60, 23);
+            label1.Location = new Point(28, 75);
             label1.Name = "label1";
-            label1.Size = new Size(51, 15);
-            label1.TabIndex = 4;
-            label1.Text = "Nombre";
+            label1.Size = new Size(77, 20);
+            label1.Text = "Nombre: *";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 52);
+            label2.Location = new Point(28, 115);
             label2.Name = "label2";
-            label2.Size = new Size(100, 15);
-            label2.TabIndex = 5;
-            label2.Text = "Año Especialidad";
+            label2.Size = new Size(137, 20);
+            label2.Text = "Año Especialidad: *";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(81, 81);
+            label3.Location = new Point(28, 155);
             label3.Name = "label3";
-            label3.Size = new Size(30, 15);
-            label3.TabIndex = 6;
-            label3.Text = "Plan";
+            label3.Size = new Size(50, 20);
+            label3.Text = "Plan: *";
             // 
             // planComboBox
             // 
-            planComboBox.FormattingEnabled = true;
-            planComboBox.Location = new Point(130, 78);
+            planComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            planComboBox.Location = new Point(176, 151);
             planComboBox.Name = "planComboBox";
-            planComboBox.Size = new Size(150, 23);
-            planComboBox.TabIndex = 7;
+            planComboBox.Size = new Size(342, 28);
+            planComboBox.TabIndex = 2;
             // 
             // modificarComision
             // 
-            modificarComision.Location = new Point(159, 130);
+            modificarComision.Location = new Point(270, 10);
             modificarComision.Name = "modificarComision";
-            modificarComision.Size = new Size(75, 23);
-            modificarComision.TabIndex = 10;
-            modificarComision.Text = "Modificar"; // Texto Modificar
+            modificarComision.Size = new Size(98, 30);
+            modificarComision.TabIndex = 3;
+            modificarComision.Text = "Modificar";
             modificarComision.UseVisualStyleBackColor = true;
             modificarComision.Click += modificarComision_Click;
             // 
             // cancelarButton
             // 
-            cancelarButton.Location = new Point(240, 130);
+            cancelarButton.Location = new Point(374, 10);
             cancelarButton.Name = "cancelarButton";
-            cancelarButton.Size = new Size(75, 23);
-            cancelarButton.TabIndex = 11;
+            cancelarButton.Size = new Size(75, 30);
+            cancelarButton.TabIndex = 4;
             cancelarButton.Text = "Cancelar";
             cancelarButton.UseVisualStyleBackColor = true;
             cancelarButton.Click += cancelarButton_Click;
             // 
+            // lblEstado
+            // 
+            lblEstado.AutoSize = true;
+            lblEstado.Location = new Point(10, 17);
+            lblEstado.Name = "lblEstado";
+            lblEstado.Size = new Size(0, 20);
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(lblEstado);
+            panel1.Controls.Add(modificarComision);
+            panel1.Controls.Add(cancelarButton);
+            panel1.Dock = DockStyle.Bottom;
+            panel1.Location = new Point(0, 220);
+            panel1.Name = "panel1";
+            panel1.Padding = new Padding(10);
+            panel1.Size = new Size(530, 58);
+            // 
+            // panel2
+            // 
+            panel2.AutoSize = true;
+            panel2.Controls.Add(lblTitulo);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(11, 13, 11, 13);
+            panel2.Size = new Size(530, 58);
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitulo.Location = new Point(11, 13);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(239, 32);
+            lblTitulo.Text = "Modificar Comisión";
+            // 
             // ModificarComision
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(329, 172);
-            Controls.Add(modificarComision);
-            Controls.Add(cancelarButton);
+            ClientSize = new Size(530, 278);
+            Controls.Add(panel2);
+            Controls.Add(panel1);
             Controls.Add(planComboBox);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(anioEspecialidadBox);
             Controls.Add(nombreBox);
-            Name = "ModificarComision";
-            StartPosition = FormStartPosition.CenterScreen;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Modificar Comisión";
             Load += ModificarComision_Load;
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -131,12 +167,16 @@
         #endregion
 
         private TextBox nombreBox;
-        private TextBox anioEspecialidadBox;
+        private ComboBox anioEspecialidadBox;
         private Label label1;
         private Label label2;
         private Label label3;
         private ComboBox planComboBox;
         private Button modificarComision;
         private Button cancelarButton;
+        private Label lblEstado;
+        private Panel panel1;
+        private Panel panel2;
+        private Label lblTitulo;
     }
 }

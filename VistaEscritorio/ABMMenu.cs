@@ -179,5 +179,34 @@ namespace VistaEscritorio
         {
             AbrirFormularioEnPanel(new MisCursos());
         }
+
+        private async void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Confirmar cierre de sesión
+                var resultado = MessageBox.Show(
+                    "¿Está seguro que desea cerrar sesión?",
+                    "Cerrar sesión",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (resultado != DialogResult.Yes)
+                    return;
+
+                // Limpiar la sesión
+                await AuthServiceProvider.Instance.LogoutAsync();
+
+                // Cerrar el menú actual (esto volverá a mostrar el formulario de Inicio)
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cerrar sesión: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
     }
 }

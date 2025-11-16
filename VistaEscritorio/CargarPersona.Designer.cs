@@ -49,7 +49,7 @@
             // 
             nombreTextBox.Location = new Point(146, 54);
             nombreTextBox.Name = "nombreTextBox";
-            nombreTextBox.Size = new Size(190, 23);
+            nombreTextBox.Size = new Size(190, 27);
             nombreTextBox.TabIndex = 1;
             // 
             // apellidoLabel
@@ -65,7 +65,7 @@
             // 
             apellidoTextBox.Location = new Point(146, 94);
             apellidoTextBox.Name = "apellidoTextBox";
-            apellidoTextBox.Size = new Size(190, 23);
+            apellidoTextBox.Size = new Size(190, 27);
             apellidoTextBox.TabIndex = 3;
             // 
             // dniLabel
@@ -80,7 +80,7 @@
             // 
             dniTextBox.Location = new Point(146, 134);
             dniTextBox.Name = "dniTextBox";
-            dniTextBox.Size = new Size(190, 23);
+            dniTextBox.Size = new Size(190, 27);
             dniTextBox.TabIndex = 5;
             // 
             // fechaNacimientoLabel
@@ -96,7 +96,7 @@
             // 
             fechaNacimientoPicker.Location = new Point(146, 183);
             fechaNacimientoPicker.Name = "fechaNacimientoPicker";
-            fechaNacimientoPicker.Size = new Size(190, 23);
+            fechaNacimientoPicker.Size = new Size(190, 27);
             fechaNacimientoPicker.TabIndex = 7;
             // 
             // registrarButton
@@ -105,7 +105,7 @@
             registrarButton.Name = "registrarButton";
             registrarButton.Size = new Size(133, 23);
             registrarButton.TabIndex = 8;
-            registrarButton.Text = "Registrar";
+            registrarButton.Text = "Cargar";
             registrarButton.Click += registrarButton_Click;
             // 
             // PersonaRegistrar

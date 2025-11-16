@@ -134,7 +134,6 @@ namespace VistaEscritorio
             }
         }
 
-        // 🔍 NUEVO MÉTODO DE BÚSQUEDA
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
             string materia = txtMateria.Text.Trim();

@@ -1,4 +1,4 @@
-﻿using API.Clients; // Asumo PlanApiClient y ComisionApiClient
+﻿using API.Clients;
 using DTOs;
 using System;
 using System.Collections.Generic;
@@ -10,53 +10,93 @@ namespace VistaEscritorio
 {
     public partial class CargaComision : Form
     {
+        private List<PlanDTO>? listaPlanes;
+
         public CargaComision()
         {
             InitializeComponent();
         }
 
+        private void CargarAnios()
+        {
+            string[] aniosValidos = { "Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto" };
+            anioEspecialidadBox.Items.Clear();
+            anioEspecialidadBox.Items.AddRange(aniosValidos);
+            anioEspecialidadBox.SelectedIndex = 0;
+        }
+
         private async Task CargarPlanesAsync()
         {
-            var listaPlanes = await PlanApiClient.GetAllAsync();
-            planComboBox.DataSource = listaPlanes;
-            planComboBox.DisplayMember = "Nombre"; 
+            var planes = await PlanApiClient.GetAllAsync();
+            listaPlanes = planes?.ToList();
+            var especialidades = await EspecialidadApiClient.GetAllAsync();
+            var listaEspecialidades = especialidades?.ToList();
+            var lista = listaPlanes
+                .Select(p => new
+                {
+                    p.Id,
+                    Descripcion = $"{p.Descripcion} - {listaEspecialidades?.FirstOrDefault(e => e.Id == p.EspecialidadId)?.Descripcion}"
+                })
+                .ToList();
+            planComboBox.DataSource = lista;
+            planComboBox.DisplayMember = "Descripcion";
             planComboBox.ValueMember = "Id";
         }
 
         private async void CargarComision_Load(object sender, EventArgs e)
         {
+            CargarAnios();
             await CargarPlanesAsync();
         }
 
         private void cancelarButton_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.Cancel;
             Close();
         }
 
         private async void agregarComision_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(nombreBox.Text) || string.IsNullOrWhiteSpace(anioEspecialidadBox.Text) || planComboBox.SelectedValue == null)
+            if (!ValidarFormulario()) return;
+
+            var nuevaComision = new ComisionDTO
             {
-                MessageBox.Show("Debe ingresar todos los datos.");
-                return;
-            }
-            var nuevaComision = new DTOs.ComisionDTO
-            {
-                Nombre = nombreBox.Text,
-                AnioEspecialidad = anioEspecialidadBox.Text,
+                Nombre = nombreBox.Text.Trim(),
+                AnioEspecialidad = anioEspecialidadBox.SelectedItem.ToString(),
                 PlanId = (int)planComboBox.SelectedValue
             };
 
-            try
+            await ComisionApiClient.AddAsync(nuevaComision);
+            this.DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        private bool ValidarFormulario()
+        {
+            if (string.IsNullOrWhiteSpace(nombreBox.Text))
             {
-                await ComisionApiClient.AddAsync(nuevaComision);
-                MessageBox.Show("Comisión agregada correctamente.");
-                Close();
+                nombreBox.Focus();
+                return false;
             }
-            catch (Exception ex)
+
+            if (anioEspecialidadBox.SelectedItem == null)
             {
-                MessageBox.Show($"Error al agregar la comisión: {ex.Message}");
+                anioEspecialidadBox.Focus();
+                return false;
             }
+
+            if (planComboBox.SelectedValue == null)
+            {
+                planComboBox.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

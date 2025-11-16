@@ -7,7 +7,6 @@ namespace VistaEscritorio
 {
     public partial class Inicio : Form
     {
-
         public Inicio()
         {
             InitializeComponent();
@@ -28,12 +27,22 @@ namespace VistaEscritorio
 
                 // ✅ Autenticar a través del AuthServiceProvider
                 bool response = await AuthServiceProvider.Instance.LoginAsync(usuario, clave);
+
                 if (response)
                 {
                     MessageBox.Show("Inicio de sesión exitoso.");
 
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    // Abrir el menú principal
+                    ABMMenu menu = new ABMMenu();
+                    this.Hide(); // Ocultar el login
+
+                    menu.ShowDialog(); // Mostrar el menú de forma modal
+
+                    // Cuando se cierre el menú, volver a mostrar el login
+                    this.Show();
+                    usuarioTextBox.Clear();
+                    passwordTextBox.Clear();
+                    usuarioTextBox.Focus();
                 }
                 else
                 {
@@ -54,7 +63,6 @@ namespace VistaEscritorio
 
         private void Inicio_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

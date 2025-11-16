@@ -12,10 +12,10 @@ namespace VistaEscritorio
 {
     public partial class InscripcionCurso : Form
     {
-        private CursoService cursoService = new CursoService();
         private IEnumerable<CursoDTO>? listaCursos;
         private IEnumerable<MateriaDTO>? listaMaterias;
         private IEnumerable<ComisionDTO>? listaComisiones;
+        private bool isProcessing = false;
 
         public InscripcionCurso()
         {
@@ -24,25 +24,40 @@ namespace VistaEscritorio
 
         private async void InscripcionCurso_Load(object sender, EventArgs e)
         {
-            // Deshabilitar el botón mientras se cargan los datos
-            btnInscribirse.Enabled = false;
-            btnInscribirse.Text = "Cargando...";
-
+            // Verificar rol del usuario
             try
             {
+                int usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
+                string rol = await UsuarioApiClient.getUserRole(usuarioId);
+
+                if (rol != "Alumno")
+                {
+                    MessageBox.Show("Solo los alumnos pueden acceder a esta sección.",
+                        "Acceso denegado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    this.Close();
+                    return;
+                }
+
                 await CargarCursosAsync();
-                btnInscribirse.Enabled = true;
-                btnInscribirse.Text = "Inscribirse";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar los cursos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al inicializar: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 btnInscribirse.Enabled = false;
             }
         }
 
         private async Task CargarCursosAsync()
         {
+            btnInscribirse.Enabled = false;
+            lblEstado.Text = "Cargando cursos...";
+            lblEstado.ForeColor = System.Drawing.Color.Blue;
+
             try
             {
                 listaCursos = await CursoApiClient.GetAllAsync();
@@ -51,7 +66,7 @@ namespace VistaEscritorio
 
                 // Obtener inscripciones del usuario actual
                 int usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
-                var inscripciones = await API.Clients.AlumnoInscripcionApiClient.GetAllAsync();
+                var inscripciones = await AlumnoInscripcionApiClient.GetAllAsync();
                 var cursosInscriptoIds = inscripciones
                     .Where(i => i.UsuarioId == usuarioId)
                     .Select(i => i.CursoId)
@@ -64,10 +79,14 @@ namespace VistaEscritorio
                     .ToList();
 
                 ActualizarGridCursos();
+                lblEstado.Text = "";
+                btnInscribirse.Enabled = true;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al cargar cursos desde API: {ex.Message}", ex);
+                lblEstado.Text = $"Error al cargar cursos: {ex.Message}";
+                lblEstado.ForeColor = System.Drawing.Color.Red;
+                throw;
             }
         }
 
@@ -82,30 +101,40 @@ namespace VistaEscritorio
                     .Select(c => new
                     {
                         c.Id,
-                        c.AnioCalendario,
-                        c.Cupo,
                         Materia = listaMaterias?.FirstOrDefault(m => m.Id == c.MateriaId)?.Descripcion ?? "Materia no encontrada",
-                        Comision = listaComisiones?.FirstOrDefault(co => co.Id == c.ComisionId)?.Nombre ?? "Comisión no encontrada"
+                        Comision = listaComisiones?.FirstOrDefault(co => co.Id == c.ComisionId)?.Nombre ?? "Comisión no encontrada",
+                        Año = c.AnioCalendario,
+                        c.Cupo
                     })
                     .ToList();
 
                 if (listaConNombre == null || !listaConNombre.Any())
                 {
-                    MessageBox.Show("No hay cursos disponibles para el año actual.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    lblEstado.Text = "No hay cursos disponibles para el año actual.";
+                    lblEstado.ForeColor = System.Drawing.Color.DarkOrange;
                     dgvCursos.DataSource = null;
+                    btnInscribirse.Enabled = false;
                     return;
                 }
 
                 dgvCursos.DataSource = listaConNombre;
                 dgvCursos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvCursos.ReadOnly = true;
+                dgvCursos.MultiSelect = false;
+
+                // Ocultar la columna Id
+                if (dgvCursos.Columns["Id"] != null)
+                    dgvCursos.Columns["Id"].Visible = false;
 
                 // Ajustar columnas
                 dgvCursos.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al actualizar el grid: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al actualizar el grid: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -113,45 +142,51 @@ namespace VistaEscritorio
         {
             if (dgvCursos.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Seleccione un curso.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, seleccione un curso.",
+                    "Advertencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
+            if (isProcessing)
+                return;
+
             try
             {
+                isProcessing = true;
+                btnInscribirse.Enabled = false;
+                lblEstado.Text = "Procesando inscripción...";
+                lblEstado.ForeColor = System.Drawing.Color.Blue;
+
                 // Obtener el ID del curso seleccionado
                 int cursoId = (int)dgvCursos.SelectedRows[0].Cells["Id"].Value;
-                var curso = listaCursos?.FirstOrDefault(c => c.Id == cursoId);
+                string materia = dgvCursos.SelectedRows[0].Cells["Materia"].Value?.ToString() ?? "desconocida";
+                string comision = dgvCursos.SelectedRows[0].Cells["Comision"].Value?.ToString() ?? "desconocida";
 
-                if (curso == null)
-                {
-                    MessageBox.Show("Curso no encontrado.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                // Obtener nombre de materia y comisión para mostrar
-                var materia = listaMaterias?.FirstOrDefault(m => m.Id == curso.MateriaId)?.Descripcion ?? "Materia no encontrada";
-                var comision = listaComisiones?.FirstOrDefault(co => co.Id == curso.ComisionId)?.Nombre ?? "Comisión no encontrada";
-
-                var mensaje = $"¿Desea inscribirse al curso de materia '{materia}' en la comisión '{comision}'?";
-                var result = MessageBox.Show(mensaje, "Confirmar inscripción", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                var mensaje = $"¿Desea inscribirse al curso de '{materia}' en la comisión '{comision}'?";
+                var result = MessageBox.Show(mensaje,
+                    "Confirmar inscripción",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
 
                 if (result != DialogResult.Yes)
+                {
+                    lblEstado.Text = "";
                     return;
-
-                // Deshabilitar botón durante la operación
-                btnInscribirse.Enabled = false;
-                btnInscribirse.Text = "Procesando...";
+                }
 
                 // Obtener ID del alumno y validar rol
                 int usuarioId = await AuthServiceProvider.Instance.GetUserIdAsync();
                 string rol = await UsuarioApiClient.getUserRole(usuarioId);
 
-                if (rol != "Usuario")
+                if (rol != "Alumno")
                 {
-                    MessageBox.Show("Solo los alumnos pueden inscribirse en cursos.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    btnInscribirse.Enabled = true;
-                    btnInscribirse.Text = "Inscribirse";
+                    MessageBox.Show("Solo los alumnos pueden inscribirse en cursos.",
+                        "Acceso denegado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    lblEstado.Text = "";
                     return;
                 }
 
@@ -164,30 +199,43 @@ namespace VistaEscritorio
                     Nota = null
                 };
 
-                await API.Clients.AlumnoInscripcionApiClient.AddAsync(inscripcionDto);
-                MessageBox.Show("Inscripción realizada con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                await AlumnoInscripcionApiClient.AddAsync(inscripcionDto);
+
+                lblEstado.Text = "Inscripción realizada correctamente.";
+                lblEstado.ForeColor = System.Drawing.Color.Green;
+
+                MessageBox.Show("Inscripción realizada correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 // Recargar los cursos
                 await CargarCursosAsync();
-                btnInscribirse.Text = "Inscribirse";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al inscribirse: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnInscribirse.Enabled = true;
-                btnInscribirse.Text = "Inscribirse";
+                lblEstado.Text = $"Error: {ex.Message}";
+                lblEstado.ForeColor = System.Drawing.Color.Red;
+
+                string errorMsg = !string.IsNullOrWhiteSpace(ex.Message)
+                    ? ex.Message
+                    : "Ocurrió un error inesperado al intentar inscribirse.";
+
+                MessageBox.Show($"Error al inscribirse: {errorMsg}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
-                btnInscribirse.Enabled = true;
-                if (btnInscribirse.Text == "Procesando...")
-                    btnInscribirse.Text = "Inscribirse";
+                isProcessing = false;
+                btnInscribirse.Enabled = dgvCursos.Rows.Count > 0;
             }
         }
 
-        private void dgvCursos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvCursos_SelectionChanged(object sender, EventArgs e)
         {
-
+            btnInscribirse.Enabled = dgvCursos.SelectedRows.Count > 0 && !isProcessing;
         }
     }
 }
