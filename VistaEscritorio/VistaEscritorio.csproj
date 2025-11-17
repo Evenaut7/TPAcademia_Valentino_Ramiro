@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="QuestPDF" Version="2025.7.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\API.Auth.WindowsForm\API.Auth.WindowsForms.csproj" />
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
     <ProjectReference Include="..\Application.Services\Application.Services.csproj" />

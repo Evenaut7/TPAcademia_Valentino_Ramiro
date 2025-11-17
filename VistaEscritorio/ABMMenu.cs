@@ -208,5 +208,10 @@ namespace VistaEscritorio
                     MessageBoxIcon.Error);
             }
         }
+
+        private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioEnPanel(new ReporteAlumnosForm());
+        }
     }
 }

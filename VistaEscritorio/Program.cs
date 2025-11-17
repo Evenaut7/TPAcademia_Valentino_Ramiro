@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using API.Auth.WindowsForms; 
+using API.Auth.WindowsForms;
 using Application.Services;
 
 namespace VistaEscritorio
@@ -22,7 +22,8 @@ namespace VistaEscritorio
             System.Windows.Forms.Application.ThreadException += Application_ThreadException;
 
             // Ejecutar el flujo principal de forma asíncrona
-            Task.Run(MainAsync).GetAwaiter().GetResult();
+            // CAMBIO: Ejecutar Application.Run en el hilo principal STA
+            MainAsync().GetAwaiter().GetResult();
         }
 
         private static async Task MainAsync()
@@ -47,6 +48,7 @@ namespace VistaEscritorio
                 {
                     var abmMenu = _serviceProvider.GetRequiredService<ABMMenu>();
                     await abmMenu.CargarDatosUsuarioAsync();
+                    // Application.Run debe ejecutarse en el hilo principal STA
                     System.Windows.Forms.Application.Run(abmMenu);
                     break;
                 }

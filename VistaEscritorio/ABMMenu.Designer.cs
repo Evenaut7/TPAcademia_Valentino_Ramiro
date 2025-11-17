@@ -41,6 +41,7 @@
             alumnosToolStripMenuItem = new ToolStripMenuItem();
             cursosActualesToolStripMenu = new ToolStripMenuItem();
             inscripcionCursoToolStripMenu = new ToolStripMenuItem();
+            reportesToolStripMenuItem = new ToolStripMenuItem();
             cerrarSesion = new ToolStripMenuItem();
             ABMPanel = new Panel();
             label1 = new Label();
@@ -68,7 +69,7 @@
             menuStrip1.Font = new Font("Segoe UI", 11F);
             menuStrip1.GripMargin = new Padding(2);
             menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, cursosActualesToolStripMenu, inscripcionCursoToolStripMenu, cerrarSesion });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { materiasToolStripMenuItem, planesToolStripMenuItem, especialidadesToolStripMenuItem, Comisiones, cursosToolStripMenuItem, usuariosToolStripMenuItem, alumnosToolStripMenuItem, cursosActualesToolStripMenu, inscripcionCursoToolStripMenu, reportesToolStripMenuItem, cerrarSesion });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Padding = new Padding(7, 3, 0, 3);
@@ -195,6 +196,17 @@
             inscripcionCursoToolStripMenu.TextAlign = ContentAlignment.MiddleLeft;
             inscripcionCursoToolStripMenu.Click += inscripcionCursoToolStripMenu_Click;
             // 
+            // reportesToolStripMenuItem
+            // 
+            reportesToolStripMenuItem.BackColor = SystemColors.ScrollBar;
+            reportesToolStripMenuItem.Font = new Font("Segoe UI", 14.25F);
+            reportesToolStripMenuItem.Margin = new Padding(2);
+            reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
+            reportesToolStripMenuItem.Size = new Size(217, 36);
+            reportesToolStripMenuItem.Text = "Reportes";
+            reportesToolStripMenuItem.TextAlign = ContentAlignment.MiddleLeft;
+            reportesToolStripMenuItem.Click += reportesToolStripMenuItem_Click;
+            // 
             // cerrarSesion
             // 
             cerrarSesion.Font = new Font("Segoe UI", 14.25F);
@@ -276,6 +288,7 @@
         private Label label1;
         private ToolStripMenuItem cursosActualesToolStripMenu;
         private ToolStripMenuItem inscripcionCursoToolStripMenu;
+        private ToolStripMenuItem reportesToolStripMenuItem;
         private ToolStripMenuItem cerrarSesion;
     }
-}
+}   
