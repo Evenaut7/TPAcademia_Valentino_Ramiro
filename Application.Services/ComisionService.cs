@@ -60,7 +60,7 @@ namespace Application.Services
         {
             var comisionRepository = new ComisionRepository();
             // Validar que no exista otra comisión con el mismo nombre (excluyendo la comisión actual)
-            if (comisionRepository.NombreExists(dto.Nombre, dto.PlanId))
+            if (comisionRepository.NombreExists(dto.Nombre, dto.PlanId, dto.Id))
             {
                 throw new ArgumentException($"Ya existe una comisión con el nombre '{dto.Nombre}', para el plan '{dto.PlanId}'.");
             }

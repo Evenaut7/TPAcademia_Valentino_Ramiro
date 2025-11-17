@@ -1,98 +1,163 @@
-﻿namespace VistaEscritorio
+﻿using System.Drawing;
+using DrawingColor = System.Drawing.Color;
+
+namespace VistaEscritorio
 {
     partial class ReporteAlumnosForm
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.Panel panelHeader;
+        private System.Windows.Forms.Label labelTitulo;
+        private System.Windows.Forms.Panel panelSeleccion;
+        private System.Windows.Forms.Label labelSeleccione;
+        private System.Windows.Forms.ComboBox comboBoxCursos;
+        private System.Windows.Forms.Button btnGenerarReporte;
+        private System.Windows.Forms.Panel panelDescargar;
+        private System.Windows.Forms.Button btnDescargarPDF;
+        private System.Windows.Forms.Label labelCargando;
+        private System.Windows.Forms.Label lblTotalAlumnos;
+        private System.Windows.Forms.Panel panelReporte;
+        private System.Windows.Forms.DataGridView dataGridViewAlumnos;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            btnDescargarPDF = new Button();
-            comboBoxCursos = new ComboBox();
-            label1 = new Label();
-            label2 = new Label();
+            panelHeader = new System.Windows.Forms.Panel();
+            labelTitulo = new System.Windows.Forms.Label();
+            panelSeleccion = new System.Windows.Forms.Panel();
+            labelSeleccione = new System.Windows.Forms.Label();
+            comboBoxCursos = new System.Windows.Forms.ComboBox();
+            btnGenerarReporte = new System.Windows.Forms.Button();
+            panelDescargar = new System.Windows.Forms.Panel();
+            btnDescargarPDF = new System.Windows.Forms.Button();
+            labelCargando = new System.Windows.Forms.Label();
+            lblTotalAlumnos = new System.Windows.Forms.Label();
+            panelReporte = new System.Windows.Forms.Panel();
+            dataGridViewAlumnos = new System.Windows.Forms.DataGridView();
+
             SuspendLayout();
-            // 
-            // btnDescargarPDF
-            // 
-            btnDescargarPDF.Location = new Point(210, 208);
-            btnDescargarPDF.Name = "btnDescargarPDF";
-            btnDescargarPDF.Size = new Size(167, 50);
-            btnDescargarPDF.TabIndex = 0;
-            btnDescargarPDF.Text = "Descargar Reporte";
+
+            labelTitulo.AutoSize = true;
+            labelTitulo.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            labelTitulo.Location = new System.Drawing.Point(16, 12);
+            labelTitulo.Text = "Reportes";
+
+            panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            panelHeader.Height = 56;
+            panelHeader.BackColor = DrawingColor.White;
+            panelHeader.Controls.Add(labelTitulo);
+
+            labelSeleccione.AutoSize = true;
+            labelSeleccione.Font = new System.Drawing.Font("Segoe UI", 10F);
+            labelSeleccione.Location = new System.Drawing.Point(16, 12);
+            labelSeleccione.Text = "Seleccionar Curso";
+
+            comboBoxCursos.Font = new System.Drawing.Font("Segoe UI", 10F);
+            comboBoxCursos.Location = new System.Drawing.Point(16, 36);
+            comboBoxCursos.Width = 520;
+            comboBoxCursos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+
+            btnGenerarReporte.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            btnGenerarReporte.Location = new System.Drawing.Point(548, 34);
+            btnGenerarReporte.Size = new System.Drawing.Size(120, 30);
+            btnGenerarReporte.Text = "Generar";
+            btnGenerarReporte.UseVisualStyleBackColor = true;
+            btnGenerarReporte.Click += btnGenerarReporte_Click;
+
+            panelSeleccion.Dock = System.Windows.Forms.DockStyle.Top;
+            panelSeleccion.Height = 80;
+            panelSeleccion.Padding = new System.Windows.Forms.Padding(8);
+            panelSeleccion.Controls.Add(labelSeleccione);
+            panelSeleccion.Controls.Add(comboBoxCursos);
+            panelSeleccion.Controls.Add(btnGenerarReporte);
+
+            btnDescargarPDF.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            btnDescargarPDF.Location = new System.Drawing.Point(16, 12);
+            btnDescargarPDF.Size = new System.Drawing.Size(160, 32);
+            btnDescargarPDF.Text = "Descargar PDF";
             btnDescargarPDF.UseVisualStyleBackColor = true;
+            btnDescargarPDF.Enabled = false;
             btnDescargarPDF.Click += btnDescargarPDF_Click;
-            // 
-            // comboBoxCursos
-            // 
-            comboBoxCursos.FormattingEnabled = true;
-            comboBoxCursos.Location = new Point(210, 157);
-            comboBoxCursos.Name = "comboBoxCursos";
-            comboBoxCursos.Size = new Size(167, 23);
-            comboBoxCursos.TabIndex = 1;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(210, 140);
-            label1.Name = "label1";
-            label1.Size = new Size(142, 15);
-            label1.TabIndex = 2;
-            label1.Text = "Seleccione el ID del Curso";
-            label1.Click += label1_Click;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(210, 27);
-            label2.Name = "label2";
-            label2.Size = new Size(154, 45);
-            label2.TabIndex = 3;
-            label2.Text = "Reportes";
-            // 
-            // ReporteAlumnosForm
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(605, 339);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(comboBoxCursos);
-            Controls.Add(btnDescargarPDF);
+
+            labelCargando.AutoSize = true;
+            labelCargando.Font = new System.Drawing.Font("Segoe UI", 9F);
+            labelCargando.Location = new System.Drawing.Point(192, 18);
+            labelCargando.Text = "Cargando...";
+            labelCargando.Visible = false;
+
+            lblTotalAlumnos.AutoSize = true;
+            lblTotalAlumnos.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            lblTotalAlumnos.Location = new System.Drawing.Point(320, 17);
+            lblTotalAlumnos.Text = "Total: 0";
+
+            panelDescargar.Dock = System.Windows.Forms.DockStyle.Top;
+            panelDescargar.Height = 60;
+            panelDescargar.Padding = new System.Windows.Forms.Padding(12);
+            panelDescargar.Controls.Add(btnDescargarPDF);
+            panelDescargar.Controls.Add(labelCargando);
+            panelDescargar.Controls.Add(lblTotalAlumnos);
+
+            dataGridViewAlumnos.Dock = System.Windows.Forms.DockStyle.Fill;
+            dataGridViewAlumnos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.None;
+            dataGridViewAlumnos.AllowUserToAddRows = false;
+            dataGridViewAlumnos.AllowUserToDeleteRows = false;
+            dataGridViewAlumnos.ReadOnly = true;
+            dataGridViewAlumnos.RowHeadersVisible = false;
+            dataGridViewAlumnos.VirtualMode = true;
+            dataGridViewAlumnos.BackgroundColor = DrawingColor.White;
+            dataGridViewAlumnos.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewAlumnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewAlumnos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewAlumnos.CellValueNeeded += dataGridViewAlumnos_CellValueNeeded;
+
+            var colNumero = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colNumero.HeaderText = "Nº";
+            colNumero.Width = 50;
+            colNumero.Name = "colNumero";
+            var colApellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colApellido.HeaderText = "Apellido";
+            colApellido.Width = 200;
+            colApellido.Name = "colApellido";
+            var colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colNombre.HeaderText = "Nombre";
+            colNombre.Width = 200;
+            colNombre.Name = "colNombre";
+            var colLegajo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colLegajo.HeaderText = "Legajo";
+            colLegajo.Width = 120;
+            colLegajo.Name = "colLegajo";
+            var colNota = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colNota.HeaderText = "Nota";
+            colNota.Width = 70;
+            colNota.Name = "colNota";
+            var colCondicion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            colCondicion.HeaderText = "Condición";
+            colCondicion.Width = 120;
+            colCondicion.Name = "colCondicion";
+
+            dataGridViewAlumnos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+                colNumero, colApellido, colNombre, colLegajo, colNota, colCondicion
+            });
+
+            panelReporte.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelReporte.AutoScroll = true;
+            panelReporte.Padding = new System.Windows.Forms.Padding(12);
+            panelReporte.Controls.Add(dataGridViewAlumnos);
+
+            ClientSize = new System.Drawing.Size(920, 650);
+            Controls.Add(panelReporte);
+            Controls.Add(panelDescargar);
+            Controls.Add(panelSeleccion);
+            Controls.Add(panelHeader);
             Name = "ReporteAlumnosForm";
-            Text = "ReporteAlumnosForm";
-            Load += ReporteAlumnosForm_Load;
+            Text = "Reporte de Alumnos";
+
             ResumeLayout(false);
-            PerformLayout();
         }
-
-        #endregion
-
-        private Button btnDescargarPDF;
-        private ComboBox comboBoxCursos;
-        private Label label1;
-        private Label label2;
     }
 }

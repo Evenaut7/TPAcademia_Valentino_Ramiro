@@ -138,6 +138,7 @@ namespace VistaEscritorio
             cursosToolStripMenuItem.Visible = false;
             usuariosToolStripMenuItem.Visible = false;
             alumnosToolStripMenuItem.Visible = false;
+            reportesToolStripMenuItem.Visible = false;
         }
 
         private void ConfigurarMenuProfesor()

@@ -21,8 +21,6 @@ namespace VistaEscritorio
             // Capturar errores globales en la UI
             System.Windows.Forms.Application.ThreadException += Application_ThreadException;
 
-            // Ejecutar el flujo principal de forma asíncrona
-            // CAMBIO: Ejecutar Application.Run en el hilo principal STA
             MainAsync().GetAwaiter().GetResult();
         }
 
